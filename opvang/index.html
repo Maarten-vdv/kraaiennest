@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base target="_top">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" type="text/javascript"></script>
+</head>
+
+<body style="height: 100%">
+<div class="container d-flex flex-column" style="height: 100%">
+    <div class="part flex-grow-0">
+        <h1>Opvang Tijdsregistratie</h1>
+        <h2 class="name"><?=name ?></h2>
+    </div>
+    <div class="part flex-row">
+        <div class="h-100 text-center" id="clock">
+        </div>
+    </div>
+    <div class="part">
+        <div class="d-flex align-items-center w-100 justify-content-center">
+            <button id="lower" class="btn btn-light changeBtn">-</button>
+            <span id="halfHours" class="halfHours"></span>
+            <button id="higher" class="btn btn-light changeBtn">+</button>
+        </div>
+        <span class="d-flex flex-column halfHours">halve uren</span>
+    </div>
+    <div class="part">
+        <button type="button" id="submitButton" type="button" class="btn btn-success w-100">Registreer</button>
+        <div class="d-none error message flex-grow-0 mb-2">
+            <div class="title">Error:</div>
+            <div class="message"></div>
+        </div>
+        <div class="d-none success message flex-grow-0 mb-2">
+            <div class="message">Registratie geslaagd!</div>
+        </div>
+    </div>
+</div>
+
+<?!= HtmlService.createHtmlOutputFromFile('script').getContent(); ?>
+<?!= HtmlService.createHtmlOutputFromFile('styles').getContent(); ?>
+</body>
+
+</html>
