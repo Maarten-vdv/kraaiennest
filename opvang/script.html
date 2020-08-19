@@ -1,6 +1,4 @@
 <script>
-    const inputs = [];
-
     const opvangApp = function () {
         const self = this;
         const now = new Date();
@@ -13,7 +11,8 @@
             setErrorMessage(false);
 
             const data = {
-                halfHours: parseInt(halfHours.text())
+                halfHours: parseInt(halfHours.text()),
+                now: now.getTime()
             }
 
             google.script.run
@@ -21,16 +20,6 @@
                 .withFailureHandler(self.failedToSubmit)
                 .formSubmit(data);
         };
-
-        //Retrieves the form data based on the input fields
-        self.getFormData = function () {
-            const output = {};
-            for (let i = 0; i < inputs.length; i++) {
-                output[inputs[i]] = $('#' + inputs[i]).val();
-            }
-            console.log(output)
-            return output;
-        }
 
         //When the apps script sucessfully returns
         self.successfullySubmitted = function (value) {
@@ -55,7 +44,7 @@
             console.log(s)
             $('#clock').text(s);
             // this makes the clock tick.
-            //   setTimeout(self.updateClock, 60000 - d.getTime() % 60000 + 100);
+            // setTimeout(self.updateClock, 60000 - d.getTime() % 60000 + 100);
         }
 
         self.calcHalfHours = function () {
