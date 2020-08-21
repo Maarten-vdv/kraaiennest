@@ -45,6 +45,14 @@
             $('#clock').text(s);
             // this makes the clock tick.
             // setTimeout(self.updateClock, 60000 - d.getTime() % 60000 + 100);
+
+            if(now.getHours() > 11) {
+                $('.eveningClock.clock').text("15:30");
+                $('.eveningClock').show();
+            } else {
+                $('.morningClock.clock').text("8:00");
+                $('.morningClock').show();
+            }
         }
 
         self.calcHalfHours = function () {
@@ -84,7 +92,8 @@
         $('#higher').on('click', app.higher);
 
         $('#halfHours').text(app.calcHalfHours());
-
+        $('.morningClock').hide();
+        $('.eveningClock').hide();
         app.updateClock();
 
         const clock = $('#clock');
@@ -93,9 +102,25 @@
             var height = clock.height();
             // Set the font-size and line-height of the text within the div according to the current height.
             clock.css({
-                'font-size': (height * 0.8) + 'px',
+                'font-size': (height * 1) + 'px',
                 'line-height': height + 'px'
             })
+            $('.eveningClock.until').css({
+                'font-size': (height * 0.4) + 'px',
+                'line-height': height + 'px'
+            });
+            $('.eveningClock.clock').css({
+                'font-size': (height * 1) + 'px',
+                'line-height': height + 'px'
+            });
+            $('.morningClock.until').css({
+                'font-size': (height * 0.4) + 'px',
+                'line-height': height + 'px'
+            });
+            $('.morningClock.clock').css({
+                'font-size': (height * 1) + 'px',
+                'line-height': height + 'px'
+            });
         }).trigger('resize');
     });
 

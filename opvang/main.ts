@@ -21,7 +21,7 @@ function doGet(e) {
 
 function getName(spreadsheet, userId) {
 	const sheet = spreadsheet.getSheetByName("Namen");
-	const values = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues();
+	const values = sheet.getRange(2, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues();
 	const row = values.findIndex(r => r[0] == userId);
 
 	if (row != -1) {
@@ -40,23 +40,21 @@ function formSubmit(formData) {
 	let property = props.getProperty("sheetId");
 	const spreadsheet = SpreadsheetApp.openById(property);
 	const timeSheet = spreadsheet.getSheetByName("Registraties");
-	const row = getCurrentRowForUser(spreadsheet);
-	console.log("userId: " + userId + ", row" + row);
+	const row = getCurrentRowForUser(timeSheet);
+	console.log("userId: " + userId + ", row: " + row);
 
-	updateRow(timeSheet, userId, row, now, halfHours);
+	updateRow(timeSheet, row, userId, now, halfHours);
 	return {success: true, message: 'Sucessfully submitted!'};
 }
 
-function updateRow(sheet, cell, userId, now, halfHours) {
-	const target = sheet.getRange(cell.row, 1, 1, 5);
+function updateRow(sheet, row: number, userId: number, now: Date, halfHours: number) {
+	console.log(row);
+	const target = sheet.getRange(row, 1, 1, 5);
 	target.setNumberFormat("HH:MM");
-	target.setValues([userId, now, now.getHours() >= 12 ? "A" : "O", now, halfHours]);
-
-	sheet.get(cell.row, 2).setNumberFormat("DD/MM");
-	sheet.get(cell.row, 4).setNumberFormat("HH:MM");
+	target.setValues([[userId, now, now.getHours() >= 12 ? "A" : "O", now, halfHours]]);
 }
 
-function getCurrentRowForUser(sheet) {
+function getCurrentRowForUser(sheet): number {
 	const lines = sheet.getRange(1, 1, sheet.getLastRow(), 3).getValues();
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
@@ -65,5 +63,5 @@ function getCurrentRowForUser(sheet) {
 		return date === today;
 	});
 
-	return row == -1 ? sheet.getLastRow() + 1 : row;
+	return row === -1 ? sheet.getLastRow() + 1 : row;
 }
