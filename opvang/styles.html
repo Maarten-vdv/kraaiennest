@@ -18,7 +18,6 @@
 
     .part {
         display: flex;
-        flex-direction: column;
         align-items: center;
         flex: 1 1 auto;
     }
@@ -42,6 +41,28 @@
         margin: 1rem;
         width: 100%;
         color: #8CA264;
+    }
+    @media (min-width: 767.98px) {
+        .clock {
+            font-size: 10vh;
+            line-height: 10vh;
+        }
+
+        .until {
+            font-size: 4vh;
+            line-height: 10vh;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .clock {
+            font-size: 6vh;
+            line-height: 6vh;
+        }
+        .until {
+            font-size: 3vh;
+            line-height: 6vh;
+        }
     }
 
     #halfHours {

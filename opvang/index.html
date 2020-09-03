@@ -15,17 +15,17 @@
 <body class="h-100 d-flex flex-column">
 <h1 class="title">Opvang Tijdsregistratie</h1>
 <div class="container d-flex flex-column flex-fill">
-    <div class="part flex-grow-0">
+    <div class="part flex-column flex-grow-0">
         <h2 class="name"><?=name ?></h2>
     </div>
-    <div class="part flex-row justify-content-center">
+    <div class="part flex-column flex-lg-row justify-content-center">
         <div class="eveningClock h-100 clock pr-4"></div>
         <span class="eveningClock h-100 until pr-4">tot</span>
-        <div class="=text-center h-100" id="clock"></div>
+        <div class="=text-center h-100 clock" id="clock"></div>
         <span class="morningClock h-100 until pl-4">tot</span>
         <div class=" morningClock h-100 clock pl-4"></div>
     </div>
-    <div class="part">
+    <div class="part flex-column">
         <div class="d-flex align-items-center w-100 justify-content-center">
             <button id="lower" class="btn btn-light changeBtn">-</button>
             <span id="halfHours" class="halfHours"></span>
@@ -33,7 +33,7 @@
         </div>
         <span class="d-flex flex-column halfHours">halve uren</span>
     </div>
-    <div class="part">
+    <div class="part flex-column">
         <button type="button" id="submitButton" type="button" class="btn btn-success w-100">Registreer</button>
         <div class="d-none error message flex-grow-0 mb-2">
             <div class="title">Error:</div>
