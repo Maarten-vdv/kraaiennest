@@ -11,33 +11,37 @@ function doGet(e) {
 			.setTitle('Opvang');
 	}
 
+	const isOv = e.parameter.testId === "OV";
+
 	// only available on weekdays between 6h and 19h
-	if (now.getDay() === 0 || now.getDay() === 6 || now.getHours() < 6 || now.getHours() > 19) {
+	if (!isOv && (now.getDay() === 0 || now.getDay() === 6 || now.getHours() < 6 || now.getHours() >= 19)) {
 		const errorTemplate = HtmlService.createTemplateFromFile('unavailable');
 		return errorTemplate.evaluate()
 			.setTitle('Opvang');
 	}
 
-	const userId = e.parameter.userId;
+	const qrId = e.parameter.userId;
 	const spreadsheet = SpreadsheetApp.openById(sheetId);
+	const user =  getUser(spreadsheet, qrId);
 
-	props.setProperty("userId", userId);
+	template.name = user.name;
+	props.setProperty("userId", user.id);
 	props.setProperty("sheetId", sheetId);
 
-	template.name = getName(spreadsheet, userId);
 	return template.evaluate()
 		.setTitle('Opvang');
 }
 
-function getName(spreadsheet, userId) {
+function getUser(spreadsheet, qrId) {
 	const sheet = spreadsheet.getSheetByName("Namen");
 	const values = sheet.getRange(2, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues();
-	const row = values.findIndex(r => r[0] == userId);
+	// QRID is the 5th column in the names sheet
+	const row = values.findIndex(r => r[5] == qrId);
 
 	if (row != -1) {
-		return values[row][1];
+		return {name: values[row][1], id: parseInt(values[row][0]), qrId: qrId};
 	}
-	return userId;
+	return {name: qrId, id: qrId, qrId: qrId };
 }
 
 //Called from the client with form data, basic validation for blank values
@@ -51,7 +55,6 @@ function formSubmit(formData) {
 	const spreadsheet = SpreadsheetApp.openById(property);
 	const timeSheet = spreadsheet.getSheetByName("Registraties");
 	const timeOfDay = now.getHours() >= 12 ? "A" : "O";
-	// const row = getCurrentRowForUser(timeSheet, userId, timeOfDay);
 	// always append, no overwrite
 	const row = timeSheet.getLastRow() + 1;
 
@@ -61,8 +64,17 @@ function formSubmit(formData) {
 }
 
 function updateRow(sheet, row: number, userId: number, now: Date, halfHours: number, timeOfDay: string) {
-	const target = sheet.getRange(row, 1, 1, 5);
-	target.setValues([[userId, now, timeOfDay, now, halfHours]]);
+	const target = sheet.getRange(row, 1, 1, 6);
+	let calcHalfHours = 0;
+
+	if(now.getHours() >= 12) {
+		let then  = new Date();
+		then.setHours(15);
+		then.setMinutes(45);
+		calcHalfHours = Math.ceil((now.getTime() - then.getTime()) / 1800000);
+	}
+
+	target.setValues([[userId, now, timeOfDay, now, halfHours, calcHalfHours]]);
 }
 
 function getCurrentRowForUser(sheet, userId, timeOfDay): number {

@@ -46,8 +46,12 @@
             // this makes the clock tick.
             // setTimeout(self.updateClock, 60000 - d.getTime() % 60000 + 100);
 
-            if (now.getHours() > 11) {
-                $('.eveningClock.clock').text("15:30");
+            if(now.getHours() === 15 && now.getMinutes() > 29 && now.getMinutes() < 46) {
+                // this is the free quarter and should be used to register which kids are here (with 0 half hours)
+                $(".part-register").removeClass('d-none');
+                $(".part-clock").addClass('d-none');
+            } else if (now.getHours() > 11) {
+                $('.eveningClock.clock').text("15:45");
                 $('.eveningClock').show();
             } else {
                 $('.morningClock.clock').text("8:00");
@@ -62,13 +66,13 @@
             let date = new Date();
             let minutes;
             if (evening && wednesday) {
-                date.setHours(15, 30);
+                date.setHours(15, 45);
                 minutes = moment.duration(moment(now).diff(moment(date))).as('minutes');
             } else if (evening) {
-                date.setHours(15, 30);
+                date.setHours(15, 45);
                 minutes = moment.duration(moment(now).diff(moment(date))).as('minutes');
             } else {
-                date.setHours(8, 25);
+                date.setHours(8, 0);
                 minutes = moment.duration(moment(date).diff(moment(now))).as('minutes');
             }
             return Math.max(0, Math.ceil(minutes / 30));
@@ -81,7 +85,7 @@
 
         self.higher = function () {
             const current = parseInt(halfHours.text());
-            halfHours.text(Math.min(0, current + 1));
+            halfHours.text(Math.max(0, current + 1));
         }
     };
 
@@ -97,11 +101,6 @@
         app.updateClock();
 
         const clock = $('#clock');
-        $(window).resize(function () {
-            // Get the current height of the div and save it as a variable.
-            var height = clock.height();
-            // Set the font-size and line-height of the text within the div according to the current height.
-        }).trigger('resize');
     });
 
     //Disables/enables the submit button

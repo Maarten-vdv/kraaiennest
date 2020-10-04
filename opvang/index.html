@@ -2,7 +2,7 @@
 <html style="height: 100%">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <base target="_top">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -18,12 +18,15 @@
     <div class="part flex-column flex-grow-0">
         <h2 class="name"><?=name ?></h2>
     </div>
-    <div class="part flex-column flex-lg-row justify-content-center">
-        <div class="eveningClock h-100 clock pr-4"></div>
+    <div class="part part-register d-none flex-column flex-lg-row justify-content-center">
+        <h1>Aanwezigheids registratie</h1>
+    </div>
+    <div class="part part-clock flex-column flex-lg-row justify-content-center">
         <span class="eveningClock h-100 until pr-4">tot</span>
+        <div class="eveningClock h-100 clock pr-4"></div>
         <div class="=text-center h-100 clock" id="clock"></div>
-        <span class="morningClock h-100 until pl-4">tot</span>
-        <div class=" morningClock h-100 clock pl-4"></div>
+        <div class=" morningClock h-100 clock pr-4"></div>
+        <span class="morningClock h-100 until pr-4">tot</span>
     </div>
     <div class="part flex-column">
         <div class="d-flex align-items-center w-100 justify-content-center">
@@ -34,13 +37,13 @@
         <span class="d-flex flex-column halfHours">halve uren</span>
     </div>
     <div class="part flex-column">
+        <div class="d-none success message flex-grow-0 mb-2">
+            <div class="message">Registratie geslaagd!</div>
+        </div>
         <button type="button" id="submitButton" type="button" class="btn btn-success w-100">Registreer</button>
         <div class="d-none error message flex-grow-0 mb-2">
             <div class="title">Error:</div>
             <div class="message"></div>
-        </div>
-        <div class="d-none success message flex-grow-0 mb-2">
-            <div class="message">Registratie geslaagd!</div>
         </div>
     </div>
 </div>
