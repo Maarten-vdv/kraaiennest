@@ -2,7 +2,14 @@ function doGet(e) {
 	const sheetId = "16_SNwRVKHoWVevxmAzpJs-EmxUaEVavcaKaTn_vS_Qw";
 	const template = HtmlService.createTemplateFromFile('index');
 	const props = PropertiesService.getUserProperties();
-	const now = new Date();
+	const now = new Date("2020-10-05T15:34:00");
+
+	const isPresence = e.parameter.mode === "presence";
+	const spreadsheet = SpreadsheetApp.openById(sheetId);
+
+	if(isPresence) {
+		return HtmlService.createTemplateFromFile('presence').evaluate();
+	}
 
 	// no userId found
 	if (!e.parameter || !e.parameter.userId) {
@@ -21,7 +28,6 @@ function doGet(e) {
 	}
 
 	const qrId = e.parameter.userId;
-	const spreadsheet = SpreadsheetApp.openById(sheetId);
 	const user =  getUser(spreadsheet, qrId);
 
 	template.name = user.name;
@@ -30,6 +36,28 @@ function doGet(e) {
 
 	return template.evaluate()
 		.setTitle('Opvang');
+}
+
+function getPresentNames() {
+	const sheetId = "16_SNwRVKHoWVevxmAzpJs-EmxUaEVavcaKaTn_vS_Qw";
+	const spreadsheet = SpreadsheetApp.openById(sheetId);
+	const now = new Date();
+
+	const timeOfDay = now.getHours() >= 12 ? 'A' : 'O'
+
+	const nameSheet = spreadsheet.getSheetByName("Namen");
+	const names = nameSheet.getRange(2, 1, nameSheet.getLastRow(), 2).getValues();
+
+	const mainSheet = spreadsheet.getSheetByName("Registraties");
+	const registrations = mainSheet.getRange(2, 1, nameSheet.getLastRow(), 3).getValues().filter(row => {
+		const date = new Date(row[1]);
+		return date.getDate() === now.getDate() && date.getMonth() === now.getMonth() && row[2] === timeOfDay
+	} );
+
+	return registrations.map(r => {
+		const name = names.find(n => n[0] === r[0]);
+		return name ? name[1] : null
+	}).filter(n => !!n);
 }
 
 function getUser(spreadsheet, qrId) {

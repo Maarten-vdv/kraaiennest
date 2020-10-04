@@ -49,7 +49,9 @@
             if(now.getHours() === 15 && now.getMinutes() > 29 && now.getMinutes() < 46) {
                 // this is the free quarter and should be used to register which kids are here (with 0 half hours)
                 $(".part-register").removeClass('d-none');
-                $(".part-clock").addClass('d-none');
+                $(".real-reg").addClass('d-none');
+                // auto submit form on registration
+                self.submitForm();
             } else if (now.getHours() > 11) {
                 $('.eveningClock.clock').text("15:45");
                 $('.eveningClock').show();

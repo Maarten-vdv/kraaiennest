@@ -21,14 +21,14 @@
     <div class="part part-register d-none flex-column flex-lg-row justify-content-center">
         <h1>Aanwezigheids registratie</h1>
     </div>
-    <div class="part part-clock flex-column flex-lg-row justify-content-center">
-        <span class="eveningClock h-100 until pr-4">tot</span>
+    <div class="part real-reg flex-column flex-lg-row justify-content-center">
         <div class="eveningClock h-100 clock pr-4"></div>
+        <span class="eveningClock h-100 until pr-4">tot</span>
         <div class="=text-center h-100 clock" id="clock"></div>
-        <div class=" morningClock h-100 clock pr-4"></div>
         <span class="morningClock h-100 until pr-4">tot</span>
+        <div class=" morningClock h-100 clock pr-4"></div>
     </div>
-    <div class="part flex-column">
+    <div class="part real-reg flex-column">
         <div class="d-flex align-items-center w-100 justify-content-center">
             <button id="lower" class="btn btn-light changeBtn">-</button>
             <span id="halfHours" class="halfHours"></span>
@@ -40,7 +40,7 @@
         <div class="d-none success message flex-grow-0 mb-2">
             <div class="message">Registratie geslaagd!</div>
         </div>
-        <button type="button" id="submitButton" type="button" class="btn btn-success w-100">Registreer</button>
+        <button type="button" id="submitButton" type="button" class="btn btn-success w-100 real-reg">Registreer</button>
         <div class="d-none error message flex-grow-0 mb-2">
             <div class="title">Error:</div>
             <div class="message"></div>
