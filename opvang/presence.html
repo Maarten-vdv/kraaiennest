@@ -11,18 +11,28 @@
 </head>
 
 <body style="height: 100%">
-<div class="container d-flex flex-column" style="height: 100%">
+<div class="d-flex flex-column" style="height: 100%">
     <div class="part flex-column flex-grow-0">
         <h1>Opvang Tijdsregistratie</h1>
         <h2>Aanwezige kinderen</h2>
-        <div id="kinderen">
-            <span>Loading...</span>
-        </div>
+        <div id="totals" class="pb-4"></div>
+        <table id="kinderen">
+            <tr><td>Loading...</td></tr>
+        </table>
     </div>
 </div>
 <script type="text/javascript">
-    function onSuccess(items) {
-        document.getElementById('kinderen').innerHTML =  items.map(i => '<div>' + i + '</div>').join("");;
+    function onSuccess(resultString) {
+        let result = JSON.parse(resultString);
+        const items = result.regs;
+
+        const totals = Object.keys(result.totals).reduce((s, i) => s + '<span class="pl-2">' + i + ': </span><span>' + result.totals[i] + ' </span>', []);
+        document.getElementById('totals').innerHTML = totals;
+
+        const regs = items.map(item =>
+            '<tr>' + item.reduce((s, p) => s + '<td>' + p + ' </td>', '') + '</tr>',
+        ).join("");
+        document.getElementById('kinderen').innerHTML = regs;
     }
 
     google.script.run.withSuccessHandler(onSuccess).getPresentNames();
