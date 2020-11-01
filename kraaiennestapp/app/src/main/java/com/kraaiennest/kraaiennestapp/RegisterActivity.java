@@ -1,24 +1,26 @@
 package com.kraaiennest.kraaiennestapp;
 
 import android.content.Intent;
-import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
+import com.kraaiennest.kraaiennestapp.model.Child;
+
+import static com.kraaiennest.kraaiennestapp.Constants.URL;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    public static final String URL = "com.kraaiennest.kraaiennestapp.MESSAGE";
+    private Child currentChild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        View button = findViewById(R.id.button_id);
+        View button = findViewById(R.id.backBtn);
         button.setOnClickListener(v -> finish());
 
         Intent intent = getIntent();

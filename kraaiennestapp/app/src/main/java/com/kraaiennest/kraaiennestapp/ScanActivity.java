@@ -1,9 +1,9 @@
 package com.kraaiennest.kraaiennestapp;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Size;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
@@ -50,9 +50,16 @@ public class ScanActivity extends AppCompatActivity {
         startCamera();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        this.found = false;
+    }
+
     private void goToRegistration(String url) {
         Intent intent = new Intent(this, RegisterActivity.class);
-        intent.putExtra(RegisterActivity.URL, url);
+        intent.putExtra(Constants.URL, url);
         startActivity(intent);
     }
 

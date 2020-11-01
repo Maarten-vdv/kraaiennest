@@ -3,6 +3,7 @@
           package="com.kraaiennest.kraaiennestapp">
 
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
             android:allowBackup="true"
@@ -11,11 +12,16 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name="com.kraaiennest.kraaiennestapp.RegisterActivity">
+        <activity
+                android:name=".PresenceActivity"
+                android:label="@string/title_activity_presence"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name="com.kraaiennest.kraaiennestapp.ScanActivity">
+        <activity android:name=".RegisterActivity">
         </activity>
-        <activity android:name="com.kraaiennest.kraaiennestapp.MainActivity">
+        <activity android:name=".ScanActivity">
+        </activity>
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
