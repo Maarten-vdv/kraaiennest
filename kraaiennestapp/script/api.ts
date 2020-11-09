@@ -38,6 +38,13 @@ const API = (() => {
 		}, []);
 	}
 
+	const _getChildren = function() {
+		const names = nameSheet.getRange(2, 1, nameSheet.getLastRow(), 6).getValues();
+		return names.reduce((acc, child) => {
+			acc.push({id: child[0], firstName: child[3], lastName: child[2], group: child[4], qrId: child[5]})
+			return acc;
+		} , [])
+	}
 	//Called from the client with form data, basic validation for blank values
 	function formSubmit(formData) {
 		const halfHours = formData.halfHours;
@@ -55,7 +62,12 @@ const API = (() => {
 		return {success: true, message: 'Sucessfully submitted!'};
 	}
 
-	function updateRow(sheet, row, userId, now, halfHours, timeOfDay) {
+	const _checkIn = function(id) {
+		const row = mainSheet.getLastRow() + 1;
+		updateRow(mainSheet, row, id, now, 0, timeOfDay, true);
+	}
+
+	function updateRow(sheet, row, userId, now, halfHours, timeOfDay, checkIn = false) {
 		const target = sheet.getRange(row, 1, 1, 6);
 		let calcHalfHours = 0;
 		if (now.getHours() >= 12) {
@@ -64,22 +76,12 @@ const API = (() => {
 			then.setMinutes(45);
 			calcHalfHours = Math.ceil((now.getTime() - then.getTime()) / 1800000);
 		}
-		target.setValues([[userId, now, timeOfDay, now, halfHours, calcHalfHours]]);
-	}
-
-	function getCurrentRowForUser(sheet, userId, timeOfDay) {
-		const lines = sheet.getRange(1, 1, sheet.getLastRow(), 3).getValues();
-		const today = new Date();
-		const row = lines.findIndex(value => {
-			const date = new Date(value[1]);
-			return value[0] == userId
-				&& date.getDay() === today.getDay() && date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()
-				&& value[2] == timeOfDay;
-		});
-		return row === -1 ? sheet.getLastRow() + 1 : row + 1;
+		target.setValues([[userId, now, timeOfDay, now, halfHours, checkIn ? 0 : calcHalfHours]]);
 	}
 
 	return {
-		getPresentNames: _getPresentNames
+		getChildren: _getChildren,
+		getPresentNames: _getPresentNames,
+		checkIn: _checkIn
 	}
 })();

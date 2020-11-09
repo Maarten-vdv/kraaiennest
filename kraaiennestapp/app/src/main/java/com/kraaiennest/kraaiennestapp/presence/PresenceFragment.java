@@ -19,7 +19,6 @@ import java.util.ArrayList;
  */
 public class PresenceFragment extends Fragment {
 
-    private static final String ARG_ITEMS = "column-count";
     private PresenceViewModel model;
     private PresenceRecyclerViewAdapter presenceAdapter;
     private RecyclerView recyclerView;
@@ -54,7 +53,6 @@ public class PresenceFragment extends Fragment {
         presenceAdapter = new PresenceRecyclerViewAdapter(new ArrayList<>());
 
         recycleView.setNestedScrollingEnabled(false);
-        recycleView.setLayoutManager(new GridLayoutManager(context, 1));
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         recycleView.setAdapter(presenceAdapter);
 

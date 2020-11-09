@@ -1,30 +1,32 @@
-package com.kraaiennest.kraaiennestapp.main;
+package com.kraaiennest.kraaiennestapp;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import com.kraaiennest.kraaiennestapp.PresenceActivity;
-import com.kraaiennest.kraaiennestapp.R;
-import com.kraaiennest.kraaiennestapp.ScanActivity;
+import com.kraaiennest.kraaiennestapp.api.APIInterface;
+import com.kraaiennest.kraaiennestapp.api.APIService;
+import com.kraaiennest.kraaiennestapp.model.Child;
+import org.parceler.Parcels;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
     private final int REQUEST_CAMERA_PERMISSION = 10;
 
     private ConstraintLayout container;
+    private List<Child> children;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
         register.setBackgroundColor(Color.parseColor("#F79922"));
         register.setOnClickListener(event -> startScanner());
 
-        View checkIn = findViewById(R.id.check_in_btn);
+        View checkIn = findViewById(R.id.scan_btn);
         checkIn.setBackgroundColor(Color.parseColor("#5133AB"));
+        checkIn.setOnClickListener(event -> startCheckIn());
 
         View presence = findViewById(R.id.presence_btn);
         presence.setBackgroundColor(Color.parseColor("#AC193D"));
@@ -49,6 +52,23 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
         }
+
+        if(children == null) {
+            children = loadChildren();
+        }
+    }
+
+    private List<Child> loadChildren() {
+        APIInterface api = APIService.getClient().create(APIInterface.class);
+        try {
+            List<Child> children = api.doGetChildren().get();
+            System.out.println(children.size());
+            return children;
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 
     private void startScanner() {
@@ -58,6 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void startPresence() {
         Intent intent = new Intent(this, PresenceActivity.class);
+        startActivity(intent);
+    }
+
+    private void startCheckIn() {
+        Intent intent = new Intent(this, CheckInActivity.class);
+        Bundle bundle = new Bundle();
+        Parcelable wrapped = Parcels.wrap(children);
+        bundle.putParcelable("children", wrapped);
+     intent.putExtras(bundle);
         startActivity(intent);
     }
 

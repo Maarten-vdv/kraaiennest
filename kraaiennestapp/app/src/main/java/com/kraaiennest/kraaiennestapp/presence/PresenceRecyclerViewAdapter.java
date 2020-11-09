@@ -1,15 +1,19 @@
 package com.kraaiennest.kraaiennestapp.presence;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.flexbox.FlexboxLayout;
 import com.kraaiennest.kraaiennestapp.R;
+import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.model.Presence;
-import com.kraaiennest.kraaiennestapp.model.Timestamp;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PresenceRecyclerViewAdapter extends RecyclerView.Adapter<PresenceRecyclerViewAdapter.ViewHolder> {
@@ -28,10 +32,23 @@ public class PresenceRecyclerViewAdapter extends RecyclerView.Adapter<PresenceRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = data.get(position);
-        holder.mIdView.setText(data.get(position).getChild().getFirstName());
-        holder.mContentView.setText(data.get(position).getTimestamps().stream()
-                .map(t -> t.getRegisteredAt().toString()).reduce("", String::concat));
+        holder.item = data.get(position);
+        Child child = data.get(position).getChild();
+        holder.childNameView.setText(child.getFirstName() + " " + child.getLastName());
+        holder.childGroupView.setText(child.getGroup());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        Context context = holder.childNameView.getContext();
+        holder.item.getTimestamps().forEach(t -> holder.timestampsView.addView(createTimestampView(context, dateFormat, t)));
+    }
+
+    private TextView createTimestampView(Context context, SimpleDateFormat dateFormat, com.kraaiennest.kraaiennestapp.model.Timestamp t) {
+        TextView view = new TextView(context);
+        view.setText(dateFormat.format(t.getRegisteredAt()));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(20,0,20,0);
+        view.setLayoutParams(params);
+        return view;
     }
 
     @Override
@@ -47,20 +64,22 @@ public class PresenceRecyclerViewAdapter extends RecyclerView.Adapter<PresenceRe
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public Presence mItem;
+        public final TextView childNameView;
+        public final TextView childGroupView;
+        public final FlexboxLayout timestampsView;
+        public Presence item;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            childNameView = view.findViewById(R.id.child_name);
+            childGroupView = view.findViewById(R.id.child_group);
+            timestampsView = view.findViewById(R.id.timestamps);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + item.toString() + "'";
         }
     }
 }

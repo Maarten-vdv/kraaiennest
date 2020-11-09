@@ -1,17 +1,21 @@
 package com.kraaiennest.kraaiennestapp.model;
 
 import com.google.gson.annotations.SerializedName;
+import org.parceler.Parcel;
 
+@Parcel
 public class Child {
 
     @SerializedName("firstName")
-    private String firstName;
+    String firstName;
     @SerializedName("lastName")
-    private String lastName;
+    String lastName;
     @SerializedName("id")
-    private String id;
+    String id;
     @SerializedName("group")
-    private String group;
+    String group;
+    @SerializedName("qrId")
+    String qrId;
 
     public String getFirstName() {
         return firstName;
@@ -43,5 +47,13 @@ public class Child {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    public String getQrId() {
+        return qrId;
+    }
+
+    public void setQrId(String qrId) {
+        this.qrId = qrId;
     }
 }

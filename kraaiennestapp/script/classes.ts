@@ -1,6 +1,6 @@
 class Presence {
-	private child: Child;
-	private timestamps: Date[];
+	child: Child;
+	timestamps: Date[];
 
 	constructor(child, timestamps) {
 		this.child = child;
@@ -9,10 +9,10 @@ class Presence {
 }
 
 class Child {
-	private id: string;
-	private firstName: string;
-	private lastName: string;
-	private group: string;
+	id: string;
+	firstName: string;
+	lastName: string;
+	group: string;
 
 	constructor(id, firstName, lastName, group) {
 		this.id = id;

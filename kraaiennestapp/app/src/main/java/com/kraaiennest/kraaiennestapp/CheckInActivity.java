@@ -2,6 +2,7 @@ package com.kraaiennest.kraaiennestapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
@@ -15,12 +16,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static com.kraaiennest.kraaiennestapp.ScanActivity.SCANNED_USER_ID;
 
-public class RegisterActivity extends AppCompatActivity {
+public class CheckInActivity extends AppCompatActivity {
 
-    public static final int REGISTER_SCAN_REQUEST = 1;
+    public static final int CHECK_IN_SCAN_REQUEST = 1;
 
     private List<Child> children;
     private Child child;
@@ -29,21 +32,21 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_check_in);
 
         children = Parcels.unwrap(getIntent().getParcelableExtra("children"));
         api = APIService.getClient().create(APIInterface.class);
 
-        CircularProgressButton registerInBtn = findViewById(R.id.register_btn);
-        registerInBtn.setOnClickListener(click -> {
-            registerInBtn.startAnimation();
+        CircularProgressButton checkInBtn = findViewById(R.id.check_in_btn);
+        checkInBtn.setOnClickListener(click -> {
+            checkInBtn.startAnimation();
             if (child != null) {
                 Call<ResponseBody> checkIn = api.doPostCheckIn(child);
 
                 checkIn.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        registerInBtn.revertAnimation();
+                        checkInBtn.revertAnimation();
                         loadChild(null);
                     }
 
@@ -54,28 +57,28 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-//        CircularProgressButton scanBtn = findViewById(R.id.scan_btn);
-//        scanBtn.setOnClickListener(click -> {
-//            startScan();
-//        });
-//
-//        CircularProgressButton backBtn = findViewById(R.id.back_btn);
-//        backBtn.setOnClickListener(click -> {
-//            finish();
-//        });
+        CircularProgressButton scanBtn = findViewById(R.id.scan_btn);
+        scanBtn.setOnClickListener(click -> {
+            startScan();
+        });
+
+        CircularProgressButton backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(click -> {
+            finish();
+        });
 
         startScan();
     }
 
     private void startScan() {
         Intent intent = new Intent(this, ScanActivity.class);
-        startActivityForResult(intent, REGISTER_SCAN_REQUEST);
+        startActivityForResult(intent, CHECK_IN_SCAN_REQUEST);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
-        if (requestCode == REGISTER_SCAN_REQUEST) {
+        if (requestCode == CHECK_IN_SCAN_REQUEST) {
             if (resultCode == RESULT_OK) {
                 String userId = data.getStringExtra(SCANNED_USER_ID);
                 if (userId != null) {

@@ -2,12 +2,13 @@
 function doGet(e) {
 	const sheetId = "16_SNwRVKHoWVevxmAzpJs-EmxUaEVavcaKaTn_vS_Qw";
 	const props = PropertiesService.getUserProperties();
-	const now = new Date();
-	const isPresence = e.parameter.mode === "presence";
-	const spreadsheet = SpreadsheetApp.openById(sheetId);
+	const mode = e.parameter.mode;
 
-	if (isPresence) {
+	if (mode === "presence") {
 		const content = API.getPresentNames();
+		return ContentService.createTextOutput(JSON.stringify(content)).setMimeType(ContentService.MimeType.JSON);
+	}else if(mode === "children") {
+		const content = API.getChildren();
 		return ContentService.createTextOutput(JSON.stringify(content)).setMimeType(ContentService.MimeType.JSON);
 	}
 	// // no userId found
@@ -33,18 +34,24 @@ function doGet(e) {
 	// return template.evaluate()
 	// 	.setTitle('Opvang');
 }
+function doPost(e) {
+	const child: Child = JSON.parse(e.postData.contents);
+	API.checkIn(child.id);
+	return ContentService.createTextOutput(JSON.stringify({success: true})).setMimeType(ContentService.MimeType.JSON);
+}
 
+function updateRow(sheet, row: number, userId: number, now: Date, halfHours: number, timeOfDay: string) {
+	const target = sheet.getRange(row, 1, 1, 6);
+	let calcHalfHours = 0;
 
-
-function getUser(spreadsheet, qrId) {
-	const sheet = spreadsheet.getSheetByName("Namen");
-	const values = sheet.getRange(2, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues();
-	// QRID is the 5th column in the names sheet
-	const row = values.findIndex(r => r[5] == qrId);
-	if (row != -1) {
-		return {name: values[row][1], id: parseInt(values[row][0]), qrId: qrId};
+	if(now.getHours() >= 12) {
+		let then  = new Date();
+		then.setHours(15);
+		then.setMinutes(45);
+		calcHalfHours = Math.ceil((now.getTime() - then.getTime()) / 1800000);
 	}
-	return {name: qrId, id: qrId, qrId: qrId};
+
+	target.setValues([[userId, now, timeOfDay, now, halfHours, calcHalfHours]]);
 }
 
 //# sourceMappingURL=module.js.map

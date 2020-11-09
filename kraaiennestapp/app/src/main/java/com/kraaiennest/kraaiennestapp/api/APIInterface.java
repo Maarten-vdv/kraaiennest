@@ -1,9 +1,13 @@
 package com.kraaiennest.kraaiennestapp.api;
 
+import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.model.Presence;
 import com.kraaiennest.kraaiennestapp.model.PresenceResponse;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -15,13 +19,9 @@ public interface APIInterface {
     @GET(SCRIPT_URL + "/exec?mode=presence")
     CompletableFuture<List<Presence>> doGetPresence();
 
-//    @POST("/api/users")
-//    Call<User> createUser(@Body User user);
-//
-//    @GET("/api/users?")
-//    Call<UserList> doGetUserList(@Query("page") String page);
-//
-//    @FormUrlEncoded
-//    @POST("/api/users?")
-//    Call<UserList> doCreateUserWithField(@Field("name") String name, @Field("job") String job);
+    @GET(SCRIPT_URL + "/exec?mode=children")
+    CompletableFuture<List<Child>> doGetChildren();
+
+    @POST(SCRIPT_URL + "/exec?mode=checkIn")
+    Call<ResponseBody> doPostCheckIn(@Body Child child);
 }
