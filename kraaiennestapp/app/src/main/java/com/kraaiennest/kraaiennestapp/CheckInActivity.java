@@ -2,7 +2,6 @@ package com.kraaiennest.kraaiennestapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
@@ -16,15 +15,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import static com.kraaiennest.kraaiennestapp.ScanActivity.SCANNED_USER_ID;
 
 public class CheckInActivity extends AppCompatActivity {
 
     public static final int CHECK_IN_SCAN_REQUEST = 1;
-
     private List<Child> children;
     private Child child;
     private APIInterface api;
@@ -57,12 +53,12 @@ public class CheckInActivity extends AppCompatActivity {
             }
         });
 
-        CircularProgressButton scanBtn = findViewById(R.id.scan_btn);
+        CircularProgressButton scanBtn = findViewById(R.id.register_scan_btn);
         scanBtn.setOnClickListener(click -> {
             startScan();
         });
 
-        CircularProgressButton backBtn = findViewById(R.id.back_btn);
+        CircularProgressButton backBtn = findViewById(R.id.register_back_btn);
         backBtn.setOnClickListener(click -> {
             finish();
         });

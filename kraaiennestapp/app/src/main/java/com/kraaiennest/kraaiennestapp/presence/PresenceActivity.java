@@ -1,12 +1,10 @@
-package com.kraaiennest.kraaiennestapp;
+package com.kraaiennest.kraaiennestapp.presence;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.kraaiennest.kraaiennestapp.presence.PresenceViewModel;
+import com.kraaiennest.kraaiennestapp.R;
 
 public class PresenceActivity extends AppCompatActivity {
 

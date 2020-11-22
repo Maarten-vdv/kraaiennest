@@ -18,11 +18,11 @@
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-                android:name=".PresenceActivity"
+                android:name=".presence.PresenceActivity"
                 android:label="@string/title_activity_presence"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".register.RegisterActivity">
         </activity>
         <activity android:name=".ScanActivity">
         </activity>

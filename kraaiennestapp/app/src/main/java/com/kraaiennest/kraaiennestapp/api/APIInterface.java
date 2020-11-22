@@ -3,6 +3,7 @@ package com.kraaiennest.kraaiennestapp.api;
 import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.model.Presence;
 import com.kraaiennest.kraaiennestapp.model.PresenceResponse;
+import com.kraaiennest.kraaiennestapp.model.Registration;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,4 +25,7 @@ public interface APIInterface {
 
     @POST(SCRIPT_URL + "/exec?mode=checkIn")
     Call<ResponseBody> doPostCheckIn(@Body Child child);
+
+    @POST(SCRIPT_URL + "/exec?mode=register")
+    Call<ResponseBody> doPostRegister(@Body Registration registration);
 }

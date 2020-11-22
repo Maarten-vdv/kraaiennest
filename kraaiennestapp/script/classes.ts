@@ -21,3 +21,11 @@ class Child {
 		this.group = group;
 	}
 }
+
+class Registration {
+	childId: string;
+	halfHours: number;
+	realHalfHours: number;
+	partOfDay;
+	registrationTime: Date;
+}

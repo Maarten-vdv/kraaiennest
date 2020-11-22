@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat;
 import com.kraaiennest.kraaiennestapp.api.APIInterface;
 import com.kraaiennest.kraaiennestapp.api.APIService;
 import com.kraaiennest.kraaiennestapp.model.Child;
+import com.kraaiennest.kraaiennestapp.presence.PresenceActivity;
+import com.kraaiennest.kraaiennestapp.register.RegisterActivity;
 import org.parceler.Parcels;
 
 import java.util.Collections;
@@ -36,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
         View register = findViewById(R.id.register_btn);
         register.setBackgroundColor(Color.parseColor("#F79922"));
-        register.setOnClickListener(event -> startScanner());
+        register.setOnClickListener(event -> startRegister());
 
-        View checkIn = findViewById(R.id.scan_btn);
+        View checkIn = findViewById(R.id.register_scan_btn);
         checkIn.setBackgroundColor(Color.parseColor("#5133AB"));
         checkIn.setOnClickListener(event -> startCheckIn());
 
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
         }
 
-        if(children == null) {
+        if (children == null) {
             children = loadChildren();
         }
     }
@@ -71,8 +73,12 @@ public class MainActivity extends AppCompatActivity {
         return Collections.emptyList();
     }
 
-    private void startScanner() {
-        Intent intent = new Intent(this, ScanActivity.class);
+    private void startRegister() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        Bundle bundle = new Bundle();
+        Parcelable wrapped = Parcels.wrap(children);
+        bundle.putParcelable("children", wrapped);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -86,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         Parcelable wrapped = Parcels.wrap(children);
         bundle.putParcelable("children", wrapped);
-     intent.putExtras(bundle);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

@@ -11,8 +11,6 @@ w
 Gapp/src/main/java/com/kraaiennest/kraaiennestapp/qr/QrCodeAnalyzer.java,f\0\f027bd699e87b5bdaf8c131bd1e441b1167f53c7
 r
 Bapp/src/main/java/com/kraaiennest/kraaiennestapp/ScanActivity.java,c\3\c3f8be19e60c31f945f7c61d86497dc9df5571e8
-v
-Fapp/src/main/java/com/kraaiennest/kraaiennestapp/RegisterActivity.java,5\9\5985500ee90d2e6be3f63db3407049c5ae2f9f62
 w
 Gapp/src/main/java/com/kraaiennest/kraaiennestapp/qr/QrCodeListener.java,f\0\f03f62977fcfdff212d7ac14ae5fc3c339404924
 7
@@ -21,8 +19,6 @@ A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
 ?
 settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
-v
-Fapp/src/main/java/com/kraaiennest/kraaiennestapp/PresenceActivity.java,9\a\9a9a423836959163fb85a68b70b092b2d4d01f0e
 t
 Dapp/src/main/java/com/kraaiennest/kraaiennestapp/model/Presence.java,6\d\6d133a72c545cccfc65beb0f30497a88b68b5447
 q
@@ -58,8 +54,6 @@ A
 script/classes.ts,b\9\b903fedb717591406167e3abf54879e90fdf878e
 R
 "app/src/main/res/values/dimens.xml,c\3\c3c1811dec2dbad2deeafb9aad505ca9631da740
-U
-%app/src/main/res/layout/grid_item.xml,d\4\d45074d70219131f4cef29fd628e8d73987e0d89
 W
 'app/src/main/res/menu/menu_presence.xml,6\b\6bfd1d38e01e2ab63d34195ff0d46986b66efb9d
 H
@@ -74,3 +68,9 @@ r
 Bapp/src/main/java/com/kraaiennest/kraaiennestapp/MainActivity.java,7\8\781ef71b95b46fdd94f2b1f6a659f70779171e0e
 u
 Eapp/src/main/java/com/kraaiennest/kraaiennestapp/CheckInActivity.java,4\5\454151630cf0454033e4695f1839a0d9ce7c941a
+R
+"app/src/main/res/values/colors.xml,9\6\969faa2a5d9f5e8390e958d2c07f2cfd54676e6b
+x
+Happ/src/main/java/com/kraaiennest/kraaiennestapp/model/Registration.java,8\6\869d5c44c706b039ed829256ac429e2be8e45a76
+y
+Iapp/src/main/java/com/kraaiennest/kraaiennestapp/widgets/MyTextClock.java,8\8\889e218b94c42bc5ef53b44ccc422396b193e298

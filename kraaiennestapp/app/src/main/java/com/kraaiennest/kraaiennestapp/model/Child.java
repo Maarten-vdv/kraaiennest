@@ -56,4 +56,8 @@ public class Child {
     public void setQrId(String qrId) {
         this.qrId = qrId;
     }
+
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
 }

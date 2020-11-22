@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.kraaiennest.kraaiennestapp.R;
@@ -21,16 +20,12 @@ public class PresenceFragment extends Fragment {
 
     private PresenceViewModel model;
     private PresenceRecyclerViewAdapter presenceAdapter;
-    private RecyclerView recyclerView;
-
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PresenceFragment() {
-        System.out.println("created!");
-    }
+    public PresenceFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

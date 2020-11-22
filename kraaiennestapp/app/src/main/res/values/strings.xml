@@ -116,4 +116,12 @@
     <string name="do_check_in_btn">Check in</string>
     <string name="back_btn">Terug</string>
     <string name="scan_code_message">Scan een kind code</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lower">-</string>
+    <string name="higher">+</string>
+    <string name="scan_een_kind">Scan een kind</string>
+    <string name="registration_success">Registratie geslaagd</string>
+    <string name="scan_child">Scan een kind</string>
+    <string name="half_hours">halve uren</string>
 </resources>

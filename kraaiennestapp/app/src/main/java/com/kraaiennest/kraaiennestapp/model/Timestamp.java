@@ -49,8 +49,3 @@ public class Timestamp {
         this.realUnits = realUnits;
     }
 }
-
-
-enum PartOfDay {
-    O, A
-}

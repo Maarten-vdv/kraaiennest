@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.util.Size;
+import android.view.Surface;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
@@ -14,22 +15,16 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.zxing.Result;
 import com.kraaiennest.kraaiennestapp.qr.QrCodeAnalyzer;
-import com.kraaiennest.kraaiennestapp.qr.QrCodeListener;
+import com.kraaiennest.kraaiennestapp.register.RegisterActivity;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class ScanActivity extends AppCompatActivity {
 
-    public static final String SCANNED_USER_ID = "userid";
-
-    private PreviewView previewView;
+    public static final String SCANNED_USER_ID = "userId";
     private Executor cameraExecutor = Executors.newSingleThreadExecutor();
     private QrCodeAnalyzer analyzer;
 
@@ -40,16 +35,17 @@ public class ScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        previewView = findViewById(R.id.preview_view);
+        PreviewView previewView = findViewById(R.id.preview_view);
 
         analyzer = new QrCodeAnalyzer();
         analyzer.register(result -> {
-            if(!found) {
+            if (!found) {
                 String url = result.getText();
                 String userId = new UrlQuerySanitizer(url).getValue("userId");
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra(SCANNED_USER_ID, userId);
                 setResult(Activity.RESULT_OK, resultIntent);
+                found = true;
                 finish();
             }
         });
@@ -77,7 +73,7 @@ public class ScanActivity extends AppCompatActivity {
 
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                bindPreviewAnsAnalysis(cameraProvider);
+                bindPreviewAnalysis(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future
                 // This should never be reached
@@ -86,9 +82,11 @@ public class ScanActivity extends AppCompatActivity {
         }, ContextCompat.getMainExecutor(this));
     }
 
-    private void bindPreviewAnsAnalysis(ProcessCameraProvider cameraProvider) {
+    private void bindPreviewAnalysis(ProcessCameraProvider cameraProvider) {
+        PreviewView previewView = findViewById(R.id.preview_view);
         Preview preview = new Preview.Builder().setTargetAspectRatio(AspectRatio.RATIO_4_3).
-                setTargetRotation(previewView.getDisplay().getRotation())
+                setTargetRotation(previewView == null || previewView.getDisplay() == null ?
+                        Surface.ROTATION_0 : previewView.getDisplay().getRotation())
                 .build();
 
 
