@@ -67,6 +67,14 @@ const API = (() => {
 		updateRow(mainSheet, row, id, now, 0, timeOfDay, true);
 	}
 
+	const _register = function(registration: Registration) {
+		const row = mainSheet.getLastRow() + 1;
+		Logger.log(registration);
+		updateRow(mainSheet, row, registration.childId, new Date(Date.parse(registration.registrationTime)),
+			registration.halfHours,registration.partOfDay, false);
+
+	}
+
 	function updateRow(sheet, row, userId, now, halfHours, timeOfDay, checkIn = false) {
 		const target = sheet.getRange(row, 1, 1, 6);
 		let calcHalfHours = 0;
@@ -82,6 +90,7 @@ const API = (() => {
 	return {
 		getChildren: _getChildren,
 		getPresentNames: _getPresentNames,
-		checkIn: _checkIn
+		checkIn: _checkIn,
+		register: _register
 	}
 })();

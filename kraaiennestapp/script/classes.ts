@@ -26,6 +26,6 @@ class Registration {
 	childId: string;
 	halfHours: number;
 	realHalfHours: number;
-	partOfDay;
-	registrationTime: Date;
+	partOfDay: "A" | "O";
+	registrationTime: string;
 }

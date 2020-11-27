@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.kraaiennest.kraaiennestapp.api.APIInterface;
 import com.kraaiennest.kraaiennestapp.api.APIService;
+import com.kraaiennest.kraaiennestapp.checkin.CheckInActivity;
 import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.presence.PresenceActivity;
 import com.kraaiennest.kraaiennestapp.register.RegisterActivity;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Make sure this is before calling super.onCreate
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         container = findViewById(R.id.main_grid);

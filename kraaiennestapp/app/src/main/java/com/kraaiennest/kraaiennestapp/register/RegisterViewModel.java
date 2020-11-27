@@ -19,9 +19,11 @@ import retrofit2.Response;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+
+import static java.text.MessageFormat.format;
 
 public class RegisterViewModel extends ViewModel {
 
@@ -34,19 +36,20 @@ public class RegisterViewModel extends ViewModel {
     private MutableLiveData<PartOfDay> partOfDay;
 
     private APIInterface api;
-    private MutableLiveData<RegistrationState> registrationState;
+    private MutableLiveData<ApiCallState> registrationState;
 
     private final Map<Integer, String> strings;
+    private final DateTimeFormatter dateTimeFormatter;
 
-    public RegisterViewModel(Map<Integer, String> strings) {
+    public RegisterViewModel(Map<Integer, String> strings, DateTimeFormatter dateTimeFormatter) {
         this.strings = strings;
+        this.dateTimeFormatter = dateTimeFormatter;
         api = APIService.getClient().create(APIInterface.class);
     }
 
     public void loadExtra(Intent intent) {
         children = Parcels.unwrap(intent.getParcelableExtra("children"));
     }
-
 
     public LiveData<Child> getChild() {
         if (child == null) {
@@ -58,19 +61,21 @@ public class RegisterViewModel extends ViewModel {
     public LiveData<String> getFullName() {
         return Transformations.map(getChild(), c -> c == null ? strings.get(R.string.scan_child) : c.getFullName());
     }
+
     public LiveData<PartOfDay> getPartOfDay() {
-        if(partOfDay == null) {
+        if (partOfDay == null) {
             LocalDateTime now = LocalDateTime.now();
-            partOfDay = new MutableLiveData<>(now.getHour() > 11? PartOfDay.A : PartOfDay.O);
+            partOfDay = new MutableLiveData<>(now.getHour() > 11 ? PartOfDay.A : PartOfDay.O);
         }
         return partOfDay;
     }
-        public LiveData<LocalDateTime> getCutOff() {
-        if(cutOff == null) {
+
+    public LiveData<LocalDateTime> getCutOff() {
+        if (cutOff == null) {
             LocalDateTime cutoff = LocalDateTime.now();
             if (cutoff.getHour() >= 12) {
                 // evening
-                cutoff = cutoff.withHour(15).withMinute(30);
+                cutoff = cutoff.withHour(15).withMinute(45);
             } else {
                 // morning
                 cutoff = cutoff.withHour(8).withMinute(0);
@@ -78,19 +83,23 @@ public class RegisterViewModel extends ViewModel {
             cutOff = new MutableLiveData<>(cutoff);
         }
 
-            return cutOff;
-        }
+        return cutOff;
+    }
+
+    public LiveData<String> getCutOffValue() {
+        return Transformations.map(getCutOff(), c -> c == null ? "" : c.format(dateTimeFormatter));
+    }
 
     public LiveData<String> getHalfHours() {
         if (halfHours == null) {
             halfHours = new MutableLiveData<>(calculateHalfHours());
         }
-        return Transformations.map(halfHours, integer -> integer == null ? "" : integer.toString());
+        return Transformations.map(halfHours, integer -> integer == null ? "" : format("{0} {1}", integer.toString(), strings.get(R.string.half_hours)));
     }
 
-    public MutableLiveData<RegistrationState> getRegistrationState() {
+    public MutableLiveData<ApiCallState> getRegistrationState() {
         if (registrationState == null) {
-            registrationState = new MutableLiveData<>(RegistrationState.IDLE);
+            registrationState = new MutableLiveData<>(ApiCallState.IDLE);
         }
         return registrationState;
     }
@@ -102,14 +111,14 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void createRegistration() {
-        if(child.getValue() == null) {
+        if (child.getValue() == null) {
             return;
         }
 
-        registrationState.setValue(RegistrationState.BUSY);
+        registrationState.setValue(ApiCallState.BUSY);
         Registration registration = new Registration();
         registration.setChildId(child.getValue().getId());
-        registration.setHalfHours(registration.halfHours);
+        registration.setHalfHours(halfHours.getValue());
         registration.setRealHalfHours(calculateHalfHours());
         registration.setRegistrationTime(LocalDateTime.now());
         registration.setPartOfDay(getPartOfDay().getValue());
@@ -120,12 +129,12 @@ public class RegisterViewModel extends ViewModel {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 child.setValue(null);
                 halfHours.setValue(null);
-                registrationState.setValue(RegistrationState.SUCCESS);
+                registrationState.setValue(ApiCallState.SUCCESS);
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                registrationState.setValue(RegistrationState.ERROR);
+                registrationState.setValue(ApiCallState.ERROR);
             }
         });
     }
@@ -135,8 +144,10 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void loadChild(String userId) {
+        if (children == null || child == null) {
+            return;
+        }
         child.setValue(children.stream().filter(c -> c.getQrId().equals(userId)).findFirst().orElse(null));
-
     }
 
     public void addHalfHours(int i) {
@@ -146,7 +157,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void registrationDone() {
-        registrationState.setValue(RegistrationState.IDLE);
+        registrationState.setValue(ApiCallState.IDLE);
     }
 }
 

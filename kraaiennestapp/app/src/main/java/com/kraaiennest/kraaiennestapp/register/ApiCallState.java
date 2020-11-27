@@ -1,6 +1,6 @@
 package com.kraaiennest.kraaiennestapp.register;
 
-public enum RegistrationState {
+public enum ApiCallState {
     IDLE,
     BUSY,
     ERROR,

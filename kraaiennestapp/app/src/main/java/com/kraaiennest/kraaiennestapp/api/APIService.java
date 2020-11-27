@@ -1,13 +1,16 @@
 package com.kraaiennest.kraaiennestapp.api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
+
+import java.time.LocalDateTime;
 
 import static com.kraaiennest.kraaiennestapp.Constants.SCRIPT_BASE_URL;
-import static com.kraaiennest.kraaiennestapp.Constants.SCRIPT_URL;
 
 public class APIService {
 
@@ -22,11 +25,19 @@ public class APIService {
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(SCRIPT_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(createGsonConverter())
                 .client(client)
                 .build();
 
 
         return retrofit;
+    }
+
+    private static Converter.Factory createGsonConverter() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
+        Gson gson = gsonBuilder.create();
+
+        return GsonConverterFactory.create(gson);
     }
 }
