@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Naschoolse opvan \'t Kraaiennest</string>
+    <string name="app_name">Naschoolse opvang \'t Kraaiennest</string>
     <string name="title_activity_presence">Aanwezigheden</string>
     <string name="action_settings">Settings</string>
     <string name="startBtn">Start</string>
@@ -27,7 +27,6 @@
     <string name="do_check_in_btn">Check in</string>
     <string name="back_btn">Terug</string>
     <string name="scan_code_message">Scan een kind code</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="lower">-</string>
     <string name="higher">+</string>
@@ -37,4 +36,18 @@
     <string name="half_hours">halve uren</string>
     <string name="until">tot</string>
     <string name="check_in_success">Check in geslaagd</string>
+    <string name="title_activity_settings">Instellingen</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>

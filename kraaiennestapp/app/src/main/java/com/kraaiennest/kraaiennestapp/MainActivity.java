@@ -2,16 +2,20 @@ package com.kraaiennest.kraaiennestapp;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 import com.kraaiennest.kraaiennestapp.api.APIInterface;
 import com.kraaiennest.kraaiennestapp.api.APIService;
 import com.kraaiennest.kraaiennestapp.checkin.CheckInActivity;
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ConstraintLayout container;
     private List<Child> children;
+    private APIInterface api;
+    private String scriptId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         container = findViewById(R.id.main_grid);
+
+        api = APIService.getClient().create(APIInterface.class);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        scriptId = sharedPreferences.getString("scriptId", "");
 
         View register = findViewById(R.id.register_btn);
         register.setBackgroundColor(Color.parseColor("#F79922"));
@@ -64,9 +75,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<Child> loadChildren() {
-        APIInterface api = APIService.getClient().create(APIInterface.class);
         try {
-            List<Child> children = api.doGetChildren().get();
+            List<Child> children = api.doGetChildren(scriptId).get();
             System.out.println(children.size());
             return children;
         } catch (ExecutionException | InterruptedException e) {

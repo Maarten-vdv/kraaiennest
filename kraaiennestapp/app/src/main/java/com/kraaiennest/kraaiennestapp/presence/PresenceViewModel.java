@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 public class PresenceViewModel extends ViewModel {
 
+    private String scriptId;
     private MutableLiveData<List<Presence>> presences;
     public LiveData<List<Presence>> getPresences() {
         if (presences == null) {
@@ -22,9 +23,14 @@ public class PresenceViewModel extends ViewModel {
         return presences;
     }
 
+    public void loadExtra(String scriptId) {
+        this.scriptId = scriptId;
+    }
+
+
     private void loadPresence() {
         APIInterface api = APIService.getClient().create(APIInterface.class);
-        CompletableFuture<List<Presence>> getPresence = api.doGetPresence();
+        CompletableFuture<List<Presence>> getPresence = api.doGetPresence(scriptId);
         try {
             presences.postValue(getPresence.get());
 

@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp;
+package com.kraaiennest.kraaiennestapp.scan;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +15,9 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.kraaiennest.kraaiennestapp.qr.QrCodeAnalyzer;
+import com.kraaiennest.kraaiennestapp.Constants;
+import com.kraaiennest.kraaiennestapp.R;
+import com.kraaiennest.kraaiennestapp.scan.QrCodeAnalyzer;
 import com.kraaiennest.kraaiennestapp.register.RegisterActivity;
 
 import java.util.concurrent.ExecutionException;

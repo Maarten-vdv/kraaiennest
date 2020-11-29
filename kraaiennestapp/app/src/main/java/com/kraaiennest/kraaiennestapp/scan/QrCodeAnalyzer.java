@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp.qr;
+package com.kraaiennest.kraaiennestapp.scan;
 
 import android.util.Log;
 import androidx.annotation.NonNull;

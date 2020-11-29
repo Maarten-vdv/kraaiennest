@@ -40,6 +40,7 @@ public class RegisterViewModel extends ViewModel {
 
     private final Map<Integer, String> strings;
     private final DateTimeFormatter dateTimeFormatter;
+    private String scriptId;
 
     public RegisterViewModel(Map<Integer, String> strings, DateTimeFormatter dateTimeFormatter) {
         this.strings = strings;
@@ -47,8 +48,9 @@ public class RegisterViewModel extends ViewModel {
         api = APIService.getClient().create(APIInterface.class);
     }
 
-    public void loadExtra(Intent intent) {
+    public void loadExtra(Intent intent, String scriptId) {
         children = Parcels.unwrap(intent.getParcelableExtra("children"));
+        this.scriptId = scriptId;
     }
 
     public LiveData<Child> getChild() {
@@ -122,7 +124,7 @@ public class RegisterViewModel extends ViewModel {
         registration.setRealHalfHours(calculateHalfHours());
         registration.setRegistrationTime(LocalDateTime.now());
         registration.setPartOfDay(getPartOfDay().getValue());
-        Call<ResponseBody> register = api.doPostRegister(registration);
+        Call<ResponseBody> register = api.doPostRegister(scriptId, registration);
 
         register.enqueue(new Callback<ResponseBody>() {
             @Override

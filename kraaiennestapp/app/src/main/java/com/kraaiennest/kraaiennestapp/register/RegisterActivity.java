@@ -1,6 +1,7 @@
 package com.kraaiennest.kraaiennestapp.register;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -9,8 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import com.kraaiennest.kraaiennestapp.R;
-import com.kraaiennest.kraaiennestapp.ScanActivity;
+import com.kraaiennest.kraaiennestapp.scan.ScanActivity;
 import com.kraaiennest.kraaiennestapp.databinding.ActivityRegisterBinding;
 import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.model.PartOfDay;
@@ -20,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kraaiennest.kraaiennestapp.ScanActivity.SCANNED_USER_ID;
+import static com.kraaiennest.kraaiennestapp.scan.ScanActivity.SCANNED_USER_ID;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -47,7 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
         };
         RegisterViewModel model = new ViewModelProvider(this, factory).get(RegisterViewModel.class);
         binding.setViewmodel(model);
-        model.loadExtra(getIntent());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        model.loadExtra(getIntent(), sharedPreferences.getString("scriptId",""));
         model.loadChild(null);
 
         binding.registerBtn.setOnClickListener(click -> model.createRegistration());

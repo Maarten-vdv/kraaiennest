@@ -22,6 +22,7 @@ import java.util.Map;
 public class CheckInViewModel extends ViewModel {
 
     private List<Child> children;
+    private String scriptId;
     private MutableLiveData<Child> child;
     private MutableLiveData<ApiCallState> apiCallState;
     private APIInterface api;
@@ -32,8 +33,9 @@ public class CheckInViewModel extends ViewModel {
         api = APIService.getClient().create(APIInterface.class);
     }
 
-    public void loadExtra(Intent intent) {
+    public void loadExtra(Intent intent,String scriptId) {
         children = Parcels.unwrap(intent.getParcelableExtra("children"));
+        this.scriptId = scriptId;
     }
 
     public LiveData<Child> getChild() {
@@ -68,7 +70,7 @@ public class CheckInViewModel extends ViewModel {
     public void createCheckIn() {
         apiCallState.setValue(ApiCallState.BUSY);
         if (child.getValue() != null) {
-            Call<ResponseBody> checkIn = api.doPostCheckIn(child.getValue());
+            Call<ResponseBody> checkIn = api.doPostCheckIn(scriptId, child.getValue());
 
             checkIn.enqueue(new Callback<ResponseBody>() {
                 @Override
