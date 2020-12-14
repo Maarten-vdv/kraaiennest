@@ -56,6 +56,7 @@ public class RegisterViewModel extends ViewModel {
     public LiveData<Child> getChild() {
         if (child == null) {
             child = new MutableLiveData<>();
+            child.setValue(null);
         }
         return child;
     }
@@ -96,7 +97,8 @@ public class RegisterViewModel extends ViewModel {
         if (halfHours == null) {
             halfHours = new MutableLiveData<>(calculateHalfHours());
         }
-        return Transformations.map(halfHours, integer -> integer == null ? "" : format("{0} {1}", integer.toString(), strings.get(R.string.half_hours)));
+
+        return Transformations.map(halfHours, integer -> integer == null ? "" : format("{0}{1}", integer.toString(), strings.get(R.string.half_hours)));
     }
 
     public MutableLiveData<ApiCallState> getRegistrationState() {

@@ -41,6 +41,7 @@ public class CheckInViewModel extends ViewModel {
     public LiveData<Child> getChild() {
         if (child == null) {
             child = new MutableLiveData<>();
+            child.setValue(null);
         }
         return child;
     }

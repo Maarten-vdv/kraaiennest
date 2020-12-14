@@ -7,12 +7,6 @@ X
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
-w
-Gapp/src/main/java/com/kraaiennest/kraaiennestapp/qr/QrCodeAnalyzer.java,f\0\f027bd699e87b5bdaf8c131bd1e441b1167f53c7
-r
-Bapp/src/main/java/com/kraaiennest/kraaiennestapp/ScanActivity.java,c\3\c3f8be19e60c31f945f7c61d86497dc9df5571e8
-w
-Gapp/src/main/java/com/kraaiennest/kraaiennestapp/qr/QrCodeListener.java,f\0\f03f62977fcfdff212d7ac14ae5fc3c339404924
 7
 gradlew,5\b\5bbfa66edb4db3c7c33c5181f43510990d3307f9
 A
@@ -74,8 +68,6 @@ Papp/src/main/java/com/kraaiennest/kraaiennestapp/register/RegisterViewModel.jav
 Oapp/src/main/java/com/kraaiennest/kraaiennestapp/register/RegisterActivity.java,5\2\528e917ff4bfe5937bc061e9218055a8762ff65c
 
 Oapp/src/main/java/com/kraaiennest/kraaiennestapp/presence/PresenceActivity.java,1\b\1bc84990bc177219d60284bcc0ffa727c9b941d7
-]
--app/src/main/res/layout/activity_check_in.xml,7\4\741cfe35ed0aeccbb402591fae547e2a498081e4
 {
 Kapp/src/main/java/com/kraaiennest/kraaiennestapp/register/ApiCallState.java,0\4\04c6812f2091ab112caa97202db0b800c1e9c03b
 }
@@ -92,9 +84,9 @@ h
 +app/src/main/res/drawable/launch_screen.xml,a\d\adfa4af698199542a64bc418c1fa70c6aed301b9
 €
 Papp/src/main/java/com/kraaiennest/kraaiennestapp/api/LocalDateTimeConverter.java,b\b\bbbeee4c6828f613ea3f1423f9a3c0b306e6cebe
-S
-#app/src/main/res/values/strings.xml,d\2\d2281fbb3027de2722081a53408dd77628bf080e
 R
 "app/src/main/res/values/styles.xml,f\7\f79cc2688e29fcbc286fda14ae07b27c9e83690f
 ~
 Napp/src/main/java/com/kraaiennest/kraaiennestapp/checkin/CheckInViewModel.java,c\d\cd6c34d98d9a428c6f8a07a5358a29712d595fc8
+
+Oapp/src/main/java/com/kraaiennest/kraaiennestapp/settings/SettingsFragment.java,f\e\fe2d571b29e742bd74b653b93a1705268c7350bd

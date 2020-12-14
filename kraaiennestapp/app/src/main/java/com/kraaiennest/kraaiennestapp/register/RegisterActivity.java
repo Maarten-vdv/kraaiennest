@@ -2,6 +2,7 @@ package com.kraaiennest.kraaiennestapp.register;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -41,16 +42,18 @@ public class RegisterActivity extends AppCompatActivity {
             @NonNull
             @Override
             public <T extends ViewModel> T create(@NonNull @NotNull Class<T> modelClass) {
+                int orientation = getResources().getConfiguration().orientation;
+
                 Map<Integer, String> strings = new HashMap<>();
                 strings.put(R.string.scan_child, getString(R.string.scan_child));
-                strings.put(R.string.half_hours, getString(R.string.half_hours));
+                strings.put(R.string.half_hours, (orientation == Configuration.ORIENTATION_LANDSCAPE ? " " : "\n") + getString(R.string.half_hours));
                 return (T) new RegisterViewModel(strings, DateTimeFormatter.ofPattern("HH:mm"));
             }
         };
         RegisterViewModel model = new ViewModelProvider(this, factory).get(RegisterViewModel.class);
         binding.setViewmodel(model);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        model.loadExtra(getIntent(), sharedPreferences.getString("scriptId",""));
+        model.loadExtra(getIntent(), sharedPreferences.getString("scriptId", ""));
         model.loadChild(null);
 
         binding.registerBtn.setOnClickListener(click -> model.createRegistration());
@@ -62,8 +65,8 @@ public class RegisterActivity extends AppCompatActivity {
                 binding.registerBtn.revertAnimation();
             }
 
-            if(state.equals(ApiCallState.SUCCESS)) {
-                Toast.makeText(this, R.string.registration_success , Toast.LENGTH_SHORT).show();
+            if (state.equals(ApiCallState.SUCCESS)) {
+                Toast.makeText(this, R.string.registration_success, Toast.LENGTH_SHORT).show();
                 model.registrationDone();
             }
         });

@@ -15,16 +15,13 @@
 
         <activity
             android:name=".settings.SettingsActivity"
-            android:label="@string/title_activity_settings">
-        </activity>
+            android:label="@string/title_activity_settings"></activity>
         <activity
             android:name=".checkin.CheckInActivity"
-            android:label="@string/title_activity_check_in"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_check_in" />
         <activity
             android:name=".presence.PresenceActivity"
-            android:label="@string/title_activity_presence"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_presence" />
         <activity android:name=".register.RegisterActivity" />
         <activity android:name=".scan.ScanActivity" />
         <activity

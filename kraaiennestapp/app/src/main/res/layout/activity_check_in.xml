@@ -11,68 +11,83 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/check_in_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".checkin.CheckInActivity"
-        android:id="@+id/check_in_layout"
         android:background="@color/secondaryDarkColor"
         android:backgroundTintMode="add"
-        android:layout_marginBottom="20dp">
+        tools:context=".checkin.CheckInActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="20dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/child_name"
-                android:text="@{viewmodel.fullName}"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textSize="36sp"
-                android:textColor="#FFFFFF"
                 android:layout_marginVertical="5dp"
+                android:layout_marginBottom="90dp"
                 android:gravity="center"
-                app:layout_constraintHeight_percent="0.25" />
+                android:text="@{viewmodel.fullName}"
+                android:textColor="#FFFFFF"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toTopOf="@+id/child_group"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.25"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/child_group"
-                android:text="@{viewmodel.child.group}"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textSize="36sp"
-                android:textColor="#FFFFFF"
                 android:layout_marginVertical="5dp"
                 android:gravity="center"
+                android:text="@{viewmodel.child.group}"
+                android:textColor="#FFFFFF"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toTopOf="@id/checkin_guideline"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.25"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/child_name" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/checkin_guideline"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/check_in_scan_btn"
+                app:layout_constraintGuide_percent="0.75"
+                app:layout_constraintHeight_percent="0.25"
+                app:layout_constraintTop_toBottomOf="@id/child_group" />
 
             <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                 android:id="@+id/check_in_btn"
-                android:enabled="@{viewmodel.child != null}"
                 style="@style/MainButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="2dp"
                 android:background="@color/primaryColor"
+                android:enabled="@{viewmodel.child != null}"
                 android:text="@string/do_check_in_btn"
                 android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/check_in_scan_btn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/child_group"
+                app:layout_constraintTop_toBottomOf="@id/checkin_guideline"
                 app:spinning_bar_color="#FFF"
                 app:spinning_bar_padding="15dp"
                 app:spinning_bar_width="4dp" />
@@ -90,22 +105,22 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/check_in_back_btn"
                 app:layout_constraintStart_toEndOf="@+id/check_in_btn"
-                app:layout_constraintTop_toBottomOf="@id/child_group" />
+                app:layout_constraintTop_toBottomOf="@id/checkin_guideline" />
 
             <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                 android:id="@+id/check_in_back_btn"
-                android:text="@string/back_btn"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintStart_toEndOf="@+id/check_in_scan_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/child_group"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:textColor="#FFFFFF"
                 android:layout_marginStart="2dp"
-                android:backgroundTintMode="add"
                 android:background="@color/cancelColor"
-                android:backgroundTint="@null" />
+                android:backgroundTint="@null"
+                android:backgroundTintMode="add"
+                android:text="@string/back_btn"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/check_in_scan_btn"
+                app:layout_constraintTop_toBottomOf="@id/checkin_guideline" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

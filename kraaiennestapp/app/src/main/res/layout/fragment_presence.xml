@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             app:flexWrap="wrap"
             app:alignItems="stretch"
+        android:foreground="@color/titleTextColor"
             app:alignContent="space_around" android:layout_marginHorizontal="10dp"
             android:paddingVertical="5dp" android:background="@drawable/border_bottom">
     </com.google.android.flexbox.FlexboxLayout>
