@@ -1,12 +1,21 @@
+
 class Presence {
 	child: Child;
-	timestamps: Date[];
+	timestamps: Timestamp[];
 
 	constructor(child, timestamps) {
 		this.child = child;
 		this.timestamps = timestamps;
 	}
 }
+
+class Timestamp {
+	date: Date;
+	partOfDay: 'O' | 'A';
+	registeredAt: Date;
+	isCheckIn: boolean;
+}
+
 
 class Child {
 	id: string;

@@ -8,7 +8,7 @@ const API = (() => {
 
 	const _getPresentNames = () => {
 		const names = nameSheet.getRange(2, 1, nameSheet.getLastRow(), 5).getValues();
-		const values = mainSheet.getRange(2, 1, mainSheet.getLastRow(), 4).getValues();
+		const values = mainSheet.getRange(2, 1, mainSheet.getLastRow(), 6).getValues();
 		const registrations = values.filter(row => {
 			const date = new Date(row[1]);
 			return date.getDate() === now.getDate() && date.getMonth() === now.getMonth() && row[2] === timeOfDay;
@@ -25,7 +25,8 @@ const API = (() => {
 			const regObj = {
 				date: registration[1],
 				partOfDay: registration[2],
-				registeredAt: registration[3]
+				registeredAt: registration[3],
+				isCheckIn: registration[5] === 0
 			}
 			children[registration[0]].timestamps.push(regObj);
 		});

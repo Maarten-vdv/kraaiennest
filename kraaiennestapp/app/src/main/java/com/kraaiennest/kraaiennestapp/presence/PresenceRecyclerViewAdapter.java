@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.flexbox.FlexboxLayout;
 import com.kraaiennest.kraaiennestapp.R;
 import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.model.Presence;
+import com.kraaiennest.kraaiennestapp.model.Timestamp;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
@@ -40,11 +42,17 @@ public class PresenceRecyclerViewAdapter extends RecyclerView.Adapter<PresenceRe
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Context context = holder.childNameView.getContext();
         holder.item.getTimestamps().forEach(t -> holder.timestampsView.addView(createTimestampView(context, dateFormat, t)));
+
+        if(!holder.item.getTimestamps().stream().allMatch(Timestamp::isCheckIn)) {
+            holder.presenseItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.departedColor));
+        }
     }
 
     private TextView createTimestampView(Context context, SimpleDateFormat dateFormat, com.kraaiennest.kraaiennestapp.model.Timestamp t) {
         TextView view = new TextView(context);
         view.setText(dateFormat.format(t.getRegisteredAt()));
+      //  view.setTextColor(ContextCompat.getColor(context, R.color.titleTextColor));
+        view.setTextSize(18);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(20,0,20,0);
         view.setLayoutParams(params);
@@ -67,6 +75,7 @@ public class PresenceRecyclerViewAdapter extends RecyclerView.Adapter<PresenceRe
         public final TextView childNameView;
         public final TextView childGroupView;
         public final FlexboxLayout timestampsView;
+        public final LinearLayout presenseItemLayout;
         public Presence item;
 
         public ViewHolder(View view) {
@@ -75,6 +84,7 @@ public class PresenceRecyclerViewAdapter extends RecyclerView.Adapter<PresenceRe
             childNameView = view.findViewById(R.id.child_name);
             childGroupView = view.findViewById(R.id.child_group);
             timestampsView = view.findViewById(R.id.timestamps);
+            presenseItemLayout = view.findViewById(R.id.presenseItemLayout);
         }
 
         @Override

@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         api = APIService.getClient().create(APIInterface.class);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener((c, key) -> {
+                scriptId = c.getString("scriptId", "");
+        });
         scriptId = sharedPreferences.getString("scriptId", "");
 
         View register = findViewById(R.id.register_btn);

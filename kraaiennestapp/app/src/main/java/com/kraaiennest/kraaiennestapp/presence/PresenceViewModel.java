@@ -18,7 +18,7 @@ public class PresenceViewModel extends ViewModel {
     public LiveData<List<Presence>> getPresences() {
         if (presences == null) {
             presences = new MutableLiveData<>();
-            loadPresence();
+            refreshPresences();
         }
         return presences;
     }
@@ -28,7 +28,7 @@ public class PresenceViewModel extends ViewModel {
     }
 
 
-    private void loadPresence() {
+    public void refreshPresences() {
         APIInterface api = APIService.getClient().create(APIInterface.class);
         CompletableFuture<List<Presence>> getPresence = api.doGetPresence(scriptId);
         try {

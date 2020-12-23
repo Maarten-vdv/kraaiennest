@@ -74,8 +74,6 @@ Kapp/src/main/java/com/kraaiennest/kraaiennestapp/register/ApiCallState.java,0\
 Mapp/src/main/java/com/kraaiennest/kraaiennestapp/checkin/CheckInActivity.java,6\1\612d6d5de0bd22782613796d3105511c95631161
 f
 6app/src/main/res/color/color_states_materialbutton.xml,f\3\f3e0c845562700e21506a1b27b2e3136ba4521e9
-R
-"app/src/main/res/values/colors.xml,9\6\969faa2a5d9f5e8390e958d2c07f2cfd54676e6b
 h
 8app/src/main/res/drawable-v24/ic_launcher_foreground.xml,0\7\078508c831007ccb3938b355f0d30a8368f99a8d
 h

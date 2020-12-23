@@ -11,4 +11,5 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#000000</color>
     <color name="cancelColor">#E53935</color>
+    <color name="departedColor">#D3766F</color>
 </resources>

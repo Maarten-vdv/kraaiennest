@@ -6,8 +6,7 @@ public class Timestamp {
     private Date date;
     private PartOfDay partOfDay;
     private Date registeredAt;
-    private int registeredUnits;
-    private int realUnits;
+    private boolean isCheckIn;
 
     public Date getDate() {
         return date;
@@ -33,19 +32,11 @@ public class Timestamp {
         this.registeredAt = registeredAt;
     }
 
-    public int getRegisteredUnits() {
-        return registeredUnits;
+    public boolean isCheckIn() {
+        return isCheckIn;
     }
 
-    public void setRegisteredUnits(int registeredUnits) {
-        this.registeredUnits = registeredUnits;
-    }
-
-    public int getRealUnits() {
-        return realUnits;
-    }
-
-    public void setRealUnits(int realUnits) {
-        this.realUnits = realUnits;
+    public void setCheckIn(boolean checkIn) {
+        isCheckIn = checkIn;
     }
 }

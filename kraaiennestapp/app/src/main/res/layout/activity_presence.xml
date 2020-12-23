@@ -8,18 +8,9 @@
         android:fitsSystemWindows="true"
         tools:context=".presence.PresenceActivity">
 
-    <androidx.core.widget.NestedScrollView
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:showIn="@layout/activity_presence"
-            android:layout_width="match_parent"
-            android:fillViewport="true"
-            android:layout_height="match_parent">
-
         <androidx.fragment.app.FragmentContainerView class="com.kraaiennest.kraaiennestapp.presence.PresenceFragment"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:id="@+id/presence">
         </androidx.fragment.app.FragmentContainerView>
-    </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.kraaiennest.kraaiennestapp.R;
 
 import java.util.ArrayList;
@@ -23,12 +24,14 @@ public class PresenceFragment extends Fragment {
     private PresenceViewModel model;
     private PresenceRecyclerViewAdapter presenceAdapter;
     private String scriptId;
+    private SwipeRefreshLayout swipeContainer;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PresenceFragment() { }
+    public PresenceFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +59,24 @@ public class PresenceFragment extends Fragment {
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         recycleView.setAdapter(presenceAdapter);
 
+        swipeContainer = view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(() -> {
+            // Your code to refresh the list here.
+            // Make sure you call swipeContainer.setRefreshing(false)
+            // once the network request has completed successfully.
+            model.refreshPresences();
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         model.getPresences().observe(this, newList -> {
             presenceAdapter.setData(newList);
+            swipeContainer.setRefreshing(false);
         });
 
         return view;
