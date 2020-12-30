@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.core.widget.NestedScrollView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -15,16 +16,14 @@
         android:fillViewport="true"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:name="com.kraaiennest.kraaiennestapp.presence.PresenceFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/primaryColor"
+            android:background="@color/primaryLightColor"
             app:layoutManager="LinearLayoutManager"
             tools:context=".presence.PresenceFragment"
-            tools:listitem="@layout/fragment_presence"></androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/fragment_presence" />
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

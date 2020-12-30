@@ -143,10 +143,6 @@ public class RegisterViewModel extends ViewModel {
         });
     }
 
-    public void setChildren(List<Child> children) {
-        this.children = children;
-    }
-
     public void loadChild(String userId) {
         if (children == null || child == null) {
             return;

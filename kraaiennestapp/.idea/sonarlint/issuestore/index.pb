@@ -48,8 +48,6 @@ A
 script/classes.ts,b\9\b903fedb717591406167e3abf54879e90fdf878e
 R
 "app/src/main/res/values/dimens.xml,c\3\c3c1811dec2dbad2deeafb9aad505ca9631da740
-W
-'app/src/main/res/menu/menu_presence.xml,6\b\6bfd1d38e01e2ab63d34195ff0d46986b66efb9d
 H
 script/package-lock.json,5\c\5ceeaf3001f1138f31d13eed1ab050cdf55c2710
 u
@@ -82,9 +80,15 @@ h
 +app/src/main/res/drawable/launch_screen.xml,a\d\adfa4af698199542a64bc418c1fa70c6aed301b9
 Ä
 Papp/src/main/java/com/kraaiennest/kraaiennestapp/api/LocalDateTimeConverter.java,b\b\bbbeee4c6828f613ea3f1423f9a3c0b306e6cebe
-R
-"app/src/main/res/values/styles.xml,f\7\f79cc2688e29fcbc286fda14ae07b27c9e83690f
 ~
 Napp/src/main/java/com/kraaiennest/kraaiennestapp/checkin/CheckInViewModel.java,c\d\cd6c34d98d9a428c6f8a07a5358a29712d595fc8
 
 Oapp/src/main/java/com/kraaiennest/kraaiennestapp/settings/SettingsFragment.java,f\e\fe2d571b29e742bd74b653b93a1705268c7350bd
+r
+Bapp/src/main/java/com/kraaiennest/kraaiennestapp/MenuFragment.java,e\d\ede8be3c279b2fa9941be4dc81c8592c079f069e
+}
+Mapp/src/main/java/com/kraaiennest/kraaiennestapp/model/PresenceSortOrder.java,8\a\8a6dbff5c5fc5c630cfbf01b7c35e2be39d0879e
+Å
+Qapp/src/main/java/com/kraaiennest/kraaiennestapp/presence/PresenceComparator.java,5\b\5b55a7a25659d781d5d68b429a9fc13d33fc024a
+Ç
+Rapp/src/main/java/com/kraaiennest/kraaiennestapp/presence/SortOptionsFragment.java,8\0\809f2f850f7d3d71d2a24885a14c075a7514ef13

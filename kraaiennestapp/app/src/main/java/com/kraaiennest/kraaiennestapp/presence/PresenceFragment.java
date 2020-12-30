@@ -6,15 +6,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.kraaiennest.kraaiennestapp.R;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A fragment representing a list of Items.
@@ -36,9 +41,19 @@ public class PresenceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        model = new ViewModelProvider(this).get(PresenceViewModel.class);
+
+        ViewModelProvider.Factory factory = new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull @NotNull Class<T> modelClass) {
+                Map<Integer, String> strings = new HashMap<>();
+                strings.put(R.string.error_load_presence, getString(R.string.error_load_presence));
+                return (T) new PresenceViewModel(strings);
+            }
+        };
+
+        model = new ViewModelProvider(requireActivity(), factory).get(PresenceViewModel.class);
         scriptId = sharedPreferences.getString("scriptId", "");
         model.loadExtra(scriptId);
         // Create the observer which updates the UI.
@@ -60,6 +75,7 @@ public class PresenceFragment extends Fragment {
         recycleView.setAdapter(presenceAdapter);
 
         swipeContainer = view.findViewById(R.id.swipeContainer);
+        swipeContainer.setRefreshing(true);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(() -> {
             // Your code to refresh the list here.

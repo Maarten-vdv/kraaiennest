@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import com.kraaiennest.kraaiennestapp.R;
-import com.kraaiennest.kraaiennestapp.scan.ScanActivity;
 import com.kraaiennest.kraaiennestapp.databinding.ActivityCheckInBinding;
 import com.kraaiennest.kraaiennestapp.register.ApiCallState;
+import com.kraaiennest.kraaiennestapp.scan.ScanActivity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

@@ -4,8 +4,10 @@
     android:id="@+id/presenseItemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/primaryLightColor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/border_bottom"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,10 +38,8 @@
         android:id="@+id/timestamps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/border_bottom"
         android:paddingVertical="5dp"
+        android:paddingHorizontal="10dp"
         app:alignContent="space_around"
         app:alignItems="stretch"
         app:flexWrap="wrap"></com.google.android.flexbox.FlexboxLayout>

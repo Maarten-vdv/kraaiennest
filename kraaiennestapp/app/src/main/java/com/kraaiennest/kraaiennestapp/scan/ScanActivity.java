@@ -15,10 +15,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.kraaiennest.kraaiennestapp.Constants;
 import com.kraaiennest.kraaiennestapp.R;
-import com.kraaiennest.kraaiennestapp.scan.QrCodeAnalyzer;
-import com.kraaiennest.kraaiennestapp.register.RegisterActivity;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -27,7 +24,7 @@ import java.util.concurrent.Executors;
 public class ScanActivity extends AppCompatActivity {
 
     public static final String SCANNED_USER_ID = "userId";
-    private Executor cameraExecutor = Executors.newSingleThreadExecutor();
+    private final Executor cameraExecutor = Executors.newSingleThreadExecutor();
     private QrCodeAnalyzer analyzer;
 
     private boolean found;
@@ -36,8 +33,6 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
-
-        PreviewView previewView = findViewById(R.id.preview_view);
 
         analyzer = new QrCodeAnalyzer();
         analyzer.register(result -> {
@@ -60,12 +55,6 @@ public class ScanActivity extends AppCompatActivity {
         super.onResume();
 
         this.found = false;
-    }
-
-    private void goToRegistration(String url) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        intent.putExtra(Constants.URL, url);
-        startActivity(intent);
     }
 
     private void startCamera() {

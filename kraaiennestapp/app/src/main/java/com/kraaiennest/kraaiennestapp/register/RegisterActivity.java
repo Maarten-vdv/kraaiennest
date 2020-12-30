@@ -13,10 +13,9 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import com.kraaiennest.kraaiennestapp.R;
-import com.kraaiennest.kraaiennestapp.scan.ScanActivity;
 import com.kraaiennest.kraaiennestapp.databinding.ActivityRegisterBinding;
-import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.model.PartOfDay;
+import com.kraaiennest.kraaiennestapp.scan.ScanActivity;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.format.DateTimeFormatter;
@@ -54,7 +53,6 @@ public class RegisterActivity extends AppCompatActivity {
         binding.setViewmodel(model);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         model.loadExtra(getIntent(), sharedPreferences.getString("scriptId", ""));
-        model.loadChild(null);
 
         binding.registerBtn.setOnClickListener(click -> model.createRegistration());
 
@@ -70,8 +68,6 @@ public class RegisterActivity extends AppCompatActivity {
                 model.registrationDone();
             }
         });
-
-        model.getChild().observe(this, this::loadChild);
 
         binding.registerScanBtn.setOnClickListener(click -> startScan());
         binding.registerBackBtn.setOnClickListener(click -> finish());
@@ -108,10 +104,5 @@ public class RegisterActivity extends AppCompatActivity {
                 model.loadChild(userId);
             }
         }
-    }
-
-    private void loadChild(Child child) {
-        binding.registerChildName.setText(child != null ? child.getFirstName() + " " + child.getLastName() : getString(R.string.scan_code_message));
-        binding.registerChildGroup.setText(child != null ? child.getGroup() : "");
     }
 }

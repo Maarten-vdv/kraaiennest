@@ -6,14 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.flexbox.FlexboxLayout;
 import com.kraaiennest.kraaiennestapp.R;
 import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.model.Presence;
 import com.kraaiennest.kraaiennestapp.model.Timestamp;
-import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -41,10 +39,13 @@ public class PresenceRecyclerViewAdapter extends RecyclerView.Adapter<PresenceRe
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Context context = holder.childNameView.getContext();
+        holder.timestampsView.removeAllViews();
         holder.item.getTimestamps().forEach(t -> holder.timestampsView.addView(createTimestampView(context, dateFormat, t)));
 
         if(!holder.item.getTimestamps().stream().allMatch(Timestamp::isCheckIn)) {
-            holder.presenseItemLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.departedColor));
+            holder.presenseItemLayout.setAlpha(0.25f);
+        } else {
+            holder.presenseItemLayout.setAlpha(1f);
         }
     }
 

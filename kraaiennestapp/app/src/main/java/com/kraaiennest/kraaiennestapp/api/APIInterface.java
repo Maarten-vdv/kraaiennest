@@ -2,7 +2,6 @@ package com.kraaiennest.kraaiennestapp.api;
 
 import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.model.Presence;
-import com.kraaiennest.kraaiennestapp.model.PresenceResponse;
 import com.kraaiennest.kraaiennestapp.model.Registration;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

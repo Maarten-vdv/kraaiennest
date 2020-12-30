@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".presence.PresenceActivity">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context=".presence.PresenceActivity">
+        android:orientation="vertical">
 
-        <androidx.fragment.app.FragmentContainerView class="com.kraaiennest.kraaiennestapp.presence.PresenceFragment"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:id="@+id/presence">
-        </androidx.fragment.app.FragmentContainerView>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_presence"
+            android:minHeight="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="@android:color/white"
+            android:background="?attr/colorPrimary"
+            app:theme="@style/AppTheme.AppBarOverlay" />
+
+        <androidx.fragment.app.FragmentContainerView
+            class="com.kraaiennest.kraaiennestapp.presence.PresenceFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/presence" />
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

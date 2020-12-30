@@ -33,7 +33,7 @@ public class CheckInViewModel extends ViewModel {
         api = APIService.getClient().create(APIInterface.class);
     }
 
-    public void loadExtra(Intent intent,String scriptId) {
+    public void loadExtra(Intent intent, String scriptId) {
         children = Parcels.unwrap(intent.getParcelableExtra("children"));
         this.scriptId = scriptId;
     }

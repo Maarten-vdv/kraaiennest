@@ -1,41 +1,33 @@
-package com.kraaiennest.kraaiennestapp;
+package com.kraaiennest.kraaiennestapp.main;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
-import com.kraaiennest.kraaiennestapp.api.APIInterface;
-import com.kraaiennest.kraaiennestapp.api.APIService;
+import com.kraaiennest.kraaiennestapp.R;
 import com.kraaiennest.kraaiennestapp.checkin.CheckInActivity;
-import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.presence.PresenceActivity;
 import com.kraaiennest.kraaiennestapp.register.RegisterActivity;
 import org.parceler.Parcels;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 public class MainActivity extends AppCompatActivity {
 
-    private final int REQUEST_CAMERA_PERMISSION = 10;
+    private static final int REQUEST_CAMERA_PERMISSION = 10;
 
     private ConstraintLayout container;
-    private List<Child> children;
-    private APIInterface api;
     private String scriptId;
+
+    private MainViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +37,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         container = findViewById(R.id.main_grid);
 
-        api = APIService.getClient().create(APIInterface.class);
+
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener((c, key) -> {
-                scriptId = c.getString("scriptId", "");
+            scriptId = c.getString("scriptId", "");
         });
         scriptId = sharedPreferences.getString("scriptId", "");
 
+        model = new ViewModelProvider(this).get(MainViewModel.class);
+        model.loadExtra(scriptId);
+
         View register = findViewById(R.id.register_btn);
-        register.setBackgroundColor(Color.parseColor("#F79922"));
         register.setOnClickListener(event -> startRegister());
 
         View checkIn = findViewById(R.id.register_scan_btn);
-        checkIn.setBackgroundColor(Color.parseColor("#5133AB"));
         checkIn.setOnClickListener(event -> startCheckIn());
 
         View presence = findViewById(R.id.presence_btn);
-        presence.setBackgroundColor(Color.parseColor("#AC193D"));
         presence.setOnClickListener(event -> startPresence());
 
         // Request camera permissions
@@ -71,28 +63,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
         }
-
-        if (children == null) {
-            children = loadChildren();
-        }
-    }
-
-    private List<Child> loadChildren() {
-        try {
-            List<Child> children = api.doGetChildren(scriptId).get();
-            System.out.println(children.size());
-            return children;
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return Collections.emptyList();
     }
 
     private void startRegister() {
         Intent intent = new Intent(this, RegisterActivity.class);
         Bundle bundle = new Bundle();
-        Parcelable wrapped = Parcels.wrap(children);
+        Parcelable wrapped = Parcels.wrap(model.getChildren().getValue());
         bundle.putParcelable("children", wrapped);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -106,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private void startCheckIn() {
         Intent intent = new Intent(this, CheckInActivity.class);
         Bundle bundle = new Bundle();
-        Parcelable wrapped = Parcels.wrap(children);
+        Parcelable wrapped = Parcels.wrap(model.getChildren().getValue());
         bundle.putParcelable("children", wrapped);
         intent.putExtras(bundle);
         startActivity(intent);

@@ -12,20 +12,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".settings.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".checkin.CheckInActivity"
             android:label="@string/title_activity_check_in" />
         <activity
             android:name=".presence.PresenceActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_presence" />
         <activity android:name=".register.RegisterActivity" />
         <activity android:name=".scan.ScanActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
