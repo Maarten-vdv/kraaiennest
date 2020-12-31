@@ -27,6 +27,7 @@ public class CheckInActivity extends AppCompatActivity {
     public static final int CHECK_IN_SCAN_REQUEST = 1;
 
     private ActivityCheckInBinding binding;
+    private CheckInViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,10 @@ public class CheckInActivity extends AppCompatActivity {
             }
         };
 
-        CheckInViewModel model = new ViewModelProvider(this, factory).get(CheckInViewModel.class);
+        model = new ViewModelProvider(this, factory).get(CheckInViewModel.class);
         binding.setViewmodel(model);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         model.loadExtra(getIntent(), sharedPreferences.getString("scriptId", ""));
-        model.loadChild(null);
-
         binding.checkInBtn.setOnClickListener(click -> model.createCheckIn());
         binding.checkInBackBtn.setOnClickListener(click -> finish());
         binding.checkInScanBtn.setOnClickListener(click -> startScan());
@@ -68,6 +67,12 @@ public class CheckInActivity extends AppCompatActivity {
                 model.checkInDone();
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        model.clearChild();
     }
 
     private void startScan() {

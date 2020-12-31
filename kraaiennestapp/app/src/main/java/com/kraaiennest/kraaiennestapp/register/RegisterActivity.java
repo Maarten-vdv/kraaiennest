@@ -28,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public static final int REGISTER_SCAN_REQUEST = 2;
     private ActivityRegisterBinding binding;
+    private RegisterViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
                 return (T) new RegisterViewModel(strings, DateTimeFormatter.ofPattern("HH:mm"));
             }
         };
-        RegisterViewModel model = new ViewModelProvider(this, factory).get(RegisterViewModel.class);
+        model = new ViewModelProvider(this, factory).get(RegisterViewModel.class);
         binding.setViewmodel(model);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         model.loadExtra(getIntent(), sharedPreferences.getString("scriptId", ""));
@@ -87,6 +88,12 @@ public class RegisterActivity extends AppCompatActivity {
                 binding.cutoff2.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        this.model.clearChild();
     }
 
     private void startScan() {

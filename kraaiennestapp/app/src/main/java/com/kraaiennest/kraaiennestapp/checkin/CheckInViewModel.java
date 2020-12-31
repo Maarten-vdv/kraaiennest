@@ -87,4 +87,8 @@ public class CheckInViewModel extends ViewModel {
             });
         }
     }
+
+    public void clearChild() {
+        this.child.setValue(null);
+    }
 }

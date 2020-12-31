@@ -156,6 +156,10 @@ public class RegisterViewModel extends ViewModel {
         }
     }
 
+    public void clearChild() {
+        this.child.setValue(null);
+    }
+
     public void registrationDone() {
         registrationState.setValue(ApiCallState.IDLE);
     }
