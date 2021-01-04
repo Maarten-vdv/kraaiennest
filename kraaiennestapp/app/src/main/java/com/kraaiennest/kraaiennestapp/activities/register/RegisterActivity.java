@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp.register;
+package com.kraaiennest.kraaiennestapp.activities.register;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,62 +6,58 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import com.kraaiennest.kraaiennestapp.R;
 import com.kraaiennest.kraaiennestapp.databinding.ActivityRegisterBinding;
 import com.kraaiennest.kraaiennestapp.model.PartOfDay;
-import com.kraaiennest.kraaiennestapp.scan.ScanActivity;
-import org.jetbrains.annotations.NotNull;
+import com.kraaiennest.kraaiennestapp.activities.scan.ScanActivity;
+import dagger.hilt.android.AndroidEntryPoint;
 
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kraaiennest.kraaiennestapp.scan.ScanActivity.SCANNED_USER_ID;
+import static com.kraaiennest.kraaiennestapp.activities.scan.ScanActivity.SCANNED_USER_ID;
 
+@AndroidEntryPoint
 public class RegisterActivity extends AppCompatActivity {
 
     public static final int REGISTER_SCAN_REQUEST = 2;
-    private ActivityRegisterBinding binding;
     private RegisterViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
+        ActivityRegisterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setLifecycleOwner(this);
         View view = binding.getRoot();
         setContentView(view);
 
-        ViewModelProvider.Factory factory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull @NotNull Class<T> modelClass) {
-                int orientation = getResources().getConfiguration().orientation;
+        Toolbar toolbar = findViewById(R.id.toolbar_register);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(e -> finish());
 
-                Map<Integer, String> strings = new HashMap<>();
-                strings.put(R.string.scan_child, getString(R.string.scan_child));
-                strings.put(R.string.half_hours, (orientation == Configuration.ORIENTATION_LANDSCAPE ? " " : "\n") + getString(R.string.half_hours));
-                return (T) new RegisterViewModel(strings, DateTimeFormatter.ofPattern("HH:mm"));
-            }
-        };
-        model = new ViewModelProvider(this, factory).get(RegisterViewModel.class);
+        model = new ViewModelProvider(this).get(RegisterViewModel.class);
         binding.setViewmodel(model);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        model.loadExtra(getIntent(), sharedPreferences.getString("scriptId", ""));
 
-        binding.registerBtn.setOnClickListener(click -> model.createRegistration());
+        Map<Integer, String> strings = new HashMap<>();
+        strings.put(R.string.scan_child, getString(R.string.scan_child));
+        int orientation = getResources().getConfiguration().orientation;
+        strings.put(R.string.half_hours, (orientation == Configuration.ORIENTATION_LANDSCAPE ? " " : "\n") + getString(R.string.half_hours));
+        model.loadExtra(getIntent(), sharedPreferences.getString("scriptId", ""), strings);
+
+        binding.registerRegisterBtn.setOnClickListener(click -> model.createRegistration());
 
         model.getRegistrationState().observe(this, state -> {
             if (state.equals(ApiCallState.BUSY)) {
-                binding.registerBtn.startAnimation();
+                binding.registerRegisterBtn.startAnimation();
             } else {
-                binding.registerBtn.revertAnimation();
+                binding.registerRegisterBtn.revertAnimation();
             }
 
             if (state.equals(ApiCallState.SUCCESS)) {
@@ -71,7 +67,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         binding.registerScanBtn.setOnClickListener(click -> startScan());
-        binding.registerBackBtn.setOnClickListener(click -> finish());
         binding.registerLower.setOnClickListener(click -> model.addHalfHours(-1));
         binding.registerHigher.setOnClickListener(click -> model.addHalfHours(1));
 
@@ -107,8 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (requestCode == REGISTER_SCAN_REQUEST && resultCode == RESULT_OK) {
             String userId = data.getStringExtra(SCANNED_USER_ID);
             if (userId != null) {
-                RegisterViewModel model = new ViewModelProvider(this).get(RegisterViewModel.class);
-                model.loadChild(userId);
+               new ViewModelProvider(this).get(RegisterViewModel.class).loadChild(userId);
             }
         }
     }

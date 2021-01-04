@@ -1,43 +1,32 @@
 package com.kraaiennest.kraaiennestapp.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Converter;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.kraaiennest.kraaiennestapp.model.Child;
+import com.kraaiennest.kraaiennestapp.model.Presence;
+import com.kraaiennest.kraaiennestapp.model.Registration;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
 
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-import static com.kraaiennest.kraaiennestapp.Constants.SCRIPT_BASE_URL;
-
-public class APIService {
-
-    private static Retrofit retrofit = null;
-
-    public static Retrofit getClient() {
-
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.level(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+import static com.kraaiennest.kraaiennestapp.di.NetworkModule.SCRIPT_URL;
 
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(SCRIPT_BASE_URL)
-                .addConverterFactory(createGsonConverter())
-                .client(client)
-                .build();
+public interface APIService {
 
+    @GET(SCRIPT_URL + "{scriptId}/exec?mode=presence")
+    CompletableFuture<List<Presence>> doGetPresence(@Path(value = "scriptId") String scriptId);
 
-        return retrofit;
-    }
+    @GET(SCRIPT_URL + "{scriptId}/exec?mode=children")
+    CompletableFuture<List<Child>> doGetChildren(@Path(value = "scriptId") String scriptId);
 
-    private static Converter.Factory createGsonConverter() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
-        Gson gson = gsonBuilder.create();
+    @POST(SCRIPT_URL + "{scriptId}/exec?mode=checkIn")
+    Call<ResponseBody> doPostCheckIn(@Path(value = "scriptId") String scriptId, @Body Child child);
 
-        return GsonConverterFactory.create(gson);
-    }
+    @POST(SCRIPT_URL + "{scriptId}/exec?mode=register")
+    Call<ResponseBody> doPostRegister(@Path(value = "scriptId") String scriptId, @Body Registration registration);
 }

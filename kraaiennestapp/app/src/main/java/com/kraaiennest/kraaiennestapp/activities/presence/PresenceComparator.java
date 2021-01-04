@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp.presence;
+package com.kraaiennest.kraaiennestapp.activities.presence;
 
 import com.kraaiennest.kraaiennestapp.model.Presence;
 import com.kraaiennest.kraaiennestapp.model.PresenceSortOrder;

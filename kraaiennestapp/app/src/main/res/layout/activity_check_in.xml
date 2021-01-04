@@ -7,120 +7,121 @@
 
         <variable
             name="viewmodel"
-            type="com.kraaiennest.kraaiennestapp.checkin.CheckInViewModel" />
+            type="com.kraaiennest.kraaiennestapp.activities.checkin.CheckInViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/check_in_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/secondaryDarkColor"
-        android:backgroundTintMode="add"
-        tools:context=".checkin.CheckInActivity">
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_checkin"
+            android:minHeight="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="@android:color/white"
+            android:background="@color/check_in_btn_color"
+            app:theme="@style/AppTheme.AppBarOverlay" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:id="@+id/check_in_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/appBackgroundColor"
+            android:backgroundTintMode="add"
+            tools:context=".activities.checkin.CheckInActivity">
 
-            <TextView
-                android:id="@+id/child_name"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginVertical="5dp"
-                android:layout_marginBottom="90dp"
-                android:gravity="center"
-                android:text="@{viewmodel.fullName}"
-                android:textColor="#FFFFFF"
-                android:textSize="36sp"
-                app:layout_constraintBottom_toTopOf="@+id/child_group"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.25"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/child_group"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginVertical="5dp"
-                android:gravity="center"
-                android:text="@{viewmodel.child.group}"
-                android:textColor="#FFFFFF"
-                android:textSize="36sp"
-                app:layout_constraintBottom_toTopOf="@id/checkin_guideline"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.25"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/child_name" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/checkin_guideline"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/check_in_scan_btn"
-                app:layout_constraintGuide_percent="0.75"
-                app:layout_constraintHeight_percent="0.25"
-                app:layout_constraintTop_toBottomOf="@id/child_group" />
-
-            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-                android:id="@+id/check_in_btn"
-                style="@style/MainButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="2dp"
-                android:background="@color/primaryColor"
-                android:enabled="@{viewmodel.child != null}"
-                android:text="@string/do_check_in_btn"
-                android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/check_in_scan_btn"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/checkin_guideline"
-                app:spinning_bar_color="#FFF"
-                app:spinning_bar_padding="15dp"
-                app:spinning_bar_width="4dp" />
-
-            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-                android:id="@+id/check_in_scan_btn"
-                style="@style/MainButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:background="@color/primaryColor"
-                android:text="@string/scan_btn"
-                android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/check_in_back_btn"
-                app:layout_constraintStart_toEndOf="@+id/check_in_btn"
-                app:layout_constraintTop_toBottomOf="@id/checkin_guideline" />
-
-            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-                android:id="@+id/check_in_back_btn"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="2dp"
-                android:background="@color/cancelColor"
-                android:backgroundTint="@null"
-                android:backgroundTintMode="add"
-                android:text="@string/back_btn"
-                android:textColor="#FFFFFF"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/check_in_scan_btn"
-                app:layout_constraintTop_toBottomOf="@id/checkin_guideline" />
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/child_name"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginBottom="90dp"
+                    android:gravity="center"
+                    android:text="@{viewmodel.fullName}"
+                    android:textColor="#FFFFFF"
+                    android:textSize="36sp"
+                    app:layout_constraintBottom_toTopOf="@+id/child_group"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.25"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/child_group"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="5dp"
+                    android:gravity="center"
+                    android:text="@{viewmodel.child.group}"
+                    android:textColor="#FFFFFF"
+                    android:textSize="36sp"
+                    app:layout_constraintBottom_toTopOf="@id/checkin_guideline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.25"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/child_name" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/checkin_guideline"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@id/check_in_scan_btn"
+                    app:layout_constraintGuide_percent="0.75"
+                    app:layout_constraintHeight_percent="0.25"
+                    app:layout_constraintTop_toBottomOf="@id/child_group" />
+
+                <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                    android:id="@+id/check_in_btn"
+                    style="@style/MainButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="@color/primaryColor"
+                    android:enabled="@{viewmodel.child != null}"
+                    android:text="@string/do_check_in_btn"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/check_in_scan_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/checkin_guideline"
+                    app:spinning_bar_color="#FFF"
+                    app:spinning_bar_padding="15dp"
+                    app:spinning_bar_width="4dp" />
+
+                <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                    android:id="@+id/check_in_scan_btn"
+                    style="@style/MainButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="@color/primaryColor"
+                    android:text="@string/scan_btn"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/check_in_btn"
+                    app:layout_constraintTop_toBottomOf="@id/checkin_guideline" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 </layout>

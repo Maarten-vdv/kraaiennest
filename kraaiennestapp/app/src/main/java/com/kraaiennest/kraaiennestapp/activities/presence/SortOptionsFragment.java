@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp.presence;
+package com.kraaiennest.kraaiennestapp.activities.presence;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

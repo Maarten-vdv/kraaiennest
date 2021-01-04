@@ -7,215 +7,234 @@
 
         <variable
             name="viewmodel"
-            type="com.kraaiennest.kraaiennestapp.register.RegisterViewModel" />
+            type="com.kraaiennest.kraaiennestapp.activities.register.RegisterViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/check_in_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/secondaryDarkColor"
-        android:backgroundTintMode="add"
-        tools:context=".register.RegisterActivity">
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_register"
+            android:minHeight="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleTextColor="@android:color/white"
+            android:background="@color/register_btn_color"
+            android:navigationIcon="@drawable/ic_baseline_home_24"
+            app:theme="@style/AppTheme.AppBarOverlay" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:id="@+id/check_in_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/appBackgroundColor"
+            android:backgroundTintMode="add"
+            tools:context=".activities.register.RegisterActivity">
 
-            <TextView
-                android:id="@+id/register_child_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:gravity="center"
-                android:text="@{viewmodel.fullName}"
-                android:textColor="#FFFFFF"
-                android:textSize="36sp"
-                app:layout_constraintBottom_toTopOf="@id/register_child_group"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="spread"
-                app:layout_constraintVertical_weight="1" />
-
-            <TextView
-                android:id="@+id/register_child_group"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:gravity="center"
-                android:text="@{viewmodel.child.group}"
-                android:textColor="#FFFFFF"
-                android:textSize="36sp"
-                app:layout_constraintBottom_toTopOf="@+id/clock1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/register_child_name"
-                app:layout_constraintVertical_chainStyle="spread"
-                app:layout_constraintVertical_weight="1" />
-
-            <com.kraaiennest.kraaiennestapp.widgets.MyTextClock
-                android:id="@+id/clock1"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:autoSizeTextType="uniform"
-                android:textAlignment="center"
-                android:textColor="@color/secondaryLightColor"
-                app:layout_constraintBottom_toTopOf="@id/halfHours"
-                app:layout_constraintEnd_toStartOf="@id/clock_connection"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/register_child_group"
-                app:layout_constraintVertical_weight="1" />
-
-            <TextView
-                android:id="@+id/cutoff1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-                android:gravity="center"
-                android:text="@{viewmodel.cutOffValue}"
-                android:textAlignment="center"
-                android:textColor="@color/secondaryLightColor"
-                app:layout_constraintBottom_toTopOf="@id/halfHours"
-                app:layout_constraintEnd_toStartOf="@id/clock_connection"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/register_child_group"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="spread"
-                app:layout_constraintVertical_weight="1" />
-
-            <TextView
-                android:id="@+id/clock_connection"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="10sp"
-                android:autoSizeTextType="none"
-                android:gravity="center"
-                android:shadowColor="#FFFFFF"
-                android:text="@string/until"
-                android:textAlignment="center"
-                android:textColor="@color/secondaryLightColor"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@id/halfHours"
-                app:layout_constraintEnd_toStartOf="@id/clock2"
-                app:layout_constraintStart_toEndOf="@id/clock1"
-                app:layout_constraintTop_toBottomOf="@id/register_child_group"
-                app:layout_constraintVertical_weight="1" />
-
-            <com.kraaiennest.kraaiennestapp.widgets.MyTextClock
-                android:id="@+id/clock2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:autoSizeTextType="uniform"
-                android:gravity="center"
-                android:textColor="@color/secondaryLightColor"
-                app:layout_constraintBottom_toTopOf="@id/halfHours"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/clock_connection"
-                app:layout_constraintTop_toBottomOf="@id/register_child_group"
-                app:layout_constraintVertical_chainStyle="spread"
-                app:layout_constraintVertical_weight="1" />
-
-            <TextView
-                android:id="@+id/cutoff2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:autoSizeTextType="uniform"
-                android:gravity="center"
-                android:text="@{viewmodel.cutOffValue}"
-                android:textAlignment="center"
-                android:textColor="@color/secondaryLightColor"
-                app:layout_constraintBottom_toTopOf="@id/halfHours"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/clock_connection"
-                app:layout_constraintTop_toBottomOf="@id/register_child_group"
-                app:layout_constraintVertical_weight="1" />
-
-            <Button
-                android:id="@+id/register_lower"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/lower"
-                app:layout_constraintBottom_toTopOf="@id/registerBtn"
-                app:layout_constraintEnd_toStartOf="@id/halfHours"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/clock_connection"
-                app:layout_constraintVertical_weight="1" />
-
-            <TextView
-                android:id="@+id/halfHours"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="5sp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:autoSizeTextType="uniform"
-                android:ems="10"
-                android:text="@{viewmodel.halfHours}"
-                android:textAlignment="center"
-                android:textColor="@color/secondaryLightColor"
-                app:layout_constraintBottom_toTopOf="@id/register_scan_btn"
-                app:layout_constraintEnd_toStartOf="@id/register_higher"
-                app:layout_constraintHorizontal_weight="2"
-                app:layout_constraintStart_toEndOf="@id/register_lower"
-                app:layout_constraintTop_toBottomOf="@id/clock_connection"
-                app:layout_constraintVertical_chainStyle="spread"
-                app:layout_constraintVertical_weight="1" />
-
-            <Button
-                android:id="@+id/register_higher"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/higher"
-                app:layout_constraintBottom_toTopOf="@id/register_back_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toEndOf="@id/halfHours"
-                app:layout_constraintTop_toBottomOf="@id/clock_connection"
-                app:layout_constraintVertical_weight="1" />
-
-            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-                android:id="@+id/registerBtn"
-                style="@style/MainButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="2dp"
-                android:background="@color/primaryColor"
-                android:enabled="@{viewmodel.child != null}"
-                android:text="@string/register_btn"
-                android:textColor="#FFFFFF"
-                app:layout_constraintHeight_percent="0.25"
+                android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/register_scan_btn"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/register_lower"
-                app:layout_constraintVertical_chainStyle="spread"
-                app:spinning_bar_color="#FFF"
-                app:spinning_bar_padding="15dp"
-                app:spinning_bar_width="4dp" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/register_child_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:gravity="center"
+                    android:text="@{viewmodel.fullName}"
+                    android:textColor="#FFFFFF"
+                    android:textSize="36sp"
+                    app:layout_constraintBottom_toTopOf="@id/register_child_group"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:layout_constraintVertical_weight="1" />
+
+                <TextView
+                    android:id="@+id/register_child_group"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:gravity="center"
+                    android:text="@{viewmodel.child.group}"
+                    android:textColor="#FFFFFF"
+                    android:textSize="36sp"
+                    app:layout_constraintBottom_toTopOf="@+id/clock1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/register_child_name"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:layout_constraintVertical_weight="1" />
+
+                <com.kraaiennest.kraaiennestapp.widgets.MyTextClock
+                    android:id="@+id/clock1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:autoSizeTextType="uniform"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondaryLightColor"
+                    app:layout_constraintBottom_toTopOf="@id/halfHours"
+                    app:layout_constraintEnd_toStartOf="@id/clock_connection"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/register_child_group"
+                    app:layout_constraintVertical_weight="1" />
+
+                <TextView
+                    android:id="@+id/cutoff1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center"
+                    android:text="@{viewmodel.cutOffValue}"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondaryLightColor"
+                    app:layout_constraintBottom_toTopOf="@id/halfHours"
+                    app:layout_constraintEnd_toStartOf="@id/clock_connection"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/register_child_group"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:layout_constraintVertical_weight="1" />
+
+                <TextView
+                    android:id="@+id/clock_connection"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="10sp"
+                    android:autoSizeTextType="none"
+                    android:gravity="center"
+                    android:shadowColor="#FFFFFF"
+                    android:text="@string/until"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondaryLightColor"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toTopOf="@id/halfHours"
+                    app:layout_constraintEnd_toStartOf="@id/clock2"
+                    app:layout_constraintStart_toEndOf="@id/clock1"
+                    app:layout_constraintTop_toBottomOf="@id/register_child_group"
+                    app:layout_constraintVertical_weight="1" />
+
+                <com.kraaiennest.kraaiennestapp.widgets.MyTextClock
+                    android:id="@+id/clock2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center"
+                    android:textColor="@color/secondaryLightColor"
+                    app:layout_constraintBottom_toTopOf="@id/halfHours"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@id/clock_connection"
+                    app:layout_constraintTop_toBottomOf="@id/register_child_group"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:layout_constraintVertical_weight="1" />
+
+                <TextView
+                    android:id="@+id/cutoff2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center"
+                    android:text="@{viewmodel.cutOffValue}"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondaryLightColor"
+                    app:layout_constraintBottom_toTopOf="@id/halfHours"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@id/clock_connection"
+                    app:layout_constraintTop_toBottomOf="@id/register_child_group"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:layout_constraintVertical_weight="1" />
+
+                <Button
+                    android:id="@+id/register_lower"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/lower"
+                    app:layout_constraintBottom_toTopOf="@id/register_register_btn"
+                    app:layout_constraintEnd_toStartOf="@id/halfHours"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/clock_connection"
+                    app:layout_constraintVertical_weight="1" />
+
+                <TextView
+                    android:id="@+id/halfHours"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="5sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:autoSizeTextType="uniform"
+                    android:ems="10"
+                    android:text="@{viewmodel.halfHours}"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondaryLightColor"
+                    app:layout_constraintBottom_toTopOf="@id/register_scan_btn"
+                    app:layout_constraintEnd_toStartOf="@id/register_higher"
+                    app:layout_constraintHorizontal_weight="2"
+                    app:layout_constraintStart_toEndOf="@id/register_lower"
+                    app:layout_constraintTop_toBottomOf="@id/clock_connection"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:layout_constraintVertical_weight="1" />
+
+                <Button
+                    android:id="@+id/register_higher"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/higher"
+                    app:layout_constraintBottom_toTopOf="@id/register_register_btn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@id/halfHours"
+                    app:layout_constraintTop_toBottomOf="@id/clock_connection"
+                    app:layout_constraintVertical_weight="1" />
+
+                <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                    android:id="@+id/register_register_btn"
+                    style="@style/MainButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="@color/primaryColor"
+                    android:enabled="@{viewmodel.child != null}"
+                    android:text="@string/register_btn"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintHeight_percent="0.25"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/register_scan_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/register_lower"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:spinning_bar_color="#FFF"
+                    app:spinning_bar_padding="15dp"
+                    app:spinning_bar_width="4dp" />
 
             <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                 android:id="@+id/register_scan_btn"
@@ -228,26 +247,11 @@
                 android:text="@string/scan_btn"
                 android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/register_back_btn"
-                app:layout_constraintHeight_percent="0.25"
-                app:layout_constraintStart_toEndOf="@+id/registerBtn"
-                app:layout_constraintTop_toBottomOf="@+id/halfHours" />
-
-            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
-                android:id="@+id/register_back_btn"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="2dp"
-                android:background="@color/cancelColor"
-                android:backgroundTint="@null"
-                app:layout_constraintHeight_percent="0.25"
-                android:backgroundTintMode="add"
-                android:text="@string/back_btn"
-                android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/register_scan_btn"
-                app:layout_constraintTop_toBottomOf="@id/register_higher" />
+                app:layout_constraintHeight_percent="0.25"
+                app:layout_constraintStart_toEndOf="@+id/register_register_btn"
+                app:layout_constraintTop_toBottomOf="@+id/halfHours" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

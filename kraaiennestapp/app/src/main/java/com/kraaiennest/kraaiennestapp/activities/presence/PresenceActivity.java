@@ -1,20 +1,21 @@
-package com.kraaiennest.kraaiennestapp.presence;
+package com.kraaiennest.kraaiennestapp.activities.presence;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import com.kraaiennest.kraaiennestapp.R;
 import com.kraaiennest.kraaiennestapp.model.PresenceSortOrder;
-import org.jetbrains.annotations.NotNull;
+import dagger.hilt.android.AndroidEntryPoint;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@AndroidEntryPoint
 public class PresenceActivity extends AppCompatActivity implements SortOptionsFragment.SortDialogListener {
 
     private PresenceViewModel model;
@@ -26,18 +27,17 @@ public class PresenceActivity extends AppCompatActivity implements SortOptionsFr
 
         Toolbar toolbar = findViewById(R.id.toolbar_presence);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(e -> finish());
 
-        ViewModelProvider.Factory factory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull @NotNull Class<T> modelClass) {
-                Map<Integer, String> strings = new HashMap<>();
-                strings.put(R.string.error_load_presence, getString(R.string.error_load_presence));
-                return (T) new PresenceViewModel(strings);
-            }
-        };
+        model = new ViewModelProvider(this).get(PresenceViewModel.class);
 
-        model = new ViewModelProvider(this, factory).get(PresenceViewModel.class);
+        Map<Integer, String> strings = new HashMap<>();
+        strings.put(R.string.error_load_presence, getString(R.string.error_load_presence));
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String scriptId = sharedPreferences.getString("scriptId", "");
+        model.loadExtra(scriptId, strings);
     }
 
     @Override
@@ -52,6 +52,8 @@ public class PresenceActivity extends AppCompatActivity implements SortOptionsFr
             SortOptionsFragment dialog = new SortOptionsFragment();
             dialog.show(getSupportFragmentManager(), "SortOptionsFragment");
             return true;
+        } else if (item.getItemId() == R.id.action_refresh) {
+            model.refreshPresences();
         }
 
         return super.onOptionsItemSelected(item);

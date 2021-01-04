@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp.scan;
+package com.kraaiennest.kraaiennestapp.activities.scan;
 
 import android.app.Activity;
 import android.content.Intent;

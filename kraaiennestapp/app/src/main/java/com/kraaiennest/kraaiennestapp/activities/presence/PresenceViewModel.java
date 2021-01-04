@@ -1,10 +1,11 @@
-package com.kraaiennest.kraaiennestapp.presence;
+package com.kraaiennest.kraaiennestapp.activities.presence;
 
+import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import com.kraaiennest.kraaiennestapp.R;
-import com.kraaiennest.kraaiennestapp.api.APIInterface;
 import com.kraaiennest.kraaiennestapp.api.APIService;
 import com.kraaiennest.kraaiennestapp.model.Presence;
 import com.kraaiennest.kraaiennestapp.model.PresenceSortOrder;
@@ -16,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class PresenceViewModel extends ViewModel {
 
+    private final APIService api;
     private String scriptId;
     private MutableLiveData<List<Presence>> presences;
 
@@ -24,8 +26,9 @@ public class PresenceViewModel extends ViewModel {
     Map<Integer, String> strings;
     private PresenceSortOrder sortOrder = PresenceSortOrder.NAME;
 
-    public PresenceViewModel(Map<Integer, String> strings) {
-        this.strings = strings;
+    @ViewModelInject
+    public PresenceViewModel(APIService api) {
+        this.api = api;
     }
 
     public LiveData<List<Presence>> getPresences() {
@@ -43,13 +46,17 @@ public class PresenceViewModel extends ViewModel {
         return errorMessage;
     }
 
-    public void loadExtra(String scriptId) {
+    public void loadExtra(String scriptId, Map<Integer, String> strings) {
         this.scriptId = scriptId;
+        this.strings = strings;
+    }
+
+    public LiveData<Boolean> isEmpty() {
+        return Transformations.map(getPresences(), p -> p != null && p.isEmpty());
     }
 
 
     public void refreshPresences() {
-        APIInterface api = APIService.getClient().create(APIInterface.class);
         try {
             CompletableFuture<List<Presence>> getPresence = api.doGetPresence(scriptId);
             getPresence.thenAcceptAsync((p) -> {

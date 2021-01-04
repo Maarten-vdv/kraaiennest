@@ -1,15 +1,15 @@
-package com.kraaiennest.kraaiennestapp.checkin;
+package com.kraaiennest.kraaiennestapp.activities.checkin;
 
 import android.content.Intent;
+import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import com.kraaiennest.kraaiennestapp.R;
-import com.kraaiennest.kraaiennestapp.api.APIInterface;
 import com.kraaiennest.kraaiennestapp.api.APIService;
 import com.kraaiennest.kraaiennestapp.model.Child;
-import com.kraaiennest.kraaiennestapp.register.ApiCallState;
+import com.kraaiennest.kraaiennestapp.activities.register.ApiCallState;
 import okhttp3.ResponseBody;
 import org.parceler.Parcels;
 import retrofit2.Call;
@@ -25,15 +25,16 @@ public class CheckInViewModel extends ViewModel {
     private String scriptId;
     private MutableLiveData<Child> child;
     private MutableLiveData<ApiCallState> apiCallState;
-    private APIInterface api;
-    private final Map<Integer, String> strings;
+    private APIService api;
+    private Map<Integer, String> strings;
 
-    public CheckInViewModel(Map<Integer, String> strings) {
-        this.strings = strings;
-        api = APIService.getClient().create(APIInterface.class);
+    @ViewModelInject
+    public CheckInViewModel(APIService api) {
+        this.api = api;
     }
 
-    public void loadExtra(Intent intent, String scriptId) {
+    public void loadExtra(Intent intent, String scriptId, Map<Integer, String> strings) {
+        this.strings = strings;
         children = Parcels.unwrap(intent.getParcelableExtra("children"));
         this.scriptId = scriptId;
     }

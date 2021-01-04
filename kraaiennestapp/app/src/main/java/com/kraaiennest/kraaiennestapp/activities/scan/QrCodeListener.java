@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp.scan;
+package com.kraaiennest.kraaiennestapp.activities.scan;
 
 import com.google.zxing.Result;
 

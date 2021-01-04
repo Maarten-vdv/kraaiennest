@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp.presence;
+package com.kraaiennest.kraaiennestapp.activities.presence;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,30 +6,30 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.kraaiennest.kraaiennestapp.R;
-import org.jetbrains.annotations.NotNull;
+import dagger.hilt.android.AndroidEntryPoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * A fragment representing a list of Items.
  */
+@AndroidEntryPoint
 public class PresenceFragment extends Fragment {
 
     private PresenceViewModel model;
     private PresenceRecyclerViewAdapter presenceAdapter;
     private String scriptId;
-    private SwipeRefreshLayout swipeContainer;
+    private List<SwipeRefreshLayout> swipeContainers = new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -43,26 +43,22 @@ public class PresenceFragment extends Fragment {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        ViewModelProvider.Factory factory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull @NotNull Class<T> modelClass) {
-                Map<Integer, String> strings = new HashMap<>();
-                strings.put(R.string.error_load_presence, getString(R.string.error_load_presence));
-                return (T) new PresenceViewModel(strings);
-            }
-        };
 
-        model = new ViewModelProvider(requireActivity(), factory).get(PresenceViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(PresenceViewModel.class);
+
         scriptId = sharedPreferences.getString("scriptId", "");
-        model.loadExtra(scriptId);
-        // Create the observer which updates the UI.
+        Map<Integer, String> strings = new HashMap<>();
+        strings.put(R.string.error_load_presence, getString(R.string.error_load_presence));
+        model.loadExtra(scriptId, strings);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_presence_list, container, false);
+
+        model.isEmpty().observe(getViewLifecycleOwner(), empty ->
+                view.findViewById(R.id.swipeContainer1).setVisibility(empty ? View.VISIBLE : View.GONE));
 
         RecyclerView recycleView = view.findViewById(R.id.list);
         // Set the adapter
@@ -74,7 +70,19 @@ public class PresenceFragment extends Fragment {
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         recycleView.setAdapter(presenceAdapter);
 
-        swipeContainer = view.findViewById(R.id.swipeContainer);
+        initSwipeContainer(view.findViewById(R.id.swipeContainer1));
+        initSwipeContainer(view.findViewById(R.id.swipeContainer2));
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        model.getPresences().observe(getViewLifecycleOwner(), newList -> {
+            presenceAdapter.setData(newList);
+            swipeContainers.forEach(c -> c.setRefreshing(false));
+        });
+
+        return view;
+    }
+
+    private void initSwipeContainer(SwipeRefreshLayout swipeContainer) {
         swipeContainer.setRefreshing(true);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(() -> {
@@ -89,12 +97,6 @@ public class PresenceFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        model.getPresences().observe(this, newList -> {
-            presenceAdapter.setData(newList);
-            swipeContainer.setRefreshing(false);
-        });
-
-        return view;
+        swipeContainers.add(swipeContainer);
     }
 }

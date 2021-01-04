@@ -1,27 +1,27 @@
-package com.kraaiennest.kraaiennestapp.checkin;
+package com.kraaiennest.kraaiennestapp.activities.checkin;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import com.kraaiennest.kraaiennestapp.R;
 import com.kraaiennest.kraaiennestapp.databinding.ActivityCheckInBinding;
-import com.kraaiennest.kraaiennestapp.register.ApiCallState;
-import com.kraaiennest.kraaiennestapp.scan.ScanActivity;
-import org.jetbrains.annotations.NotNull;
+import com.kraaiennest.kraaiennestapp.activities.register.ApiCallState;
+import com.kraaiennest.kraaiennestapp.activities.scan.ScanActivity;
+import dagger.hilt.android.AndroidEntryPoint;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kraaiennest.kraaiennestapp.scan.ScanActivity.SCANNED_USER_ID;
+import static com.kraaiennest.kraaiennestapp.activities.scan.ScanActivity.SCANNED_USER_ID;
 
+@AndroidEntryPoint
 public class CheckInActivity extends AppCompatActivity {
 
     public static final int CHECK_IN_SCAN_REQUEST = 1;
@@ -37,22 +37,21 @@ public class CheckInActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        ViewModelProvider.Factory factory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull @NotNull Class<T> modelClass) {
-                Map<Integer, String> strings = new HashMap<>();
-                strings.put(R.string.scan_child, getString(R.string.scan_child));
-                return (T) new CheckInViewModel(strings);
-            }
-        };
+        Toolbar toolbar = findViewById(R.id.toolbar_checkin);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(e -> finish());
 
-        model = new ViewModelProvider(this, factory).get(CheckInViewModel.class);
+
+        model = new ViewModelProvider(this).get(CheckInViewModel.class);
         binding.setViewmodel(model);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        model.loadExtra(getIntent(), sharedPreferences.getString("scriptId", ""));
+
+        Map<Integer, String> strings = new HashMap<>();
+        strings.put(R.string.scan_child, getString(R.string.scan_child));
+        model.loadExtra(getIntent(), sharedPreferences.getString("scriptId", ""), strings);
+
         binding.checkInBtn.setOnClickListener(click -> model.createCheckIn());
-        binding.checkInBackBtn.setOnClickListener(click -> finish());
         binding.checkInScanBtn.setOnClickListener(click -> startScan());
 
         model.getCheckInState().observe(this, state -> {

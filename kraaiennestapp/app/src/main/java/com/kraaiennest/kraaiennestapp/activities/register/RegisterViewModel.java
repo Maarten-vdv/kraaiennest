@@ -1,12 +1,12 @@
-package com.kraaiennest.kraaiennestapp.register;
+package com.kraaiennest.kraaiennestapp.activities.register;
 
 import android.content.Intent;
+import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import com.kraaiennest.kraaiennestapp.R;
-import com.kraaiennest.kraaiennestapp.api.APIInterface;
 import com.kraaiennest.kraaiennestapp.api.APIService;
 import com.kraaiennest.kraaiennestapp.model.Child;
 import com.kraaiennest.kraaiennestapp.model.PartOfDay;
@@ -30,27 +30,25 @@ public class RegisterViewModel extends ViewModel {
     private List<Child> children;
     private MutableLiveData<Child> child;
     private MutableLiveData<Integer> halfHours;
-
     private MutableLiveData<LocalDateTime> cutOff;
-
     private MutableLiveData<PartOfDay> partOfDay;
-
-    private APIInterface api;
+    private APIService api;
     private MutableLiveData<ApiCallState> registrationState;
-
-    private final Map<Integer, String> strings;
+    private Map<Integer, String> strings;
     private final DateTimeFormatter dateTimeFormatter;
     private String scriptId;
 
-    public RegisterViewModel(Map<Integer, String> strings, DateTimeFormatter dateTimeFormatter) {
-        this.strings = strings;
-        this.dateTimeFormatter = dateTimeFormatter;
-        api = APIService.getClient().create(APIInterface.class);
+
+    @ViewModelInject
+    public RegisterViewModel(APIService api) {
+        this.dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        this.api = api;
     }
 
-    public void loadExtra(Intent intent, String scriptId) {
+    public void loadExtra(Intent intent, String scriptId, Map<Integer, String> strings) {
         children = Parcels.unwrap(intent.getParcelableExtra("children"));
         this.scriptId = scriptId;
+        this.strings = strings;
     }
 
     public LiveData<Child> getChild() {
@@ -152,7 +150,7 @@ public class RegisterViewModel extends ViewModel {
 
     public void addHalfHours(int i) {
         if (this.halfHours.getValue() != null) {
-            this.halfHours.setValue(this.halfHours.getValue() + i);
+            this.halfHours.setValue(Math.max(0, this.halfHours.getValue() + i));
         }
     }
 

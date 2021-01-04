@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".presence.PresenceActivity">
+    tools:context=".activities.presence.PresenceActivity"
+    android:background="@color/appBackgroundColor"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,11 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="@android:color/white"
-            android:background="?attr/colorPrimary"
+            android:background="@color/presence_btn_color"
             app:theme="@style/AppTheme.AppBarOverlay" />
 
         <androidx.fragment.app.FragmentContainerView
-            class="com.kraaiennest.kraaiennestapp.presence.PresenceFragment"
+            class="com.kraaiennest.kraaiennestapp.activities.presence.PresenceFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/presence" />

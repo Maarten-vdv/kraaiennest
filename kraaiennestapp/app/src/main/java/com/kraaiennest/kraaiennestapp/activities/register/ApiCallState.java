@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp.register;
+package com.kraaiennest.kraaiennestapp.activities.register;
 
 public enum ApiCallState {
     IDLE,

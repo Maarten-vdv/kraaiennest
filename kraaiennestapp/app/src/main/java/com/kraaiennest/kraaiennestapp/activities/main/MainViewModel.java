@@ -1,8 +1,8 @@
-package com.kraaiennest.kraaiennestapp.main;
+package com.kraaiennest.kraaiennestapp.activities.main;
 
+import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.kraaiennest.kraaiennestapp.api.APIInterface;
 import com.kraaiennest.kraaiennestapp.api.APIService;
 import com.kraaiennest.kraaiennestapp.model.Child;
 
@@ -10,14 +10,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+
 public class MainViewModel extends ViewModel {
 
-    private final APIInterface api;
+    APIService api;
     private String scriptId;
     private MutableLiveData<List<Child>> children;
 
-    public MainViewModel() {
-        api = APIService.getClient().create(APIInterface.class);
+    @ViewModelInject
+    public MainViewModel(APIService api) {
+        this.api = api;
     }
 
     public void loadExtra(String scriptId) {
@@ -28,7 +30,7 @@ public class MainViewModel extends ViewModel {
     public MutableLiveData<List<Child>> getChildren() {
         if (children == null) {
             children = new MutableLiveData<>();
-            loadChildren();
+            children.setValue(loadChildren());
         }
         return children;
     }

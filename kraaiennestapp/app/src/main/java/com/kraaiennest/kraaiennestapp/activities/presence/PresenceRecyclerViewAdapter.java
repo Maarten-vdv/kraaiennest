@@ -1,4 +1,4 @@
-package com.kraaiennest.kraaiennestapp.presence;
+package com.kraaiennest.kraaiennestapp.activities.presence;
 
 import android.content.Context;
 import android.view.LayoutInflater;
