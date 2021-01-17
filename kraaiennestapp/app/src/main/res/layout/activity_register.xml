@@ -23,7 +23,7 @@
             app:titleTextColor="@android:color/white"
             android:background="@color/register_btn_color"
             android:navigationIcon="@drawable/ic_baseline_home_24"
-            app:theme="@style/AppTheme.AppBarOverlay" />
+            android:theme="@style/AppTheme.AppBarOverlay" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/check_in_layout"
@@ -97,7 +97,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="10dp"
-                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeStepGranularity="1sp"
                     android:autoSizeTextType="uniform"
                     android:gravity="center"
                     android:text="@{viewmodel.cutOffValue}"
@@ -152,7 +152,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="10dp"
-                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeStepGranularity="1sp"
                     android:autoSizeTextType="uniform"
                     android:gravity="center"
                     android:text="@{viewmodel.cutOffValue}"

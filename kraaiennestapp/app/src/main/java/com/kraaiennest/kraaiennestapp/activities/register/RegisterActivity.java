@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import com.kraaiennest.kraaiennestapp.R;
+import com.kraaiennest.kraaiennestapp.activities.main.ExceptionHandler;
 import com.kraaiennest.kraaiennestapp.databinding.ActivityRegisterBinding;
 import com.kraaiennest.kraaiennestapp.model.PartOfDay;
 import com.kraaiennest.kraaiennestapp.activities.scan.ScanActivity;
@@ -30,7 +31,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler("Register"));
+
         super.onCreate(savedInstanceState);
+
         ActivityRegisterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setLifecycleOwner(this);
         View view = binding.getRoot();
@@ -102,7 +106,9 @@ public class RegisterActivity extends AppCompatActivity {
         if (requestCode == REGISTER_SCAN_REQUEST && resultCode == RESULT_OK) {
             String userId = data.getStringExtra(SCANNED_USER_ID);
             if (userId != null) {
-               new ViewModelProvider(this).get(RegisterViewModel.class).loadChild(userId);
+                new ViewModelProvider(this).get(RegisterViewModel.class).loadChild(userId);
+            } else {
+                Toast.makeText(this, R.string.not_valid_qr, Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -32,7 +32,7 @@ public class RegisterViewModel extends ViewModel {
     private MutableLiveData<Integer> halfHours;
     private MutableLiveData<LocalDateTime> cutOff;
     private MutableLiveData<PartOfDay> partOfDay;
-    private APIService api;
+    private final APIService api;
     private MutableLiveData<ApiCallState> registrationState;
     private Map<Integer, String> strings;
     private final DateTimeFormatter dateTimeFormatter;
@@ -120,7 +120,7 @@ public class RegisterViewModel extends ViewModel {
         registrationState.setValue(ApiCallState.BUSY);
         Registration registration = new Registration();
         registration.setChildId(child.getValue().getId());
-        registration.setHalfHours(halfHours.getValue());
+        registration.setHalfHours(halfHours.getValue() != null ? halfHours.getValue() : 0);
         registration.setRealHalfHours(calculateHalfHours());
         registration.setRegistrationTime(LocalDateTime.now());
         registration.setPartOfDay(getPartOfDay().getValue());

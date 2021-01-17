@@ -73,6 +73,10 @@ dependencies {
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
 
+    //Logging ACRA
+    def acraVersion = '5.7.0'
+    implementation "ch.acra:acra-mail:$acraVersion"
+
     // CameraX
     def camerax_version = "1.0.0-beta10"
     implementation "androidx.camera:camera-core:${camerax_version}"

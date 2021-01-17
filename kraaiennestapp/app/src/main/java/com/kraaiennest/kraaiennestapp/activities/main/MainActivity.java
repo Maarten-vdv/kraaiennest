@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+       // Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler("Main"));
+
         // Make sure this is before calling super.onCreate
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
@@ -41,10 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        scriptId = sharedPreferences.getString("scriptId", "");
         sharedPreferences.registerOnSharedPreferenceChangeListener((c, key) -> {
             scriptId = c.getString("scriptId", "");
+            model.loadExtra(scriptId);
         });
-        scriptId = sharedPreferences.getString("scriptId", "");
 
         model = new ViewModelProvider(this).get(MainViewModel.class);
         model.loadExtra(scriptId);
@@ -97,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         return selfPermission == PackageManager.PERMISSION_GRANTED;
     }
 
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (isCameraPermissionGranted()) {

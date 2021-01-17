@@ -18,7 +18,6 @@ public class SortOptionsFragment extends DialogFragment {
 
     SortDialogListener listener;
 
-    // Override the Fragment.onAttach() method to instantiate the SortDialogListener listener;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

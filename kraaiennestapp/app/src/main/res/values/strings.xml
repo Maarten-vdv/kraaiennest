@@ -46,4 +46,7 @@
     <string name="title_activity_register">Registratie</string>
     <string name="action_refresh">Vernieuw</string>
     <string name="no_presences_available">Geen aanwezigheden gevonden</string>
+    <string name="not_valid_qr">Geen geldige opvang QR-code</string>
+    <string name="crach_toast">App crach report is verstuurd.</string>
+    <string name="app_crach_subject">Opvang app crach</string>
 </resources>

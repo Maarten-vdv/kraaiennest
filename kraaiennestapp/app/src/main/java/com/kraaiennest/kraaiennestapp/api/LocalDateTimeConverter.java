@@ -7,12 +7,15 @@ import java.time.LocalDateTime;
 
 public class LocalDateTimeConverter implements JsonDeserializer<LocalDateTime>, JsonSerializer<LocalDateTime> {
     @Override
-    public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
         // Timestamp format
         // "2012-06-11T20:06:10Z" format
-        LocalDateTime time = LocalDateTime.parse(json.getAsString());
 
-        return time;
+        try {
+            return LocalDateTime.parse(json.getAsString());
+        } catch (Exception exception) {
+            return null;
+        }
     }
 
     /**

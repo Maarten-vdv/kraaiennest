@@ -20,7 +20,7 @@ public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
 
     public QrCodeAnalyzer() {
         reader = new MultiFormatReader();
-        Map<DecodeHintType, Object> hints = new HashMap<>();
+        Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
         hints.put(DecodeHintType.POSSIBLE_FORMATS, Collections.singletonList(BarcodeFormat.QR_CODE));
         reader.setHints(hints);
     }
@@ -56,8 +56,8 @@ public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
            Result result = reader.decode(binaryBitmap);
             onQrCodesDetected(result);
         } catch (NotFoundException e) {
+            // do nothing
         } finally {
-
             image.close();
         }
     }

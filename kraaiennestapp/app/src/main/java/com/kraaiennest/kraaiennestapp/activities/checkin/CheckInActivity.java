@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import com.kraaiennest.kraaiennestapp.R;
+import com.kraaiennest.kraaiennestapp.activities.main.ExceptionHandler;
 import com.kraaiennest.kraaiennestapp.databinding.ActivityCheckInBinding;
 import com.kraaiennest.kraaiennestapp.activities.register.ApiCallState;
 import com.kraaiennest.kraaiennestapp.activities.scan.ScanActivity;
@@ -25,14 +26,15 @@ import static com.kraaiennest.kraaiennestapp.activities.scan.ScanActivity.SCANNE
 public class CheckInActivity extends AppCompatActivity {
 
     public static final int CHECK_IN_SCAN_REQUEST = 1;
-
-    private ActivityCheckInBinding binding;
     private CheckInViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler("CheckIn"));
+
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_check_in);
+
+        ActivityCheckInBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_check_in);
         binding.setLifecycleOwner(this);
         View view = binding.getRoot();
         setContentView(view);
@@ -85,8 +87,11 @@ public class CheckInActivity extends AppCompatActivity {
         if (requestCode == CHECK_IN_SCAN_REQUEST && resultCode == RESULT_OK) {
             String userId = data.getStringExtra(SCANNED_USER_ID);
             if (userId != null) {
-                CheckInViewModel model = new ViewModelProvider(this).get(CheckInViewModel.class);
-                model.loadChild(userId);
+                CheckInViewModel viewModel = new ViewModelProvider(this).get(CheckInViewModel.class);
+                viewModel.loadChild(userId);
+            } else {
+                Toast.makeText(this, R.string.not_valid_qr, Toast.LENGTH_SHORT).show();
+
             }
         }
     }

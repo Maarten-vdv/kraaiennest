@@ -28,7 +28,6 @@ public class PresenceFragment extends Fragment {
 
     private PresenceViewModel model;
     private PresenceRecyclerViewAdapter presenceAdapter;
-    private String scriptId;
     private List<SwipeRefreshLayout> swipeContainers = new ArrayList<>();
 
     /**
@@ -46,7 +45,7 @@ public class PresenceFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(PresenceViewModel.class);
 
-        scriptId = sharedPreferences.getString("scriptId", "");
+        String scriptId = sharedPreferences.getString("scriptId", "");
         Map<Integer, String> strings = new HashMap<>();
         strings.put(R.string.error_load_presence, getString(R.string.error_load_presence));
         model.loadExtra(scriptId, strings);
@@ -85,12 +84,7 @@ public class PresenceFragment extends Fragment {
     private void initSwipeContainer(SwipeRefreshLayout swipeContainer) {
         swipeContainer.setRefreshing(true);
         // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(() -> {
-            // Your code to refresh the list here.
-            // Make sure you call swipeContainer.setRefreshing(false)
-            // once the network request has completed successfully.
-            model.refreshPresences();
-        });
+        swipeContainer.setOnRefreshListener(() -> model.refreshPresences());
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,

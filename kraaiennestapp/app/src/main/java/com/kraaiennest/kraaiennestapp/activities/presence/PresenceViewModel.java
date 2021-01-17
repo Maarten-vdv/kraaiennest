@@ -71,7 +71,7 @@ public class PresenceViewModel extends ViewModel {
     }
 
     public void setSortOrder(PresenceSortOrder sortOrder) {
-        this.sortOrder = this.sortOrder;
+        this.sortOrder = sortOrder;
         List<Presence> value = this.presences.getValue();
         if (value != null) {
             value.sort(new PresenceComparator(sortOrder));

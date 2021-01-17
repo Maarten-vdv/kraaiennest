@@ -6,6 +6,7 @@ import android.net.UrlQuerySanitizer;
 import android.os.Bundle;
 import android.util.Size;
 import android.view.Surface;
+import android.webkit.URLUtil;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
@@ -38,13 +39,18 @@ public class ScanActivity extends AppCompatActivity {
         analyzer.register(result -> {
             if (!found) {
                 String url = result.getText();
-                String userId = new UrlQuerySanitizer(url).getValue("userId");
+                String userId = null;
+
+                if (URLUtil.isValidUrl(url)) {
+                    userId = new UrlQuerySanitizer(url).getValue(SCANNED_USER_ID);
+                }
+
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra(SCANNED_USER_ID, userId);
                 setResult(Activity.RESULT_OK, resultIntent);
-                found = true;
-                finish();
             }
+            found = true;
+            finish();
         });
 
         startCamera();
@@ -68,7 +74,6 @@ public class ScanActivity extends AppCompatActivity {
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future
                 // This should never be reached
-                e.printStackTrace();
             }
         }, ContextCompat.getMainExecutor(this));
     }
@@ -85,7 +90,7 @@ public class ScanActivity extends AppCompatActivity {
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
 
-        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+        preview.setSurfaceProvider(previewView != null ? previewView.getSurfaceProvider() : null);
 
         ImageAnalysis imageAnalysis =
                 new ImageAnalysis.Builder()

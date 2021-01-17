@@ -27,6 +27,7 @@ public class MyTextClock extends TextClock {
         try {
             super.onAttachedToWindow();
         } catch(Exception e)  {
+            // fix rendering issue
         }
     }
 

@@ -16,6 +16,8 @@ import com.kraaiennest.kraaiennestapp.model.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 public class PresenceRecyclerViewAdapter extends RecyclerView.Adapter<PresenceRecyclerViewAdapter.ViewHolder> {
 
     private final List<Presence> data;
@@ -52,9 +54,8 @@ public class PresenceRecyclerViewAdapter extends RecyclerView.Adapter<PresenceRe
     private TextView createTimestampView(Context context, SimpleDateFormat dateFormat, com.kraaiennest.kraaiennestapp.model.Timestamp t) {
         TextView view = new TextView(context);
         view.setText(dateFormat.format(t.getRegisteredAt()));
-      //  view.setTextColor(ContextCompat.getColor(context, R.color.titleTextColor));
         view.setTextSize(18);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         params.setMargins(20,0,20,0);
         view.setLayoutParams(params);
         return view;
