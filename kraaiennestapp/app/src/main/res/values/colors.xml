@@ -12,7 +12,8 @@
     <color name="secondaryTextColor">#000000</color>
     <color name="cancelColor">#E53935</color>
     <color name="departedColor">#D3766F</color>
-    <color name="register_btn_color">#F79922</color>
+    <color name="register_btn_color_O">#039BE5</color>
+    <color name="register_btn_color_A">#F79922</color>
     <color name="check_in_btn_color">#5133AB</color>
     <color name="presence_btn_color">#AC193D</color>
 </resources>

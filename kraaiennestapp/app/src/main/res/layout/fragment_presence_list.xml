@@ -50,7 +50,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
-                android:name="com.kraaiennest.kraaiennestapp.presence.PresenceFragment"
+                android:name="com.kraaiennest.opvang.presence.PresenceFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/appBackgroundColor"

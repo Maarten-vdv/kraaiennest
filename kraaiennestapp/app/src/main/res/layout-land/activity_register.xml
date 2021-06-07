@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="com.kraaiennest.kraaiennestapp.activities.register.RegisterViewModel" />
+            type="com.kraaiennest.opvang.activities.register.RegisterViewModel" />
     </data>
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="@android:color/white"
-            android:background="@color/register_btn_color"
+            android:background="@color/register_btn_color_A"
             android:theme="@style/AppTheme.AppBarOverlay" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,7 +74,7 @@
                     app:layout_constraintVertical_chainStyle="spread"
                     app:layout_constraintVertical_weight="1" />
 
-                <com.kraaiennest.kraaiennestapp.widgets.MyTextClock
+                <com.kraaiennest.opvang.widgets.MyTextClock
                     android:id="@+id/clock1"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -118,7 +118,7 @@
                     app:layout_constraintStart_toEndOf="@id/register_child_name"
                     app:layout_constraintTop_toBottomOf="@id/clock1" />
 
-                <com.kraaiennest.kraaiennestapp.widgets.MyTextClock
+                <com.kraaiennest.opvang.widgets.MyTextClock
                     android:id="@+id/clock2"
                     android:layout_width="0dp"
                     android:layout_height="0dp"

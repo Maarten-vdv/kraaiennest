@@ -4,15 +4,18 @@
     <string name="action_settings">Instellingen</string>
     <string name="startBtn">Start</string>
     <string name="presenceBtn">Presence</string>
-    <string name="action_register">Registreer</string>
+    <string name="action_register_O">Aankomst ochtend</string>
+    <string name="action_register_A">Vertrek avond</string>
     <string name="action_presence">Aanwezigheden</string>
-    <string name="check_in_btn">Check in</string>
-    <string name="register_btn">Registreer</string>
+    <string name="register_btn_O">Aankomst ochtend</string>
+    <string name="check_in_btn">Aankomst avond</string>
+    <string name="register_btn_A">Vertrek avond</string>
     <string name="presence_btn">Aanwezigheden</string>
-    <string name="title_activity_check_in">Check in</string>
+    <string name="title_activity_check_in">Aankomst avond</string>
 
+    <string name="register_btn">Registreer</string>
     <string name="scan_btn">Scan</string>
-    <string name="do_check_in_btn">Check in</string>
+    <string name="do_check_in_btn">Registreer</string>
     <string name="back_btn">Terug</string>
     <string name="lower">-</string>
     <string name="higher">+</string>
@@ -49,4 +52,7 @@
     <string name="not_valid_qr">Geen geldige opvang QR-code</string>
     <string name="crach_toast">App crach report is verstuurd.</string>
     <string name="app_crach_subject">Opvang app crach</string>
+    <string name="pin_btn">PIN</string>
+    <string name="not_valid_pin">Ongeldige PIN</string>
+    <string name="child_pin">kind PIN code</string>
 </resources>
