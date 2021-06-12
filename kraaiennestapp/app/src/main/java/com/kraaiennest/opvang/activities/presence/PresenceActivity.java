@@ -54,6 +54,8 @@ public class PresenceActivity extends AppCompatActivity implements SortOptionsFr
             return true;
         } else if (item.getItemId() == R.id.action_refresh) {
             model.refreshPresences();
+        } else if (item.getItemId() == R.id.action_filter) {
+            model.refreshPresences();
         }
 
         return super.onOptionsItemSelected(item);

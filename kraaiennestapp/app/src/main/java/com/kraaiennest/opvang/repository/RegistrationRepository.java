@@ -29,7 +29,7 @@ public class RegistrationRepository {
                 .whereLessThan("registrationTime", date.plusDays(1).toEpochDay());
     }
 
-    public Query getChecksByDateQuery(LocalDate date) {
+    public Query getCheckInsByDateQuery(LocalDate date) {
         return checkIns
                 .whereGreaterThanOrEqualTo("checkInTime", date.toEpochDay())
                 .whereLessThan("checkInTime", date.plusDays(1).toEpochDay());

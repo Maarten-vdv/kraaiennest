@@ -38,7 +38,7 @@ public class PresenceViewModel extends ViewModel {
     }
 
     public Query getCheckIns() {
-        return registrationRepository.getChecksByDateQuery(LocalDate.now());
+        return registrationRepository.getCheckInsByDateQuery(LocalDate.now());
     }
 
     public MutableLiveData<String> getErrorMessage() {

@@ -12,17 +12,11 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.databinding.FragmentPresenceListBinding;
-import com.kraaiennest.opvang.model.Registration;
 import dagger.hilt.android.AndroidEntryPoint;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,19 +26,6 @@ import java.util.Map;
 public class PresenceFragment extends Fragment {
 
     private PresenceViewModel model;
-    private PresenceRecyclerAdapter presenceRecyclerAdapter;
-    private List<SwipeRefreshLayout> swipeContainers = new ArrayList<>();
-    private FragmentPresenceListBinding binding;
-    private Query mQuery;
-    private FirebaseFirestore mFirestore;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public PresenceFragment() {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +44,7 @@ public class PresenceFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentPresenceListBinding.inflate(inflater, container, false);
+        com.kraaiennest.opvang.databinding.FragmentPresenceListBinding binding = FragmentPresenceListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -72,20 +53,7 @@ public class PresenceFragment extends Fragment {
 //        model.isEmpty().observe(getViewLifecycleOwner(), empty ->
 //                view.findViewById(R.id.swipeContainer1).setVisibility(empty ? View.VISIBLE : View.GONE));
 
-        // Firestore
-        mFirestore = FirebaseFirestore.getInstance();
-
-        // Get ${LIMIT} restaurants
-        mQuery = mFirestore.collection("registrations")
-                .orderBy("registrationTime", Query.Direction.DESCENDING);
-
-        FirestoreRecyclerOptions<Registration> options = new FirestoreRecyclerOptions.Builder<Registration>()
-                .setQuery(mQuery, Registration.class)
-                .setLifecycleOwner(getViewLifecycleOwner())
-                .build();
-
-
-        presenceRecyclerAdapter = new PresenceRecyclerAdapter(this, model.getRegistrations(), model.getChildren(), model.getCheckIns());
+        PresenceRecyclerAdapter presenceRecyclerAdapter = new PresenceRecyclerAdapter(this, model.getRegistrations(), model.getChildren(), model.getCheckIns());
 
         RecyclerView recycleView = view.findViewById(R.id.list);
         // Set the adapter
@@ -107,7 +75,5 @@ public class PresenceFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
-        swipeContainers.add(swipeContainer);
     }
 }

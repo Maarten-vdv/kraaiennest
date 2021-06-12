@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "opvang-kgov": {
+      "hosting": {
+        "opvang": [
+          "opvang-kgov"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "prod": "opvang-kgov"
+  }
+}

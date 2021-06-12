@@ -25,6 +25,7 @@ import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.model.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,7 +154,7 @@ public class PresenceRecyclerAdapter extends RecyclerView.Adapter<PresenceRecycl
         holder.childNameView.setText(presence.getChild().getFirstName() + " " + presence.getChild().getLastName());
         holder.childGroupView.setText(presence.getChild().getGroup());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        DateFormat dateFormat = DateFormat.getTimeInstance();
         Context context = holder.childNameView.getContext();
         holder.timestampsView.removeAllViews();
         presence.getRegistrationTimes().forEach(t -> holder.timestampsView.addView(createTimestampView(context, dateFormat, t)));
@@ -169,7 +170,7 @@ public class PresenceRecyclerAdapter extends RecyclerView.Adapter<PresenceRecycl
         return new PresenceViewHolder(view);
     }
 
-    private TextView createTimestampView(Context context, SimpleDateFormat dateFormat, Timestamp t) {
+    private TextView createTimestampView(Context context, DateFormat dateFormat, Timestamp t) {
         TextView view = new TextView(context);
         view.setText(dateFormat.format(t.toDate()));
         view.setTextSize(18);
@@ -179,12 +180,13 @@ public class PresenceRecyclerAdapter extends RecyclerView.Adapter<PresenceRecycl
         return view;
     }
 
-    public class PresenceViewHolder extends RecyclerView.ViewHolder {
+    public static class PresenceViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView childNameView;
         public final TextView childGroupView;
         public final FlexboxLayout timestampsView;
         public final LinearLayout presenseItemLayout;
+
         public Presence item;
 
         public PresenceViewHolder(View view) {
