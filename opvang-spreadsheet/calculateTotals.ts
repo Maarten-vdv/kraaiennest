@@ -1,19 +1,22 @@
-import {Registration} from "./models";
-import {getTotalsSheet, loadRegistrations} from "./sheet";
+import {Child, Registration} from "./models";
+import {loadRegistrations} from "./sheet";
 
-export function calculateTotals(month: number) {
-	const registrations: { [key: number]: Registration[] } = loadRegistrations(month);
-	const sheet = getTotalsSheet(month);
+export function calculateTotals(children: Record<string, Child>) {
+	const registrations: { [key: number]: Registration[] } = loadRegistrations();
+	const sheet: Sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("berekende uren");
 	sheet.clear();
 	sheet.appendRow(["Kind", "O", "A"])
 
 	Object.keys(registrations)
 		.sort((one, two) => (one > two ? -1 : 1))
 		.forEach(childId => {
-			let morning = registrations[childId].reduce((acc, v) => acc + getHalfHours(v, "O"), 0);
-			let evening = registrations[childId].reduce((acc, v) => acc + getHalfHours(v, "A"), 0);
-			sheet.appendRow([childId, morning, evening])
+			const morning = registrations[childId].reduce((acc, v) => acc + getHalfHours(v, "O"), 0);
+			const evening = registrations[childId].reduce((acc, v) => acc + getHalfHours(v, "A"), 0);
+			const child = children[childId];
+			sheet.appendRow([childId, child.lastName + " " + child.firstName, morning, evening])
 		});
+
+	sheet.autoResizeColumn(1);
 }
 
 function getHalfHours(reg: Registration, partOfDay: string) {

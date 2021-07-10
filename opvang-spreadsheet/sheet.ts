@@ -1,8 +1,8 @@
-import {Child, Parent, Registration, Total} from "./models";
+import {Child, Parent, Registration, Settings, Total} from "./models";
 import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 import Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 
-export function loadRegistrations(month: number): Record<number, Registration[]> {
+export function loadRegistrations(): Record<number, Registration[]> {
 	const dayjs = Dayjs.load();
 
 	const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -24,7 +24,8 @@ export function loadRegistrations(month: number): Record<number, Registration[]>
 			halfHours: row[4],
 			calcHalfHours: row[5]
 		}
-		if (dayjs(registration.date).month() + 1 === month) {
+		// ignore registrations on same day after the first one
+		if (!registrations[childId].find(reg => reg.date === registration.date)) {
 			registrations[childId].push(registration);
 		}
 
@@ -32,53 +33,73 @@ export function loadRegistrations(month: number): Record<number, Registration[]>
 	return registrations;
 }
 
-export function loadChildren(): Child[] {
-	return [];
+export function loadChildren(data: Spreadsheet): Child[] {
+	const sheet: Sheet = data.getSheetByName("kinderen");
+
+	const rows: any[] = sheet.getDataRange().getValues();
+	rows.shift(); // remove header row
+
+	return rows.map(row => ({
+		childId: row[0],
+		lastName: row[2],
+		firstName: row[3],
+		group: row[4]
+	}));
 }
 
 export function loadTotals(month: number): Total[] {
 	const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 	const sheet = spreadsheet.getSheetByName(month + "");
 	const rows: any[] = sheet.getDataRange().getValues();
+	rows.shift(); // remove header row;
 	return rows.map(r => ({childId: r[0], morning: r[1], evening: r[2]}));
 }
 
-export function loadParents(children: Child[]): Record<number, Parent> {
+export function loadParents(data: Spreadsheet, children: Child[]): Record<number, Parent> {
 	const childLookup: Record<string, Child> = children.reduce((acc, child) => {
 		acc[child.lastName + " " + child.firstName] = child;
 		return acc;
 	}, {})
 
-	let files = DriveApp.searchFiles('title contains "Gegevens"');
-	if (!files.hasNext()) {
-		return {};
-	}
-	const spreadsheet: Spreadsheet = SpreadsheetApp.open(files.next());
-	const sheet: Sheet = spreadsheet.getSheetByName("ouders");
+	const sheet: Sheet = data.getSheetByName("ouders");
 
 	const rows: any[] = sheet.getDataRange().getValues();
+	rows.shift(); // remove header row
 	const parents: Record<string, Parent> = {};
 	rows.forEach(row => {
-		const childName = row[0];
+		const childName = row[0].trim();
 		const child = childLookup[childName];
-
-		const parent: Parent = {
-			childName: childName,
-			group: child.group,
-			quoteName: row[2] === "" ? childName : row[2],
-			streetAndNr: row[3],
-			postalCode: row[4],
-			commune: row[5],
-			email1: row[8],
-			email2: row[9]
-
+		if (child) {
+			parents[child.childId] = {
+				childName: childName,
+				group: child.group,
+				quoteName: row[2] === "" ? childName : row[2],
+				streetAndNr: row[3],
+				postalCode: row[4],
+				commune: row[5],
+				email1: row[8],
+				email2: row[9]
+			};
 		}
-		parent[child.childId] = parent;
 	});
 
 	return parents;
 }
 
-export function getTotalsSheet(month: number): Sheet {
-	return SpreadsheetApp.getActiveSpreadsheet().getSheetByName(month + "");
+export function loadSettings(data: Spreadsheet, OGM: Spreadsheet, month: number): Settings {
+	const sheet: Sheet = data.getSheetByName("vaste gegevens");
+	const settings: Settings = sheet.getDataRange().getValues().reduce((acc, row) => {
+		acc[Number.parseInt(row[0])] = row[1];
+		return acc;
+	}, {}) as Settings;
+
+
+	let rows = OGM.getSheets()[month].getDataRange().getValues();
+	rows.shift(); // remove header row
+	settings.OGM = rows.reduce((acc, row) => {
+		acc[row[0]] = row[10];
+		return acc;
+	}, {});
+	return settings;
 }
+

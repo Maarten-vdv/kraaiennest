@@ -1,4 +1,7 @@
+import FileIterator = GoogleAppsScript.Drive.FileIterator;
+import Folder = GoogleAppsScript.Drive.Folder;
 import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
+import Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 import HTTPResponse = GoogleAppsScript.URL_Fetch.HTTPResponse;
 
 function saveFactuurToDrive(blob: GoogleAppsScript.Base.Blob, name: string, path: string): void {
@@ -10,7 +13,7 @@ function saveSheetToDrive(url: string, sheet: Sheet, fileName: string): void {
 	DriveApp.createFile(blob).moveTo(DriveApp.getFoldersByName("facturen").next());
 }
 
-function getDriveFolderFromPath(path) {
+function getDriveFolderFromPath(path): Folder {
 	return (path || "/").split("/").reduce(function (prev, current) {
 		if (prev && current) {
 			const folders = prev.getFoldersByName(current);
@@ -19,6 +22,18 @@ function getDriveFolderFromPath(path) {
 			return current ? null : prev;
 		}
 	}, DriveApp.getRootFolder());
+}
+
+function loadSpreadSheetByName(folder: Folder, name: string): Spreadsheet {
+	const files: FileIterator = folder.getFilesByName(name);
+	if (!files.hasNext()) {
+		throw new Error("Could not find spreadsheet " + name);
+	}
+	return SpreadsheetApp.open(files.next());
+}
+
+function sendMail(): void {
+
 }
 
 function getAsBlob(url, sheet, range): GoogleAppsScript.Base.Blob {

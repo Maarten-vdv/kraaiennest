@@ -30,3 +30,11 @@ export interface Total {
 	morning: number;
 	evening: number;
 }
+
+export interface Settings {
+	OGM: Record<number, string>;
+	bic: string;
+	accountNr: string;
+	rate: number;
+	dueDateRelative: number;
+}
