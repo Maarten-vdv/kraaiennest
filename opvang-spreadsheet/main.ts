@@ -1,8 +1,10 @@
-import {Dayjs} from "dayjs";
 import {calculateTotals} from "./calculateTotals";
-import {Child, Parent, Registration, Settings, Total} from "./models";
-import {loadChildren, loadParents, loadRegistrations, loadSettings, loadTotals} from "./sheet";
-import File = GoogleAppsScript.Drive.File;
+import {sendMail} from "./mail";
+import {Child, Parent, Registration, Supervisor, Total} from "./models";
+import {generateQuote} from "./quote";
+import {loadChildren, loadParents, loadRegistrations, loadSettings, loadSupervisors, loadTotals, markQuoteGenerated} from "./sheet";
+import {getSchoolYear, loadDayjs} from "./util";
+import FileIterator = GoogleAppsScript.Drive.FileIterator;
 import Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 
 function onOpen() {
@@ -10,114 +12,88 @@ function onOpen() {
 	// Or DocumentApp or FormApp.
 	ui.createMenu('Opvang')
 		.addItem('Bereken totalen', 'calculateHours')
-		.addItem('Exporteer facturen', 'createQuotes')
+		.addItem('Maak facturen', 'createQuotes')
+		.addItem('Mail facturen', 'sendMails')
 		.addToUi();
 }
 
-function calculateHours() {
-	let name = SpreadsheetApp.getActiveSpreadsheet().getName();
-	if(!name.startsWith("registraties-"))
-	{
-		return
+function calculateHours(activeSpreadsheet: Spreadsheet) {
+	loadDayjs();
+
+	let name = activeSpreadsheet.getName();
+	if (!name.startsWith("registraties-")) {
+		return;
 	}
 	const month = Number.parseInt(name.split("-")[1]);
-	const ui = SpreadsheetApp.getUi();
-	ui.alert(getSchoolYear(month))
 	const yearFolder: Folder = getDriveFolderFromPath("Opvang/" + getSchoolYear(month));
 	const data: Spreadsheet = loadSpreadSheetByName(yearFolder, "Gegevens")
-	const children: Record<string, Child> = loadChildren(data).reduce((acc: Record<string, Child>, child: Child) => {
+	let childArray: Child[] = loadChildren(data);
+	const children: Record<string, Child> = childArray.reduce((acc: Record<string, Child>, child: Child) => {
 		acc[child.childId] = child;
 		return acc;
 	}, {});
-	calculateTotals(children);
+	const parents: Record<number, Parent> = loadParents(data, childArray);
+	const supervisors: Record<number, Supervisor> = loadSupervisors(data);
+	calculateTotals(activeSpreadsheet, children, parents, supervisors);
 }
 
-function createQuotes(): void {
-	const ui = SpreadsheetApp.getUi(); // Same variations.
-	const result = ui.prompt(
-		'Berekenen voor maand',
-		'Geef maand nummer:',
-		ui.ButtonSet.OK_CANCEL);
-	const month = Number(result.getResponseText());
+function createQuotes(activeSpreadsheet: Spreadsheet): void {
+	loadDayjs();
+
+	let name = activeSpreadsheet.getName();
+	if (!name.startsWith("registraties-")) {
+		return;
+	}
+	const month = Number.parseInt(name.split("-")[1]);
 	const opvangFolder: Folder = getDriveFolderFromPath("Opvang");
 	const yearFolder: Folder = getDriveFolderFromPath("Opvang/" + getSchoolYear(month));
 
 	const data: Spreadsheet = loadSpreadSheetByName(yearFolder, "Gegevens")
 	const OGM: Spreadsheet = loadSpreadSheetByName(opvangFolder, "OGM");
 
-	const totals: Total[] = loadTotals(month);
-	const registrations: Record<number, Registration[]> = loadRegistrations(month);
+	const totals: Total[] = loadTotals(activeSpreadsheet);
+	const registrations: Record<number, Registration[]> = loadRegistrations(SpreadsheetApp.getActiveSpreadsheet());
 	const children: Child[] = loadChildren(data);
 	const parents: Record<number, Parent> = loadParents(data, children);
 	const settings = loadSettings(data, OGM, month);
 
-	//totals.forEach(total => fillQuote(total, registrations[total.childId], parents[total.childId]))
-	fillQuote(totals[0], registrations[totals[0].childId], parents[totals[0].childId], settings, month);
+	const ui = SpreadsheetApp.getUi();
+	ui.alert(`Het script gaat nu een batch van ${settings.batchSize || 50} facturen proberen aan te maken in Goolge drive map ${"Opvang/" + getSchoolYear(month) + "/Facturen/" + month}`);
+
+	const totalsToProcess = totals.filter(total => !total.quoteName).slice(0, settings.batchSize || 50);
+	totalsToProcess.forEach(total => {
+		const fileName: string = generateQuote(total, registrations[total.childId], parents[total.childId], settings, month);
+		markQuoteGenerated(SpreadsheetApp.getActiveSpreadsheet(), total, fileName);
+	});
 }
 
-export function fillQuote(total: Total, registrations: Registration[], parent: Parent, settings: Settings, month: number) {
-	const quoteTemplate: File = DriveApp.getFilesByName("factuur-template.html").next();
-	const dayjs = Dayjs.load();
+function sendMails(activeSpreadsheet: Spreadsheet) {
+	loadDayjs();
 
-	let quoteHtml: string = quoteTemplate.getBlob().getDataAsString();
-
-	quoteHtml = quoteHtml
-		.replace("{{naam}}", parent.quoteName || parent.childName)
-		.replace("{{adres}}", parent.streetAndNr)
-		.replace("{{postcode}}", parent.postalCode)
-		.replace("{{gemeente}}", parent.commune)
-		.replace("{{factuurNaam}}", "de factuur naam")
-		.replace("{{factuurDatum}}", dayjs().format("DD-MM-YYYY"))
-		.replace("{{betreft}}", parent.quoteName || parent.childName)
-		.replace("{{betalenVoor}}", dayjs().add(dayjs.duration({'days': settings.dueDateRelative})).format("DD-MM-YYYY"));
-
-	const eveningCost = total.evening * settings.rate;
-	const morningCost = total.morning * settings.rate;
-
-	quoteHtml = quoteHtml
-		.replace("{{maand}}", dayjs().month(month).format("MMMM"))
-		.replace("{{halveUrenOchtend}}", total.morning + "")
-		.replace("{{halveUrenAvond}}", total.evening + "")
-		.replace(/{{tarief}}/g, (settings.rate).toLocaleString(undefined, {minimumFractionDigits: 2}))
-		.replace("{{totaalOchtend}}", morningCost.toLocaleString(undefined))
-		.replace("{{totaalAvond}}", eveningCost.toLocaleString(undefined))
-		.replace(/{{totaal}}/g, (eveningCost + morningCost).toLocaleString(undefined));
-
-	quoteHtml = quoteHtml
-		.replace("{{rekening}}", settings.accountNr)
-		.replace("{{bic}}", settings.bic)
-		.replace("{{OGM}}", settings.OGM[total.childId]);
-
-	quoteHtml = quoteHtml.replace("{{detail}}", getHtmlDetails(registrations));
-	const blob: GoogleAppsScript.Base.Blob = Utilities.newBlob(quoteHtml, "text/html", "text.html");
-	const pdf: GoogleAppsScript.Base.Blob = blob.getAs("application/pdf");
-
-	saveFactuurToDrive(pdf, "test.pdf", "Opvang/Facturen");
-}
-
-function getHtmlDetails(registrations: Registration[]): string {
-	let result: string = "";
-	const dayjs = Dayjs.load();
-
-	registrations
-		.filter(reg => reg.halfHours > 0 || reg.calcHalfHours > 0)
-		.forEach(reg => {
-			if (reg.partOfDay === "O") {
-				result += `<tr><td>${dayjs(reg.date).format("DD-MM-YYYY")}</td><td>${dayjs(reg.time).format("HH:mm")}</td><td>${dayjs().hour(8).minute(0).format("HH:mm")}</td><td>${reg.halfHours === 0 ? reg.calcHalfHours : reg.halfHours}</td></tr>`
-			} else {
-				result += `<tr><td>${dayjs(reg.date).format("DD-MM-YYYY")}</td><td>${dayjs().hour(15).minute(45).format("HH:mm")}</td><td>${dayjs(reg.time).format("HH:mm")}</td><td>${reg.halfHours === 0 ? reg.calcHalfHours : reg.halfHours}</td></tr>`
-			}
-		})
-	return result;
-}
-
-function getSchoolYear(month: number): string {
-	const dayjs = Dayjs.load();
-	const year = dayjs().year();
-	if (month < 6) {
-		return (year - 1) + "-" + year;
-	} else {
-		return year + "-" + (year + 1);
+	let name = activeSpreadsheet.getName();
+	if (!name.startsWith("registraties-")) {
+		return
 	}
-}
+	const month = Number.parseInt(name.split("-")[1]);
+	const yearFolder: Folder = getDriveFolderFromPath("Opvang/" + getSchoolYear(month));
 
+	const data: Spreadsheet = loadSpreadSheetByName(yearFolder, "Gegevens")
+	const settings = loadSettings(data, null, month);
+	const quoteFolder: Folder = getDriveFolderFromPath(`Opvang/${getSchoolYear(month)}/facturen/${month}`);
+
+	const ui = SpreadsheetApp.getUi();
+	ui.alert(`Het script gaat nu een batch van ${settings.batchSize || 50} facturen proberen te versturen`);
+
+	const children: Child[] = loadChildren(data);
+	const parents: Record<number, Parent> = loadParents(data, children);
+	const totals: Total[] = loadTotals(activeSpreadsheet);
+	const totalsToProcess = totals.filter(total => !!total.quoteName).slice(0, settings.batchSize || 50);
+
+	totalsToProcess.forEach(total => {
+		let fileIterator: FileIterator = quoteFolder.getFilesByName(total.quoteName);
+		if (!!parents[total.childId] && fileIterator.hasNext()) {
+			sendMail(fileIterator.next(), parents[total.childId], month);
+		}
+
+	});
+}

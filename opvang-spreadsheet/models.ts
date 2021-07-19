@@ -16,6 +16,7 @@ export interface Parent {
 	commune: string;
 	email1: string;
 	email2: string;
+	isTeacher: boolean;
 }
 
 export interface Child {
@@ -29,6 +30,15 @@ export interface Total {
 	childId: number;
 	morning: number;
 	evening: number;
+	quoteName: string;
+	mailed: boolean;
+	toPrint: boolean;
+	rowNr: number;
+}
+
+export interface Supervisor {
+	id: string;
+	name: string;
 }
 
 export interface Settings {
@@ -37,4 +47,6 @@ export interface Settings {
 	accountNr: string;
 	rate: number;
 	dueDateRelative: number;
+	supervisors: Record<number, Supervisor>;
+	batchSize: number;
 }

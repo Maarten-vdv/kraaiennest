@@ -1,16 +1,10 @@
 import FileIterator = GoogleAppsScript.Drive.FileIterator;
 import Folder = GoogleAppsScript.Drive.Folder;
-import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 import Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 import HTTPResponse = GoogleAppsScript.URL_Fetch.HTTPResponse;
 
 function saveFactuurToDrive(blob: GoogleAppsScript.Base.Blob, name: string, path: string): void {
 	DriveApp.createFile(blob).setName(name).moveTo(getDriveFolderFromPath(path));
-}
-
-function saveSheetToDrive(url: string, sheet: Sheet, fileName: string): void {
-	const blob: GoogleAppsScript.Base.Blob = getAsBlob(url, sheet, null).setName(fileName);
-	DriveApp.createFile(blob).moveTo(DriveApp.getFoldersByName("facturen").next());
 }
 
 function getDriveFolderFromPath(path): Folder {
