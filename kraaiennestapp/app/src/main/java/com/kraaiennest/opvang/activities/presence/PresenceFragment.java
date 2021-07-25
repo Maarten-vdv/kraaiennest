@@ -16,6 +16,7 @@ import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.databinding.FragmentPresenceListBinding;
 import dagger.hilt.android.AndroidEntryPoint;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,15 +31,11 @@ public class PresenceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-
         model = new ViewModelProvider(requireActivity()).get(PresenceViewModel.class);
 
-        String scriptId = sharedPreferences.getString("scriptId", "");
         Map<Integer, String> strings = new HashMap<>();
         strings.put(R.string.error_load_presence, getString(R.string.error_load_presence));
-        model.loadExtra(scriptId, strings);
+        model.loadExtra(strings);
     }
 
 
@@ -50,10 +47,13 @@ public class PresenceFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-//        model.isEmpty().observe(getViewLifecycleOwner(), empty ->
-//                view.findViewById(R.id.swipeContainer1).setVisibility(empty ? View.VISIBLE : View.GONE));
+        model.isEmpty().observe(getViewLifecycleOwner(), empty ->
+                view.findViewById(R.id.swipeContainer1).setVisibility(empty ? View.VISIBLE : View.GONE));
 
-        PresenceRecyclerAdapter presenceRecyclerAdapter = new PresenceRecyclerAdapter(this, model.getRegistrations(), model.getChildren(), model.getCheckIns());
+        PresenceRecyclerAdapter presenceRecyclerAdapter
+                = new PresenceRecyclerAdapter(Collections.emptyList());
+
+        model.getPresences().observe(this, presenceRecyclerAdapter::setData);
 
         RecyclerView recycleView = view.findViewById(R.id.list);
         // Set the adapter

@@ -24,6 +24,7 @@
     <string name="half_hours">halve uren</string>
     <string name="until">-</string>
     <string name="check_in_success">Check in geslaagd</string>
+    <string name="check_in_fail">Check in mislukt</string>
     <string name="title_activity_settings">Instellingen</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -56,4 +57,5 @@
     <string name="not_valid_pin">Ongeldige PIN</string>
     <string name="child_pin">kind PIN code</string>
     <string name="action_filter">Filter</string>
+    <string name="registration_failed">Registratie mislukt: %1$s</string>
 </resources>

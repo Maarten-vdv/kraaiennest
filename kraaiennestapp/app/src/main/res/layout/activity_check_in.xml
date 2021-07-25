@@ -103,10 +103,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/check_in_scan_btn"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/checkin_guideline"
-                    app:spinning_bar_color="#FFF"
                     app:rippleColor="@color/primaryLightColor"
-                    app:spinning_bar_padding="15dp"
-                    app:spinning_bar_width="4dp" />
+                    />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/check_in_scan_btn"
@@ -124,7 +122,7 @@
                     app:layout_constraintStart_toEndOf="@+id/check_in_btn"
                     app:layout_constraintTop_toBottomOf="@id/checkin_guideline" />
 
-                <com.kraaiennest.opvang.widget.ProgressButton
+                <com.kusu.loadingbutton.LoadingButton
                     android:id="@+id/check_in_btn"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -136,12 +134,14 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/checkin_guideline"
-                    app:spinning_bar_color="#FFF"
-                    app:spinning_bar_padding="15dp"
-                    app:spinning_bar_width="4dp"
                     app:enabled="true"
                     app:text="@string/do_check_in_btn"
-                    style="@style/Widget.ProgressButton.Primary" />
+                    style="@style/Widget.ProgressButton.Primary"
+                    app:lb_buttonColor="@color/primaryColor"
+                    app:lb_isShadowEnable="false"
+                    app:lb_isCircular="false"
+                    app:lb_loaderColor="@color/white"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

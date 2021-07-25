@@ -4,14 +4,16 @@ import com.google.firebase.Timestamp;
 import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
 
+import java.time.LocalDateTime;
+
 @Parcel
 public class CheckIn {
 
     @SerializedName("childId")
     public String childId;
 
-    @SerializedName("checkInTime")
-    public Timestamp checkInTime;
+    @SerializedName("time")
+    public LocalDateTime checkInTime;
 
     public String getChildId() {
         return childId;
@@ -21,11 +23,11 @@ public class CheckIn {
         this.childId = childId;
     }
 
-    public Timestamp getCheckInTime() {
+    public LocalDateTime getCheckInTime() {
         return checkInTime;
     }
 
-    public void setCheckInTime(Timestamp checkInTime) {
+    public void setCheckInTime(LocalDateTime checkInTime) {
         this.checkInTime = checkInTime;
     }
 }

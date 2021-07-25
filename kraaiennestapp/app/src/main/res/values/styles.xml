@@ -66,5 +66,13 @@
         <item name="backgroundTint">@color/color_states_materialbutton</item>
     </style>
 
+    <style name="MainButtonStyle.SpinnerButtonStyle">
+    </style>
+
+    <style name="SpinnerButtonStyle" parent="android:Widget.Holo.Spinner">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
     <color name="white">#FFFFFF</color>
 </resources>

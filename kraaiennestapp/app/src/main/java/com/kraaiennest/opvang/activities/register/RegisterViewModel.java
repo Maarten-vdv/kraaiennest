@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import com.google.firebase.Timestamp;
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.model.Child;
 import com.kraaiennest.opvang.model.PartOfDay;
@@ -15,9 +14,7 @@ import com.kraaiennest.opvang.repository.RegistrationRepository;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 
 import static java.text.MessageFormat.format;
@@ -26,7 +23,6 @@ public class RegisterViewModel extends ViewModel {
 
     private final RegistrationRepository repository;
     private final ChildRepository childRepository;
-    private List<Child> children;
     private MutableLiveData<Child> child;
     private MutableLiveData<Integer> halfHours;
     private MutableLiveData<LocalDateTime> cutOff;
@@ -34,6 +30,7 @@ public class RegisterViewModel extends ViewModel {
     private MutableLiveData<ApiCallState> registrationState;
     private Map<Integer, String> strings;
     private final DateTimeFormatter dateTimeFormatter;
+    private String errorMessage;
 
     @ViewModelInject
     public RegisterViewModel(RegistrationRepository registrationRepository, ChildRepository childRepository) {
@@ -42,7 +39,7 @@ public class RegisterViewModel extends ViewModel {
         this.dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     }
 
-    public void loadExtra( Map<Integer, String> strings) {
+    public void loadExtra(Map<Integer, String> strings) {
         this.strings = strings;
     }
 
@@ -117,24 +114,28 @@ public class RegisterViewModel extends ViewModel {
         registration.setChildId(child.getValue().getId());
         registration.setHalfHours(halfHours.getValue() != null ? halfHours.getValue() : 0);
         registration.setRealHalfHours(calculateHalfHours());
-        registration.setRegistrationTime(Timestamp.now());
+        registration.setRegistrationTime(LocalDateTime.now());
         registration.setPartOfDay(getPartOfDay().getValue());
 
         repository.createRegistration(registration)
-                .addOnFailureListener(e -> registrationState.setValue(ApiCallState.ERROR))
-                .addOnSuccessListener(documentReference -> {
-                    child.setValue(null);
-                    halfHours.setValue(null);
-                    registrationState.setValue(ApiCallState.SUCCESS);
+                .exceptionally(e -> {
+                    registrationState.postValue(ApiCallState.ERROR);
+                    errorMessage = e.getMessage();
+                    return null;
+                })
+                .thenRunAsync(() -> {
+                    child.postValue(null);
+                    halfHours.postValue(null);
+                    registrationState.postValue(ApiCallState.SUCCESS);
                 });
     }
 
     public void loadChildById(String id) {
-        childRepository.findById(id).addOnSuccessListener(c -> child.setValue(c));
+        childRepository.findById(id).thenAccept(c -> child.postValue(c));
     }
 
     public void loadChildByPIN(String pin) {
-        childRepository.findByPIN(pin).addOnSuccessListener(c -> child.setValue(c)).addOnFailureListener(f -> System.out.println(f));
+        childRepository.findByPIN(pin).thenAccept(c -> child.postValue(c)).exceptionally(f -> null);
     }
 
     public void addHalfHours(int i) {
@@ -149,6 +150,10 @@ public class RegisterViewModel extends ViewModel {
 
     public void registrationDone() {
         registrationState.setValue(ApiCallState.IDLE);
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }
 

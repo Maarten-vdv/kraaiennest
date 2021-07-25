@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         toolbar.setBackgroundColor(partOfDay.equals("A") ?
                 getResources().getColor(R.color.register_btn_color_A, getTheme())
                 : getResources().getColor(R.color.register_btn_color_O, getTheme()));
-        toolbar.setTitle(getText(partOfDay.equals("A") ?R.string.action_register_A : R.string.action_register_O));
+        toolbar.setTitle(getText(partOfDay.equals("A") ? R.string.action_register_A : R.string.action_register_O));
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         toolbar.setNavigationOnClickListener(e -> finish());
@@ -64,14 +64,18 @@ public class RegisterActivity extends AppCompatActivity {
 
         model.getRegistrationState().observe(this, state -> {
             if (state.equals(ApiCallState.BUSY)) {
-                binding.registerRegisterBtn.startAnimation();
+                binding.registerRegisterBtn.showLoading();
             } else {
-                binding.registerRegisterBtn.revertAnimation();
+                binding.registerRegisterBtn.hideLoading();
             }
 
             if (state.equals(ApiCallState.SUCCESS)) {
                 Toast.makeText(this, R.string.registration_success, Toast.LENGTH_SHORT).show();
                 model.registrationDone();
+            }
+
+            if (state.equals(ApiCallState.ERROR)) {
+                Toast.makeText(this, getString(R.string.registration_failed, model.getErrorMessage()), Toast.LENGTH_SHORT).show();
             }
         });
 

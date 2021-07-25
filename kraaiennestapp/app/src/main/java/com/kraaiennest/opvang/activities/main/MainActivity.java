@@ -2,10 +2,8 @@ package com.kraaiennest.opvang.activities.main;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -13,28 +11,29 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
-import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.activities.checkin.CheckInActivity;
-import com.kraaiennest.opvang.databinding.ActivityMainBinding;
 import com.kraaiennest.opvang.activities.presence.PresenceActivity;
 import com.kraaiennest.opvang.activities.register.RegisterActivity;
+import com.kraaiennest.opvang.databinding.ActivityMainBinding;
+import com.kraaiennest.opvang.repository.ChildRepository;
 import dagger.hilt.android.AndroidEntryPoint;
-import org.parceler.Parcels;
+
+import javax.inject.Inject;
+import java.util.concurrent.ExecutionException;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CAMERA_PERMISSION = 10;
     private static final int RC_SIGN_IN = 404;
-    private String scriptId;
     private ActivityMainBinding binding;
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    @Inject
+    ChildRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        scriptId = sharedPreferences.getString("scriptId", "");
-        sharedPreferences.registerOnSharedPreferenceChangeListener((c, key) -> {
-            scriptId = c.getString("scriptId", "");
-        });
-
 
         View registerA = findViewById(R.id.register_btn_A);
         registerA.setOnClickListener(event -> startRegister("A"));
@@ -75,12 +67,11 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
         }
 
-        if (auth.getCurrentUser() == null) {
-            startActivityForResult(
-                    // Get an instance of AuthUI based on the default app
-                    AuthUI.getInstance().createSignInIntentBuilder().build(),
-                    RC_SIGN_IN);
-        }  // already signed in
+        try {
+            repository.getChildren().get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException("Kan de lijst mwt kinderen niet inladen");
+        }
     }
 
     @Override

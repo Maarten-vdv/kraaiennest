@@ -1,45 +1,38 @@
 package com.kraaiennest.opvang.repository;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.kraaiennest.opvang.api.APIService;
 import com.kraaiennest.opvang.model.Child;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class ChildRepository {
+    private final APIService apiService;
+    private List<Child> childCache;
 
-    private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public ChildRepository(APIService apiService) {
 
-    CollectionReference children = firebaseFirestore.collection("children");
-
-
-    public Task<List<Child>> getAll() {
-        return children.get().continueWith(task -> task.getResult().toObjects(Child.class));
+        this.apiService = apiService;
     }
 
-    public Query getAllQuery() {
-        return children;
+    public CompletableFuture<List<Child>> getChildren() {
+        if (childCache != null) {
+            return CompletableFuture.supplyAsync(() -> childCache);
+        }
+        return apiService.doGetChildren().whenComplete((children, action) -> childCache = children);
     }
 
-    public Task<Child> findById(String userId) {
-        return children.whereEqualTo("userId", userId).limit(1).get().continueWith(snap -> {
-            if (snap.isSuccessful() || !snap.getResult().isEmpty()) {
-                return snap.getResult().toObjects(Child.class).get(0);
-            } else {
-                return null;
-            }
-        });
+    public CompletableFuture<Child> findById(String id) {
+        if (childCache != null) {
+            return CompletableFuture.supplyAsync(() -> childCache.stream().filter(c -> c.getId().equals(id)).findFirst().orElse(null));
+        }
+       return getChildren().thenApply(children -> childCache.stream().filter(c -> c.getId().equals(id)).findFirst().orElse(null));
     }
 
-    public Task<Child> findByPIN(String pin) {
-        return children.whereEqualTo("pin", pin).limit(1).get().continueWith(snap -> {
-            if (snap.isSuccessful() || !snap.getResult().isEmpty()) {
-                return snap.getResult().toObjects(Child.class).get(0);
-            } else {
-                return null;
-            }
-        });
+    public CompletableFuture<Child> findByPIN(String pin) {
+        if (childCache != null) {
+            return CompletableFuture.supplyAsync(() -> childCache.stream().filter(c -> c.getPIN().equals(pin)).findFirst().orElse(null));
+        }
+        return getChildren().thenApply(children -> childCache.stream().filter(c -> c.getPIN().equals(pin)).findFirst().orElse(null));
     }
 }

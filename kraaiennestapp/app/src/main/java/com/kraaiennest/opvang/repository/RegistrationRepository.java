@@ -1,55 +1,35 @@
 package com.kraaiennest.opvang.repository;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.kraaiennest.opvang.api.APIService;
 import com.kraaiennest.opvang.model.CheckIn;
 import com.kraaiennest.opvang.model.Registration;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class RegistrationRepository {
 
-    private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private final APIService api;
 
-    CollectionReference registrations = firebaseFirestore.collection("registrations");
-    CollectionReference checkIns = firebaseFirestore.collection("check-ins");
-
-
-    public Query getRegistrationsQuery() {
-        return registrations;
+    public RegistrationRepository(APIService apiService) {
+        this.api = apiService;
     }
 
-    public Query getRegistrationByDateQuery(LocalDate date) {
-        return registrations
-                .whereGreaterThanOrEqualTo("registrationTime", date.toEpochDay())
-                .whereLessThan("registrationTime", date.plusDays(1).toEpochDay());
+    public CompletableFuture<List<Registration>> getRegistrationsOnDay(LocalDate date) {
+        return api.doGetRegistrationsOnDay(date.getMonthValue(), date.getDayOfMonth());
     }
 
-    public Query getCheckInsByDateQuery(LocalDate date) {
-        return checkIns
-                .whereGreaterThanOrEqualTo("checkInTime", date.toEpochDay())
-                .whereLessThan("checkInTime", date.plusDays(1).toEpochDay());
+    public CompletableFuture<List<CheckIn>> getCheckInsOnDay(LocalDate date) {
+        return api.doGetCheckInsOnDay(date.getMonthValue(), date.getDayOfMonth());
     }
 
-    Task<List<Registration>> getRegistrationByDate(LocalDate date) {
-        return getRegistrationByDateQuery(date).get().continueWith(snap -> {
-            if (snap.isSuccessful() || !snap.getResult().isEmpty()) {
-                return snap.getResult().toObjects(Registration.class);
-            } else {
-                return null;
-            }
-        });
+    public CompletableFuture<CheckIn> createCheckIn(CheckIn checkIn) {
+        return api.doPostCheckIn(checkIn);
     }
 
-    public Task<DocumentReference> createRegistration(Registration registration) {
-        return registrations.add(registration);
+    public CompletableFuture<Registration> createRegistration(Registration registration) {
+        return api.doPostRegistration(registration);
     }
 
-    public Task<DocumentReference> createCheckIn(CheckIn checkIn) {
-        return checkIns.add(checkIn);
-    }
 }

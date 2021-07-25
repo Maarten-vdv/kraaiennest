@@ -16,4 +16,5 @@
     <color name="register_btn_color_A">#F79922</color>
     <color name="check_in_btn_color">#5133AB</color>
     <color name="presence_btn_color">#AC193D</color>
+    <color name="black">#000000</color>
 </resources>

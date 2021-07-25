@@ -58,13 +58,18 @@ public class CheckInActivity extends AppCompatActivity {
 
         model.getCheckInState().observe(this, state -> {
             if (state.equals(ApiCallState.BUSY)) {
-                binding.checkInBtn.setLoading(true);
+                binding.checkInBtn.showLoading();
             } else {
-                binding.checkInBtn.setLoading(false);
+                binding.checkInBtn.hideLoading();
             }
 
             if (state.equals(ApiCallState.SUCCESS)) {
                 Toast.makeText(this, R.string.check_in_success, Toast.LENGTH_SHORT).show();
+                model.checkInDone();
+            }
+
+            if (state.equals(ApiCallState.ERROR)) {
+                Toast.makeText(this, R.string.check_in_fail, Toast.LENGTH_SHORT).show();
                 model.checkInDone();
             }
         });

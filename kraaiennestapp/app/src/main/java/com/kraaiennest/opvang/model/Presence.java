@@ -1,17 +1,26 @@
 package com.kraaiennest.opvang.model;
 
-import com.google.firebase.Timestamp;
 import com.google.gson.annotations.SerializedName;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Presence {
     @SerializedName("child")
     private Child child;
     @SerializedName("registrations")
-    private List<Timestamp> registrationTimes;
+    private LocalDateTime registrationTime;
 
-    private Timestamp checkIn;
+    private LocalDateTime checkIn;
+
+    public Presence(Child child, LocalDateTime registrationTime, LocalDateTime checkIn) {
+        this.child = child;
+        this.registrationTime = registrationTime;
+        this.checkIn = checkIn;
+    }
+
+    public Presence() { }
 
     public Child getChild() {
         return child;
@@ -21,19 +30,19 @@ public class Presence {
         this.child = child;
     }
 
-    public List<Timestamp> getRegistrationTimes() {
-        return registrationTimes;
+    public LocalDateTime getRegistrationTime() {
+        return registrationTime;
     }
 
-    public void setRegistrationTimes(List<Timestamp> registrationTimes) {
-        this.registrationTimes = registrationTimes;
+    public void setRegistrationTimes(LocalDateTime registrationTime) {
+        this.registrationTime = registrationTime;
     }
 
-    public Timestamp getCheckIn() {
+    public LocalDateTime getCheckIn() {
         return checkIn;
     }
 
-    public void setCheckIn(Timestamp checkIn) {
+    public void setCheckIn(LocalDateTime checkIn) {
         this.checkIn = checkIn;
     }
 }

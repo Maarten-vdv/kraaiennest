@@ -22,8 +22,8 @@ public class Registration {
     @SerializedName("partOfDay")
     public PartOfDay partOfDay;
 
-    @SerializedName("registrationTime")
-    public Timestamp registrationTime;
+    @SerializedName("time")
+    public LocalDateTime registrationTime;
 
     public String getChildId() {
         return childId;
@@ -57,11 +57,11 @@ public class Registration {
         this.partOfDay = partOfDay;
     }
 
-    public Timestamp getRegistrationTime() {
+    public LocalDateTime getRegistrationTime() {
         return registrationTime;
     }
 
-    public void setRegistrationTime(Timestamp registrationTime) {
+    public void setRegistrationTime(LocalDateTime registrationTime) {
         this.registrationTime = registrationTime;
     }
 }

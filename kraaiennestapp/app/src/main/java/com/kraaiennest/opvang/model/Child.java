@@ -10,12 +10,15 @@ public class Child {
     String firstName;
     @SerializedName("lastName")
     String lastName;
-    @SerializedName("id")
+    @SerializedName("childId")
     String id;
     @SerializedName("group")
     String group;
     @SerializedName("qrId")
     String qrId;
+
+    @SerializedName("pin")
+    String PIN;
 
     public String getFirstName() {
         return firstName;
@@ -59,5 +62,13 @@ public class Child {
 
     public String getFullName() {
         return getFirstName() + " " + getLastName();
+    }
+
+    public String getPIN() {
+        return PIN;
+    }
+
+    public void setPIN(String PIN) {
+        this.PIN = PIN;
     }
 }

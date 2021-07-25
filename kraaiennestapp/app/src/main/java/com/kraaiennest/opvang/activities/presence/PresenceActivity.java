@@ -35,9 +35,7 @@ public class PresenceActivity extends AppCompatActivity implements SortOptionsFr
         Map<Integer, String> strings = new HashMap<>();
         strings.put(R.string.error_load_presence, getString(R.string.error_load_presence));
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String scriptId = sharedPreferences.getString("scriptId", "");
-        model.loadExtra(scriptId, strings);
+        model.loadExtra(strings);
     }
 
     @Override

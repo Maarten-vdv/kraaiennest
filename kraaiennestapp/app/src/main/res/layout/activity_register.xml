@@ -198,7 +198,7 @@
                     app:layout_constraintTop_toBottomOf="@id/guideline3"
                     app:layout_constraintVertical_weight="1" />
 
-                <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                <Button
                     android:id="@+id/register_pin_btn"
                     style="@style/MainButtonStyle"
                     android:layout_width="0dp"
@@ -211,12 +211,9 @@
                     app:layout_constraintEnd_toStartOf="@+id/register_scan_btn"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/guideline2"
-                    app:layout_constraintVertical_chainStyle="spread"
-                    app:spinning_bar_color="#FFF"
-                    app:spinning_bar_padding="15dp"
-                    app:spinning_bar_width="4dp" />
+                    app:layout_constraintVertical_chainStyle="spread" />
 
-                <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                <Button
                     android:id="@+id/register_scan_btn"
                     style="@style/MainButtonStyle"
                     android:layout_width="0dp"
@@ -231,9 +228,9 @@
                     app:layout_constraintStart_toEndOf="@+id/register_pin_btn"
                     app:layout_constraintTop_toBottomOf="@+id/guideline2" />
 
-                <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                <com.kusu.loadingbutton.LoadingButton
                     android:id="@+id/register_register_btn"
-                    style="@style/MainButtonStyle"
+                    style="@style/MainButtonStyle.SpinnerButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="2dp"
@@ -248,9 +245,11 @@
                     app:layout_constraintTop_toBottomOf="@id/guideline2"
                     app:layout_constraintVertical_bias="0.0"
                     app:layout_constraintVertical_chainStyle="spread"
-                    app:spinning_bar_color="#FFF"
-                    app:spinning_bar_padding="15dp"
-                    app:spinning_bar_width="4dp" />
+                    app:lb_buttonColor="@color/colorPrimary"
+                    app:lb_isShadowEnable="false"
+                    app:lb_isCircular="false"
+                    app:lb_loaderColor="@color/white"
+                    />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline2"
