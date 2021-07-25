@@ -12,7 +12,7 @@ export function sendMail(quoteFile: File, parent: Parent, month: number) {
 		htmlBody: `<html><body><p>In bijlage vind u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}</p></body></html>`,
 		name: "Ouderverenigign 'tkraaiennes Grembergen"
 	};
-	MailApp.sendEmail(email);
+//	MailApp.sendEmail(email);
 
 	GmailApp.createDraft("mail2maartenvdv@gmail.com", //to: parent.email1
 		`Opvang 't kraaiennest - factuur ${monthString} (schooljaar ${getSchoolYear(month)})`,

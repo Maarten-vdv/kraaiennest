@@ -3,7 +3,7 @@ import {dayjs, getSchoolYear} from "./util";
 import File = GoogleAppsScript.Drive.File;
 
 export function generateQuote(total: Total, registrations: Registration[], parent: Parent, settings: Settings, month: number): string {
-	if(!parent) {
+	if (!parent) {
 		return;
 	}
 	const quoteTemplate: File = DriveApp.getFilesByName("factuur-template.html").next();
@@ -44,10 +44,12 @@ export function generateQuote(total: Total, registrations: Registration[], paren
 
 	const parentFolder = getDriveFolderFromPath("Opvang/" + getSchoolYear(month) + "/Facturen/");
 	if (!parentFolder.getFoldersByName(month + "").hasNext()) {
-		parentFolder.createFolder(month + "");
+		const monthFolder: Folder = parentFolder.createFolder(month + "");
+		monthFolder.createFolder("printen");
 	}
 
-	saveFactuurToDrive(pdf, fileName, "Opvang/" + getSchoolYear(month) + "/Facturen/" + month);
+	let path = "Opvang/" + getSchoolYear(month) + "/facturen/" + month + (total.toPrint ? "/printen" : "");
+	saveToDrive(pdf, fileName, path);
 	return fileName;
 }
 

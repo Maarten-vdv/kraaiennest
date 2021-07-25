@@ -3,7 +3,7 @@ import Folder = GoogleAppsScript.Drive.Folder;
 import Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 import HTTPResponse = GoogleAppsScript.URL_Fetch.HTTPResponse;
 
-function saveFactuurToDrive(blob: GoogleAppsScript.Base.Blob, name: string, path: string): void {
+function saveToDrive(blob: GoogleAppsScript.Base.Blob, name: string, path: string): void {
 	DriveApp.createFile(blob).setName(name).moveTo(getDriveFolderFromPath(path));
 }
 

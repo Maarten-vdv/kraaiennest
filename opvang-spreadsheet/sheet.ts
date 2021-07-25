@@ -61,8 +61,8 @@ export function loadTotals(spreadsheet: Spreadsheet): Total[] {
 		morning: r[2],
 		evening: r[3],
 		quoteName: r[4],
-		mailed: r[5] === "true",
-		toPrint: r[6] === "true",
+		mailed: !!r[5],
+		toPrint: !!r[6],
 		rowNr: index + 2
 	}));
 }

@@ -9,7 +9,7 @@ export function calculateTotals(activeSheet: Spreadsheet, children: Record<numbe
 	const sheet: Sheet = activeSheet.getSheetByName("berekende uren");
 	const sheetNonBillable: Sheet = activeSheet.getSheetByName("berekende uren (niet factureren)");
 	sheet.clear();
-	sheet.appendRow(["ID", "Naam", "Ochtend", "Avond", "factuur naam", "email", "print"])
+	sheet.appendRow(["ID", "Naam", "Ochtend", "Avond", "factuur naam", "email verzonden", "afprinten"])
 
 	const supervisorRows = [];
 	const teacherRows = [];
