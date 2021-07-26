@@ -125,7 +125,7 @@ public class RegisterViewModel extends ViewModel {
                 })
                 .thenRunAsync(() -> {
                     child.postValue(null);
-                    halfHours.postValue(null);
+                    halfHours.postValue(calculateHalfHours());
                     registrationState.postValue(ApiCallState.SUCCESS);
                 });
     }

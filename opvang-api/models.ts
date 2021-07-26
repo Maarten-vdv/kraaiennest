@@ -1,5 +1,5 @@
 export interface Registration {
-	childId: string;
+	childId: number;
 	time: string;
 	partOfDay: "O" | "A";
 	halfHours: number;
@@ -7,7 +7,7 @@ export interface Registration {
 }
 
 export interface CheckIn {
-	childId: string;
+	childId: number;
 	time: string;
 	partOfDay: "O" | "A";
 }

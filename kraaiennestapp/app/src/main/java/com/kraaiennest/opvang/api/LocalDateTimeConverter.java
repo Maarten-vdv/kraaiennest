@@ -4,6 +4,7 @@ import com.google.gson.*;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeConverter implements JsonDeserializer<LocalDateTime>, JsonSerializer<LocalDateTime> {
     @Override
@@ -12,7 +13,7 @@ public class LocalDateTimeConverter implements JsonDeserializer<LocalDateTime>, 
         // "2012-06-11T20:06:10Z" format
 
         try {
-            return LocalDateTime.parse(json.getAsString());
+            return LocalDateTime.parse(json.getAsString(), DateTimeFormatter.ISO_DATE_TIME);
         } catch (Exception exception) {
             return null;
         }

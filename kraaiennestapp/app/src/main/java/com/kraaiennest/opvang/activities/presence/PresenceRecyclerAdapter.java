@@ -12,8 +12,9 @@ import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.model.Child;
 import com.kraaiennest.opvang.model.Presence;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -23,7 +24,7 @@ public class PresenceRecyclerAdapter extends RecyclerView.Adapter<PresenceRecycl
     private final List<Presence> data;
 
     public PresenceRecyclerAdapter(List<Presence> items) {
-        data = items;
+        data = new ArrayList<>(items);
     }
 
     @Override
@@ -36,20 +37,30 @@ public class PresenceRecyclerAdapter extends RecyclerView.Adapter<PresenceRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.item = data.get(position);
         Child child = data.get(position).getChild();
-        holder.childNameView.setText(child.getFirstName() + " " + child.getLastName());
+        holder.childNameView.setText(String.format("%s %s", child.getFirstName(), child.getLastName()));
         holder.childGroupView.setText(child.getGroup());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:mm");
         Context context = holder.childNameView.getContext();
         holder.timestampsView.removeAllViews();
-        holder.timestampsView.addView(createTimestampView(context, dateFormat, holder.item.getRegistrationTime()));
 
-        holder.presenseItemLayout.setAlpha(1f);
+        if (holder.item.getCheckIn() != null) {
+            holder.timestampsView.addView(createTimestampView(context, timeFormatter, holder.item.getCheckIn()));
+            if (holder.item.getRegistrationTime() != null) {
+                holder.timestampsView.addView(createTimestampView(context, timeFormatter, holder.item.getRegistrationTime()));
+            } else {
+                holder.presenseItemLayout.setAlpha(1f);
+            }
+
+        } else if (holder.item.getRegistrationTime() != null) {
+            holder.timestampsView.addView(createTimestampView(context, timeFormatter, holder.item.getRegistrationTime()));
+            holder.presenseItemLayout.setAlpha(1f);
+        }
     }
 
-    private TextView createTimestampView(Context context, SimpleDateFormat dateFormat, LocalDateTime t) {
+    private TextView createTimestampView(Context context, DateTimeFormatter timeFormatter, LocalDateTime t) {
         TextView view = new TextView(context);
-        view.setText(dateFormat.format(t));
+        view.setText(t.format(timeFormatter));
         view.setTextSize(18);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         params.setMargins(20, 0, 20, 0);
@@ -74,6 +85,7 @@ public class PresenceRecyclerAdapter extends RecyclerView.Adapter<PresenceRecycl
         public final TextView childGroupView;
         public final FlexboxLayout timestampsView;
         public final LinearLayout presenseItemLayout;
+
         public Presence item;
 
         public ViewHolder(View view) {

@@ -10,16 +10,16 @@ import java.time.LocalDateTime;
 public class CheckIn {
 
     @SerializedName("childId")
-    public String childId;
+    public Integer childId;
 
     @SerializedName("time")
     public LocalDateTime checkInTime;
 
-    public String getChildId() {
+    public Integer getChildId() {
         return childId;
     }
 
-    public void setChildId(String childId) {
+    public void setChildId(Integer childId) {
         this.childId = childId;
     }
 

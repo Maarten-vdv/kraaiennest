@@ -6,6 +6,7 @@ import com.kraaiennest.opvang.model.Registration;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,9 +25,9 @@ public interface APIService {
     @POST("post?endpoint=registration")
     CompletableFuture<Registration> doPostRegistration(@Body Registration registration);
 
-    @GET("?endpoint=registrations&month={month}&day={day}")
-    CompletableFuture<List<Registration>> doGetRegistrationsOnDay(int month, int day);
+    @GET("?endpoint=registration")
+    CompletableFuture<List<Registration>> doGetRegistrationsOnDay(@Query("month") int month,@Query("day") int day);
 
-    @GET("?endpoint=checkIns&month={month}&day={day}")
-    CompletableFuture<List<CheckIn>> doGetCheckInsOnDay(int month, int day);
+    @GET("?endpoint=checkIn")
+    CompletableFuture<List<CheckIn>> doGetCheckInsOnDay(@Query("month") int month,@Query("day") int day);
 }

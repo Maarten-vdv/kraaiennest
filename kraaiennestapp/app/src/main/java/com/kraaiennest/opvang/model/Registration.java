@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Registration {
 
     @SerializedName("childId")
-    public String childId;
+    public Integer childId;
 
     @SerializedName("halfHours")
     public int halfHours;
@@ -25,11 +25,11 @@ public class Registration {
     @SerializedName("time")
     public LocalDateTime registrationTime;
 
-    public String getChildId() {
+    public Integer getChildId() {
         return childId;
     }
 
-    public void setChildId(String childId) {
+    public void setChildId(Integer childId) {
         this.childId = childId;
     }
 

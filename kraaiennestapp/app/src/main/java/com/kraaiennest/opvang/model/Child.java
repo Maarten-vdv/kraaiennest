@@ -11,7 +11,7 @@ public class Child {
     @SerializedName("lastName")
     String lastName;
     @SerializedName("childId")
-    String id;
+    Integer id;
     @SerializedName("group")
     String group;
     @SerializedName("qrId")
@@ -36,11 +36,11 @@ public class Child {
         this.lastName = lastName;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -53,7 +53,7 @@ public class PresenceFragment extends Fragment {
         PresenceRecyclerAdapter presenceRecyclerAdapter
                 = new PresenceRecyclerAdapter(Collections.emptyList());
 
-        model.getPresences().observe(this, presenceRecyclerAdapter::setData);
+        model.getPresences().observe(getViewLifecycleOwner(), presenceRecyclerAdapter::setData);
 
         RecyclerView recycleView = view.findViewById(R.id.list);
         // Set the adapter
@@ -64,6 +64,8 @@ public class PresenceFragment extends Fragment {
 
         initSwipeContainer(view.findViewById(R.id.swipeContainer1));
         initSwipeContainer(view.findViewById(R.id.swipeContainer2));
+
+        model.refreshPresences();
     }
 
     private void initSwipeContainer(SwipeRefreshLayout swipeContainer) {
