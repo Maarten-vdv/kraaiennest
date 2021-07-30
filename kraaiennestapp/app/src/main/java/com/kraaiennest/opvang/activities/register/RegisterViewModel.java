@@ -12,7 +12,6 @@ import com.kraaiennest.opvang.model.Registration;
 import com.kraaiennest.opvang.repository.ChildRepository;
 import com.kraaiennest.opvang.repository.RegistrationRepository;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -57,23 +56,14 @@ public class RegisterViewModel extends ViewModel {
 
     public LiveData<PartOfDay> getPartOfDay() {
         if (partOfDay == null) {
-            LocalDateTime now = LocalDateTime.now();
-            partOfDay = new MutableLiveData<>(now.getHour() > 11 ? PartOfDay.A : PartOfDay.O);
+            partOfDay = new MutableLiveData<>(repository.getPartOfDay());
         }
         return partOfDay;
     }
 
     public LiveData<LocalDateTime> getCutOff() {
         if (cutOff == null) {
-            LocalDateTime cutoff = LocalDateTime.now();
-            if (cutoff.getHour() >= 12) {
-                // evening
-                cutoff = cutoff.withHour(15).withMinute(45);
-            } else {
-                // morning
-                cutoff = cutoff.withHour(8).withMinute(0);
-            }
-            cutOff = new MutableLiveData<>(cutoff);
+            cutOff = new MutableLiveData<>(repository.getCutOff());
         }
 
         return cutOff;
@@ -85,7 +75,7 @@ public class RegisterViewModel extends ViewModel {
 
     public LiveData<String> getHalfHours() {
         if (halfHours == null) {
-            halfHours = new MutableLiveData<>(calculateHalfHours());
+            halfHours = new MutableLiveData<>(repository.calculateHalfHours());
         }
 
         return Transformations.map(halfHours, integer -> integer == null ? "" : format("{0}{1}", integer.toString(), strings.get(R.string.half_hours)));
@@ -98,12 +88,6 @@ public class RegisterViewModel extends ViewModel {
         return registrationState;
     }
 
-    private Integer calculateHalfHours() {
-        LocalDateTime now = LocalDateTime.now();
-        Duration duration = Duration.between(now, getCutOff().getValue()).abs();
-        return Math.toIntExact(duration.toMinutes()) / 30;
-    }
-
     public void createRegistration() {
         if (child.getValue() == null) {
             return;
@@ -113,7 +97,7 @@ public class RegisterViewModel extends ViewModel {
         Registration registration = new Registration();
         registration.setChildId(child.getValue().getId());
         registration.setHalfHours(halfHours.getValue() != null ? halfHours.getValue() : 0);
-        registration.setRealHalfHours(calculateHalfHours());
+        registration.setRealHalfHours(repository.calculateHalfHours());
         registration.setRegistrationTime(LocalDateTime.now());
         registration.setPartOfDay(getPartOfDay().getValue());
 
@@ -125,7 +109,7 @@ public class RegisterViewModel extends ViewModel {
                 })
                 .thenRunAsync(() -> {
                     child.postValue(null);
-                    halfHours.postValue(calculateHalfHours());
+                    halfHours.postValue(repository.calculateHalfHours());
                     registrationState.postValue(ApiCallState.SUCCESS);
                 });
     }
