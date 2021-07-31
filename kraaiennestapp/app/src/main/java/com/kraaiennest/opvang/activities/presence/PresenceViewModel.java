@@ -47,14 +47,14 @@ public class PresenceViewModel extends ViewModel {
         this.strings = strings;
     }
 
-    public void refreshPresences() {
+    public CompletableFuture<Void> refreshPresences() {
         CompletableFuture<List<Child>> childFuture = childRepository.getChildren();
         CompletableFuture<List<Registration>> regFuture = registrationRepository.getRegistrationsOnDay(LocalDate.now());
 
         if (LocalTime.now().getHour() > 12) {
             //evening
             CompletableFuture<List<CheckIn>> checkInFuture = registrationRepository.getCheckInsOnDay(LocalDate.now());
-            CompletableFuture.allOf(childFuture, regFuture, checkInFuture).thenRunAsync(() -> {
+            return CompletableFuture.allOf(childFuture, regFuture, checkInFuture).thenRunAsync(() -> {
                 Map<Integer, Child> children = childFuture.join().stream().collect(Collectors.toMap(Child::getId, Function.identity()));
                 Map<Integer, Registration> regs = regFuture.join().stream().collect(Collectors.toMap(Registration::getChildId, Function.identity()));
                 this.presences.postValue(
@@ -66,13 +66,11 @@ public class PresenceViewModel extends ViewModel {
             });
         } else {
             // morning
-            childFuture.thenCombineAsync(regFuture, (c, regs) -> {
+            return childFuture.thenCombineAsync(regFuture, (c, regs) -> {
                 Map<Integer, Child> children = c.stream().collect(Collectors.toMap(Child::getId, Function.identity()));
                 return regs.stream().map(reg -> new Presence(children.get(reg.getChildId()), reg.getRegistrationTime(), null)).collect(Collectors.toList());
             }).thenAcceptAsync(list -> this.presences.postValue(list));
         }
-
-
     }
 
     public void setSortOrder(PresenceSortOrder sortOrder) {

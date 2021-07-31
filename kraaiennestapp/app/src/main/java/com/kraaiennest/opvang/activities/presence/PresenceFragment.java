@@ -71,7 +71,9 @@ public class PresenceFragment extends Fragment {
     private void initSwipeContainer(SwipeRefreshLayout swipeContainer) {
         swipeContainer.setRefreshing(false);
         // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(() -> model.refreshPresences());
+        swipeContainer.setOnRefreshListener(() -> {
+            model.refreshPresences().thenRunAsync(() -> swipeContainer.setRefreshing(false));
+        });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,

@@ -66,8 +66,6 @@ r
 Bapp/src/main/java/com/kraaiennest/opvang/base/BaseApplication.java,a\8\a844ac0e87b50d93426ff88dd217740aa324a135
 z
 Japp/src/main/java/com/kraaiennest/opvang/activities/main/MainActivity.java,4\2\42b9f93c1b8c386f070fbc3bb3ca57d635b8cc0b
-q
-Aapp/src/main/java/com/kraaiennest/opvang/di/RepositoryModule.java,2\4\24a8e0e70ceb4de92e28605f887fc75e52a3ccef
 n
 >app/src/main/java/com/kraaiennest/opvang/di/NetworkModule.java,e\7\e7ba92db1fe0768cf0f9d7a0d25cb4de454a97be
 H
@@ -78,3 +76,17 @@ H
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 m
 =app/src/test/java/com/kraaiennest/opvang/ExampleUnitTest.java,e\3\e39db365f9ecf33a9a5b643c5ad2a2a669ed2c6e
+l
+<app/src/main/java/com/kraaiennest/opvang/model/Presence.java,e\9\e919abe83423cdf06ce1271996365331f94af53c
+p
+@app/src/main/java/com/kraaiennest/opvang/model/Registration.java,f\1\f10bce860a0ed6f7ba9ea0302fde72a0d56aa11f
+x
+Happ/src/main/java/com/kraaiennest/opvang/api/LocalDateTimeConverter.java,2\d\2d4552bda3002872d1d90adc635300392ebd542e
+i
+9app/src/main/java/com/kraaiennest/opvang/model/Child.java,3\1\316980be053098227b16f8445ef8a615d19ae001
+k
+;app/src/main/java/com/kraaiennest/opvang/model/CheckIn.java,0\a\0a8b6d50884f3da438938c1aa10cfb4b32b14afb
+‚
+Rapp/src/main/java/com/kraaiennest/opvang/activities/register/RegisterActivity.java,d\4\d475017fe37647fcad8013c5bc9ad5dc5c569719
+ƒ
+Sapp/src/main/java/com/kraaiennest/opvang/activities/register/RegisterViewModel.java,b\8\b87a5d5510c09b6a45436ebccd3eda3872ca5f95
