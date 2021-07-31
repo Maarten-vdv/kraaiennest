@@ -9,6 +9,7 @@ export function calculateTotals(activeSheet: Spreadsheet, children: Record<numbe
 	const sheet: Sheet = activeSheet.getSheetByName("berekende uren");
 	const sheetNonBillable: Sheet = activeSheet.getSheetByName("berekende uren (niet factureren)");
 	sheet.clear();
+	sheetNonBillable.clear();
 	sheet.appendRow(["ID", "Naam", "Ochtend", "Avond", "factuur naam", "email verzonden", "afprinten"])
 
 	const supervisorRows = [];
@@ -36,7 +37,8 @@ export function calculateTotals(activeSheet: Spreadsheet, children: Record<numbe
 	sheetNonBillable.appendRow(["Kinderen van leerkrachten"]);
 	teacherRows.forEach(row => sheetNonBillable.appendRow(row));
 
-	sheet.autoResizeColumn(1);
+	sheet.autoResizeColumns(1, 2);
+	sheetNonBillable.autoResizeColumns(1, 2);
 }
 
 function getHalfHours(reg: Registration, partOfDay: string) {

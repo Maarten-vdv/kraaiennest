@@ -9,20 +9,22 @@ export function createCheckIn(folder: Folder, month: number, checkIn: CheckIn): 
 	const spreadsheet = loadSpreadSheetByName(folder, "registraties-" + month)
 	const sheet = spreadsheet.getSheetByName("check-ins");
 
-	const date = dayjs(checkIn.time).date();
+	const time = dayjs(checkIn.time);
+	const newValue: any[] = [checkIn.childId, time.format("DD-MM-YYYY"), time.format("HH:mm")];
+
 	const rows: any[][] = sheet.getDataRange().getValues();
 	let index = -1;
 	let i = 0;
 	while (index < 0 && i < rows.length) {
 		const row: any[] = rows[i];
-		if (row[0] === checkIn.childId && date === dayjs(row[1]).date()) {
+		if (row[0] === checkIn.childId && time.date() === dayjs(row[1]).date()) {
 			index = i;
 		}
 		i++;
 	}
 	// ignore check in if there already is one
 	if (index === -1) {
-		sheet.appendRow([checkIn.childId, checkIn.time, checkIn.partOfDay]);
+		sheet.appendRow(newValue);
 		sheet.autoResizeColumn(1);
 	}
 }

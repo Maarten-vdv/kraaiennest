@@ -1,21 +1,12 @@
 import {calculateTotals} from "./calculateTotals";
-import {sendMail} from "./mail";
+import {sendDrafts, sendMail} from "./mail";
 import {Child, Parent, Registration, Supervisor, Total} from "./models";
 import {generateQuote} from "./quote";
 import {loadChildren, loadParents, loadRegistrations, loadSettings, loadSupervisors, loadTotals, markQuoteGenerated} from "./sheet";
 import {getSchoolYear, loadDayjs} from "./util";
+import Button = GoogleAppsScript.Base.Button;
 import FileIterator = GoogleAppsScript.Drive.FileIterator;
 import Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
-
-function onOpen() {
-	const ui = SpreadsheetApp.getUi();
-	// Or DocumentApp or FormApp.
-	ui.createMenu('Opvang')
-		.addItem('Bereken totalen', 'calculateHours')
-		.addItem('Maak facturen', 'createQuotes')
-		.addItem('Mail facturen', 'sendMails')
-		.addToUi();
-}
 
 function calculateHours(activeSpreadsheet: Spreadsheet) {
 	loadDayjs();
@@ -69,6 +60,18 @@ function createQuotes(activeSpreadsheet: Spreadsheet): void {
 
 function sendMails(activeSpreadsheet: Spreadsheet) {
 	loadDayjs();
+	const ui = SpreadsheetApp.getUi();
+
+	const drafts = GmailApp.getDrafts().filter(draft => draft.getMessage().getThread().getLabels().find(l => l.getName() === "OK"));
+	if (drafts.length > 0) {
+		const r1: Button = ui.alert('Onverzonden drafts', `Er staan nog ${drafts.length} facturen met label 'OK' in draft in gmail, deze eerst verzenden?`, ui.ButtonSet.YES_NO);
+		if (r1 === ui.Button.YES) {
+			sendDrafts(drafts);
+		}
+	}
+
+	const response: Button = ui.alert('Email modus', 'De emails meteen verzenden (ja) of als draft aanmaken (nee)?', ui.ButtonSet.YES_NO);
+	const send = response === ui.Button.YES;
 
 	let name = activeSpreadsheet.getName();
 	if (!name.startsWith("registraties-")) {
@@ -81,18 +84,18 @@ function sendMails(activeSpreadsheet: Spreadsheet) {
 	const settings = loadSettings(data, null, month);
 	const quoteFolder: Folder = getDriveFolderFromPath(`Opvang/${getSchoolYear(month)}/facturen/${month}`);
 
-	const ui = SpreadsheetApp.getUi();
-	ui.alert(`Het script gaat nu een batch van ${settings.batchSize || 50} facturen proberen te versturen`);
 
 	const children: Child[] = loadChildren(data);
 	const parents: Record<number, Parent> = loadParents(data, children);
 	const totals: Total[] = loadTotals(activeSpreadsheet);
 	const totalsToProcess = totals.filter(total => !!total.quoteName).slice(0, settings.batchSize || 50);
 
+	ui.alert(`Het script gaat nu een batch van ${totalsToProcess.length} facturen proberen te versturen`);
+
 	totalsToProcess.forEach(total => {
 		let fileIterator: FileIterator = quoteFolder.getFilesByName(total.quoteName);
 		if (!!parents[total.childId] && fileIterator.hasNext()) {
-			sendMail(fileIterator.next(), parents[total.childId], month);
+			sendMail(fileIterator.next(), parents[total.childId], month, send);
 		}
 
 	});

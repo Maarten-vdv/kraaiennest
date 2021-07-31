@@ -19,7 +19,8 @@ export function generateQuote(total: Total, registrations: Registration[], paren
 		.replace("{{factuurNaam}}", fileName.replace(".pdf", ""))
 		.replace("{{factuurDatum}}", dayjs().format("DD-MM-YYYY"))
 		.replace("{{betreft}}", parent.childName)
-		.replace("{{betalenVoor}}", dayjs().add(dayjs.duration({'days': settings.dueDateRelative})).format("DD-MM-YYYY"));
+		.replace("{{betalenVoor}}", dayjs().add(dayjs.duration({'days': settings.dueDateRelative})).format("DD-MM-YYYY"))
+		.replace("{{betalenVoor2}}", dayjs().add(dayjs.duration({'days': settings.dueDateRelative})).format("DD-MM-YYYY"));
 
 	const eveningCost = total.evening * settings.rate;
 	const morningCost = total.morning * settings.rate;
