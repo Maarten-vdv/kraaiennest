@@ -31,10 +31,10 @@ export function calculateTotals(activeSheet: Spreadsheet, children: Record<numbe
 			}
 		});
 
-	sheetNonBillable.appendRow(["Toezicht"]);
+	sheetNonBillable.appendRow(["Toezicht", "", "O", "A"]);
 	supervisorRows.forEach(row => sheetNonBillable.appendRow(row));
 
-	sheetNonBillable.appendRow(["Kinderen van leerkrachten"]);
+	sheetNonBillable.appendRow(["Kinderen van leerkrachten", "", "O", "A"]);
 	teacherRows.forEach(row => sheetNonBillable.appendRow(row));
 
 	sheet.autoResizeColumns(1, 2);
