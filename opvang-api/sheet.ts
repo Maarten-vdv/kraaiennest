@@ -1,5 +1,5 @@
 import {CheckIn, Child, Registration} from "./models";
-import {dayjs} from "./util";
+import {dayjs, getSchoolYear} from "./util";
 import Sheet = GoogleAppsScript.Spreadsheet.Sheet;
 import Spreadsheet = GoogleAppsScript.Spreadsheet.Spreadsheet;
 
@@ -92,11 +92,8 @@ export function loadRegistrationsForDay(folder: Folder, month: number, day: numb
 }
 
 export function loadChildren(): Child[] {
-	let files = DriveApp.searchFiles('title contains "Gegevens"');
-	if (!files.hasNext()) {
-		return [];
-	}
-	const spreadsheet: Spreadsheet = SpreadsheetApp.open(files.next());
+	const yearFolder: Folder = getDriveFolderFromPath("Opvang/" + getSchoolYear(dayjs().month() + 1));
+	const spreadsheet: Spreadsheet = loadSpreadSheetByName(yearFolder, "Gegevens")
 	const sheet: Sheet = spreadsheet.getSheetByName("kinderen");
 
 	const rows: any[] = sheet.getDataRange().getValues();
