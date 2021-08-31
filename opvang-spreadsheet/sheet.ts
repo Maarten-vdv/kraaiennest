@@ -46,6 +46,7 @@ export function loadChildren(data: Spreadsheet): Child[] {
 
 	return rows.map(row => ({
 		childId: row[0],
+		name: row[1],
 		lastName: row[2],
 		firstName: row[3],
 		group: row[4]
@@ -69,7 +70,7 @@ export function loadTotals(spreadsheet: Spreadsheet): Total[] {
 
 export function loadParents(data: Spreadsheet, children: Child[]): Record<number, Parent> {
 	const childLookup: Record<string, Child> = children.reduce((acc, child) => {
-		acc[child.lastName + " " + child.firstName] = child;
+		acc[child.name] = child;
 		return acc;
 	}, {})
 

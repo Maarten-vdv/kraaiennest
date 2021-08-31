@@ -21,6 +21,7 @@ export interface Parent {
 
 export interface Child {
 	childId: number;
+	name: string;
 	firstName: string;
 	lastName: string;
 	group: string;

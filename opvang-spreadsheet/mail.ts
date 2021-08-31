@@ -9,20 +9,20 @@ export function sendMail(quoteFile: File, parent: Parent, month: number, send) {
 
 	if (send) {
 		const email: MailAdvancedParameters = {
-			to: parent.email1, //to: parent.email1,
-			subject: `Opvang 't kraaiennest - factuur ${monthString} (schooljaar ${getSchoolYear(month)})`,
+			to: parent.email1 + ", " + parent.email2,
+			subject: `Opvang 't Kraaiennest - factuur ${monthString} (schooljaar ${getSchoolYear(month)})`,
 			attachments: [quoteFile.getAs("application/pdf")],
 			htmlBody: `<html><body><p>In bijlage vindt u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}</p></body></html>`,
-			name: "Ouderverenigign 'tkraaiennes Grembergen"
+			name: "Oudervereniging 't Kraaiennest Grembergen"
 		};
 		//MailApp.sendEmail(email);
 	} else {
-		GmailApp.createDraft(parent.email1,
+		GmailApp.createDraft(parent.email1 + ", " + parent.email2,
 			`Opvang 't kraaiennest - factuur ${monthString} (schooljaar ${getSchoolYear(month)})`,
 			`In bijlage vindt u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}`,
 			{
 				attachments: [quoteFile.getAs("application/pdf")],
-				name: "Ouderverenigign 'tkraaiennes Grembergen",
+				name: "Oudervereniging 't Kraaiennest Grembergen",
 				htmlBody: `<html><body><p>In bijlage vind u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}</p></body></html>`
 			});
 	}
