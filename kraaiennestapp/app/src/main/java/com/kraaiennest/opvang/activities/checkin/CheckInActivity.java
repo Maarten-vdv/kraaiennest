@@ -98,7 +98,7 @@ public class CheckInActivity extends AppCompatActivity {
         if (requestCode == CHECK_IN_SCAN_REQUEST && resultCode == RESULT_OK) {
             String userId = data.getStringExtra(SCANNED_USER_ID);
             if (userId != null) {
-                new ViewModelProvider(this).get(CheckInViewModel.class).loadChildById(userId);
+                new ViewModelProvider(this).get(CheckInViewModel.class).loadChildByQrId(userId);
             } else {
                 Toast.makeText(this, R.string.not_valid_qr, Toast.LENGTH_SHORT).show();
             }

@@ -122,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (requestCode == REGISTER_SCAN_REQUEST && resultCode == RESULT_OK) {
             String userId = data.getStringExtra(SCANNED_USER_ID);
             if (userId != null) {
-                new ViewModelProvider(this).get(RegisterViewModel.class).loadChildById(userId);
+                new ViewModelProvider(this).get(RegisterViewModel.class).loadChildByQrId(userId);
             } else {
                 Toast.makeText(this, R.string.not_valid_qr, Toast.LENGTH_SHORT).show();
             }

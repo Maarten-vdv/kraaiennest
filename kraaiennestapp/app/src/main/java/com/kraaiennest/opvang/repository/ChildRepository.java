@@ -22,11 +22,11 @@ public class ChildRepository {
         return apiService.doGetChildren().whenComplete((children, action) -> childCache = children);
     }
 
-    public CompletableFuture<Child> findById(String id) {
+    public CompletableFuture<Child> findByQrId(String id) {
         if (childCache != null) {
-            return CompletableFuture.supplyAsync(() -> childCache.stream().filter(c -> c.getId().equals(id)).findFirst().orElse(null));
+            return CompletableFuture.supplyAsync(() -> childCache.stream().filter(c -> c.getQrId().equals(id)).findFirst().orElse(null));
         }
-       return getChildren().thenApply(children -> childCache.stream().filter(c -> c.getId().equals(id)).findFirst().orElse(null));
+       return getChildren().thenApply(children -> childCache.stream().filter(c -> c.getQrId().equals(id)).findFirst().orElse(null));
     }
 
     public CompletableFuture<Child> findByPIN(String pin) {

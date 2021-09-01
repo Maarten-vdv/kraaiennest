@@ -114,8 +114,8 @@ public class RegisterViewModel extends ViewModel {
                 });
     }
 
-    public void loadChildById(String id) {
-        childRepository.findById(id).thenAccept(c -> child.postValue(c));
+    public void loadChildByQrId(String id) {
+        childRepository.findByQrId(id).thenAccept(c -> child.postValue(c)).exceptionally(f -> null);
     }
 
     public void loadChildByPIN(String pin) {

@@ -1,19 +1,19 @@
 package com.kraaiennest.opvang.activities.main;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
-import com.firebase.ui.auth.ErrorCodes;
-import com.firebase.ui.auth.IdpResponse;
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.activities.checkin.CheckInActivity;
 import com.kraaiennest.opvang.activities.presence.PresenceActivity;
@@ -35,9 +35,11 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     ChildRepository repository;
 
+    private boolean disabled;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       // Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler("Main"));
+        // Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler("Main"));
 
         // Make sure this is before calling super.onCreate
         setTheme(R.style.AppTheme);
@@ -48,18 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        View registerA = findViewById(R.id.register_btn_A);
-        registerA.setOnClickListener(event -> startRegister("A"));
-
-        View registerO = findViewById(R.id.register_btn_O);
-        registerO.setOnClickListener(event -> startRegister("O"));
-
-        View checkIn = findViewById(R.id.check_in_btn);
-        checkIn.setOnClickListener(event -> startCheckIn());
-
-        View presence = findViewById(R.id.presence_btn);
-        presence.setOnClickListener(event -> startPresence());
-
         // Request camera permissions
         if (isCameraPermissionGranted()) {
             binding.mainLayout.setVisibility(View.VISIBLE);
@@ -67,42 +57,46 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
         }
 
+        if (!hasInternet(this)) {
+            Toast.makeText(this, "Geen internet connectie.", Toast.LENGTH_LONG).show();
+            disabled = true;
+        }
+
         try {
             repository.getChildren().get();
         } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException("Kan de lijst mwt kinderen niet inladen");
+            Toast.makeText(this, "Kan de lijst met kinderen niet inladen. " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            disabled = true;
         }
+
+        View registerA = findViewById(R.id.register_btn_A);
+        registerA.setOnClickListener(event -> startRegister("A"));
+        registerA.setEnabled(!disabled);
+
+        View registerO = findViewById(R.id.register_btn_O);
+        registerO.setOnClickListener(event -> startRegister("O"));
+        registerO.setEnabled(!disabled);
+
+        View checkIn = findViewById(R.id.check_in_btn);
+        checkIn.setOnClickListener(event -> startCheckIn());
+        checkIn.setEnabled(!disabled);
+
+        View presence = findViewById(R.id.presence_btn);
+        presence.setOnClickListener(event -> startPresence());
+        presence.setEnabled(!disabled);
+
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            // Successfully signed in
-            if (resultCode == RESULT_OK) {
-                //startActivity(SignedInActivity.createIntent(this, response));
-               // finish();
-            } else {
-                // Sign in failed
-                if (response == null) {
-                    // User pressed back button
-//                    showSnackbar(R.string.sign_in_cancelled);
-//                    return;
-                }
-
-                if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-//                    showSnackbar(R.string.no_internet_connection);
-//                    return;
-                }
-
-//                showSnackbar(R.string.unknown_error);
-                Log.e("SIGN_IN", "Sign-in error: ", response.getError());
-            }
+    public static boolean hasInternet(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            Network network = connectivityManager.getActiveNetwork();
+            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+            if (capabilities != null)
+                if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET))
+                    return true;
         }
-
+        return false;
     }
 
     private void startRegister(String partOfDay) {
@@ -136,5 +130,9 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    public boolean isDisabled() {
+        return disabled;
     }
 }

@@ -42,8 +42,8 @@ public class CheckInViewModel extends ViewModel {
         return child;
     }
 
-    public void loadChildById(String id) {
-        childRepository.findById(id).thenAcceptAsync(c -> child.setValue(c));
+    public void loadChildByQrId(String id) {
+        childRepository.findByQrId(id).thenAcceptAsync(c -> child.postValue(c)).exceptionally(f -> null);
     }
 
     public void loadChildByPIN(String pin) {

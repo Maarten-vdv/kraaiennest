@@ -42,14 +42,14 @@ public class RegistrationRepository {
             return cutoff.withHour(15).withMinute(45);
         } else {
             // morning
-            return cutoff.withHour(7).withMinute(45);
+            return cutoff.withHour(8).withMinute(5);
         }
     }
 
     public Integer calculateHalfHours() {
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(now, getCutOff()).abs();
-        return Math.toIntExact(duration.toMinutes()) / 30;
+        return (30 + Math.toIntExact(duration.toMinutes() -1)) / 30;
     }
 
     public PartOfDay getPartOfDay() {

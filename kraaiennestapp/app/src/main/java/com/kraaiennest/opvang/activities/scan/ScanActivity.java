@@ -43,6 +43,8 @@ public class ScanActivity extends AppCompatActivity {
 
                 if (URLUtil.isValidUrl(url)) {
                     userId = new UrlQuerySanitizer(url).getValue(SCANNED_USER_ID);
+                } else if (url.startsWith(SCANNED_USER_ID + "=")) {
+                    userId = url.replace(SCANNED_USER_ID + "=", "");
                 }
 
                 Intent resultIntent = new Intent();
