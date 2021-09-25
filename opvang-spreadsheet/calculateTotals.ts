@@ -21,13 +21,14 @@ export function calculateTotals(activeSheet: Spreadsheet, children: Record<numbe
 			const evening = registrations[childId].reduce((acc, v) => acc + getHalfHours(v, "A"), 0);
 			const child: Child = children[childId];
 
-			const parent: Parent = parents[child.childId];
-			if (parents[childId] && parents[childId].isTeacher) {
+			const parent: Parent = parents[childId];
+			if (parent && parent.isTeacher) {
 				teacherRows.push([childId, child.lastName + " " + child.firstName, morning, evening, "", "", ""])
 			} else if (supervisors[childId]) {
 				supervisorRows.push([childId, child.lastName + " " + child.firstName, morning, evening, "", "", ""])
 			} else if (parent) {
-				sheet.appendRow([childId, child.lastName + " " + child.firstName, morning, evening, "", parent.email1 ? false : "", !parent.email1 ? true : ""])
+				const hasMail = parent.email1 || parent.email2;
+				sheet.appendRow([childId, child.lastName + " " + child.firstName, morning, evening, "", hasMail ? false : "", !hasMail ? true : ""])
 			}
 		});
 

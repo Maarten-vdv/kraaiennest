@@ -13,7 +13,6 @@ export function loadRegistrations(spreadsheet: Spreadsheet): Record<number, Regi
 		if (!registrations[childId]) {
 			registrations[childId] = [];
 		}
-
 		const registration: Registration = {
 			childId: childId,
 			date: row[1],
@@ -68,33 +67,25 @@ export function loadTotals(spreadsheet: Spreadsheet): Total[] {
 	}));
 }
 
-export function loadParents(data: Spreadsheet, children: Child[]): Record<number, Parent> {
-	const childLookup: Record<string, Child> = children.reduce((acc, child) => {
-		acc[child.name] = child;
-		return acc;
-	}, {})
-
+export function loadParents(data: Spreadsheet): Record<number, Parent> {
 	const sheet: Sheet = data.getSheetByName("ouders");
 
 	const rows: any[] = sheet.getDataRange().getValues();
 	rows.shift(); // remove header row
 	const parents: Record<string, Parent> = {};
 	rows.forEach(row => {
-		const childName = row[0].trim();
-		const child = childLookup[childName];
-		if (child) {
-			parents[child.childId] = {
-				childName: childName,
-				group: child.group,
-				quoteName: row[2] === "" ? childName : row[2],
-				streetAndNr: row[3],
-				postalCode: row[4],
-				commune: row[5],
-				email1: row[8],
-				email2: row[9],
-				isTeacher: row[20]
-			};
-		}
+		const childId = row[0];
+		parents[childId] = {
+			childName: row[3] + ' ' + row[2],
+			group: row[1],
+			quoteName: row[6] + ' / ' + row[5],
+			streetAndNr: row[12],
+			postalCode: row[13],
+			commune: row[14],
+			email1: row[8],
+			email2: row[9],
+			isTeacher: row[15]
+		};
 	});
 
 	return parents;

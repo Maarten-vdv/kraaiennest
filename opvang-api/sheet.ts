@@ -59,11 +59,11 @@ export function loadCheckInsForDay(folder: Folder, month: number, day: number): 
 
 	const rows: any[] = sheet.getDataRange().getValues();
 	const checkIns: CheckIn[] = rows.map(row => {
-		const time = dayjs(row[3], "HH:mm");
+		const time = dayjs(row[2], "HH:mm");
 		return {
 			childId: row[0],
 			time: dayjs(row[1], "DD-MM-YYYY").hour(time.hour()).minute(time.minute()).format(ISOformat),
-			partOfDay: row[2]
+			partOfDay: 'A'
 		}
 	});
 	return checkIns.filter(reg => dayjs(reg.time).date() === day);
@@ -88,7 +88,11 @@ export function loadRegistrations(folder: Folder, month: number): Registration[]
 
 
 export function loadRegistrationsForDay(folder: Folder, month: number, day: number): Registration[] {
-	return loadRegistrations(folder, month).filter(reg => dayjs(reg.time).date() === day);
+	return loadRegistrations(folder, month).filter(reg => {
+		const time = dayjs(reg.time);
+		const now = dayjs();
+		return time.date() === day && (now.hour() > 12 ? time.hour() > 12 : time.hour() <= 12);
+	});
 }
 
 export function loadChildren(): Child[] {

@@ -7,23 +7,32 @@ import GmailDraft = GoogleAppsScript.Gmail.GmailDraft;
 export function sendMail(quoteFile: File, parent: Parent, month: number, send) {
 	const monthString = dayjs().month(month).format("MMMM");
 
+	let mails = [];
+	if(parent.email1 && parent.email1 !== "") {
+		mails.push(parent.email1);
+	}
+	if(parent.email2  && parent.email2 !== "") {
+		mails.push(parent.email2);
+	}
+	const addresses: string = mails.join(", ")
+
 	if (send) {
 		const email: MailAdvancedParameters = {
-			to: parent.email1 + ", " + parent.email2,
-			subject: `Opvang 't Kraaiennest - factuur ${monthString} (schooljaar ${getSchoolYear(month)})`,
+			to: addresses,
+			subject: `Oudervereniging 't Kraaiennest - factuur Opvang maand ${monthString} (schooljaar ${getSchoolYear(month)})`,
 			attachments: [quoteFile.getAs("application/pdf")],
 			htmlBody: `<html><body><p>In bijlage vindt u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}</p></body></html>`,
 			name: "Oudervereniging 't Kraaiennest Grembergen"
 		};
 		//MailApp.sendEmail(email);
 	} else {
-		GmailApp.createDraft(parent.email1 + ", " + parent.email2,
-			`Opvang 't kraaiennest - factuur ${monthString} (schooljaar ${getSchoolYear(month)})`,
+		GmailApp.createDraft(addresses,
+			`Oudervereniging 't kraaiennest - factuur Opvang maand ${monthString} (schooljaar ${getSchoolYear(month)})`,
 			`In bijlage vindt u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}`,
 			{
 				attachments: [quoteFile.getAs("application/pdf")],
 				name: "Oudervereniging 't Kraaiennest Grembergen",
-				htmlBody: `<html><body><p>In bijlage vind u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}</p></body></html>`
+				htmlBody: `<html><body><p>In bijlage vindt u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}</p></body></html>`
 			});
 	}
 }

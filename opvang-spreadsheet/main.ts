@@ -23,7 +23,7 @@ function calculateHours(activeSpreadsheet: Spreadsheet) {
 		acc[child.childId] = child;
 		return acc;
 	}, {});
-	const parents: Record<number, Parent> = loadParents(data, childArray);
+	const parents: Record<number, Parent> = loadParents(data);
 	const supervisors: Record<number, Supervisor> = loadSupervisors(data);
 	calculateTotals(activeSpreadsheet, children, parents, supervisors);
 }
@@ -45,7 +45,7 @@ function createQuotes(activeSpreadsheet: Spreadsheet): void {
 	const totals: Total[] = loadTotals(activeSpreadsheet);
 	const registrations: Record<number, Registration[]> = loadRegistrations(SpreadsheetApp.getActiveSpreadsheet());
 	const children: Child[] = loadChildren(data);
-	const parents: Record<number, Parent> = loadParents(data, children);
+	const parents: Record<number, Parent> = loadParents(data);
 	const settings = loadSettings(data, OGM, month);
 
 	const ui = SpreadsheetApp.getUi();
@@ -86,7 +86,7 @@ function sendMails(activeSpreadsheet: Spreadsheet) {
 
 
 	const children: Child[] = loadChildren(data);
-	const parents: Record<number, Parent> = loadParents(data, children);
+	const parents: Record<number, Parent> = loadParents(data);
 	const totals: Total[] = loadTotals(activeSpreadsheet);
 	const totalsToProcess = totals.filter(total => !!total.quoteName).slice(0, settings.batchSize || 50);
 
