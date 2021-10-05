@@ -42,7 +42,7 @@ public class RegistrationRepository {
             return cutoff.withHour(15).withMinute(45);
         } else {
             // morning
-            return cutoff.withHour(8).withMinute(5);
+            return cutoff.withHour(8).withMinute(0);
         }
     }
 
