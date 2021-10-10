@@ -16,6 +16,7 @@ export interface Parent {
 	commune: string;
 	email1: string;
 	email2: string;
+	quoteVia: string;
 	isTeacher: boolean;
 }
 

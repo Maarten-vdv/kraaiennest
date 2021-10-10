@@ -25,8 +25,9 @@ export function generateQuote(total: Total, registrations: Registration[], paren
 	const eveningCost = total.evening * settings.rate;
 	const morningCost = total.morning * settings.rate;
 
+	// month in dayjs in 0 based
 	quoteHtml = quoteHtml
-		.replace("{{maand}}", dayjs().month(month).format("MMMM"))
+		.replace("{{maand}}", dayjs().month(month-1).format("MMMM"))
 		.replace("{{halveUrenOchtend}}", total.morning + "")
 		.replace("{{halveUrenAvond}}", total.evening + "")
 		.replace(/{{tarief}}/g, (settings.rate).toLocaleString(undefined, {minimumFractionDigits: 2}))

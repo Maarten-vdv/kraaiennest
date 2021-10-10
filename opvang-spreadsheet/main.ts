@@ -84,11 +84,9 @@ function sendMails(activeSpreadsheet: Spreadsheet) {
 	const settings = loadSettings(data, null, month);
 	const quoteFolder: Folder = getDriveFolderFromPath(`Opvang/${getSchoolYear(month)}/facturen/${month}`);
 
-
-	const children: Child[] = loadChildren(data);
 	const parents: Record<number, Parent> = loadParents(data);
 	const totals: Total[] = loadTotals(activeSpreadsheet);
-	const totalsToProcess = totals.filter(total => !!total.quoteName).slice(0, settings.batchSize || 50);
+	const totalsToProcess = totals.filter(total => !!total.quoteName && !total.mailed).slice(0, settings.batchSize || 50);
 
 	ui.alert(`Het script gaat nu een batch van ${totalsToProcess.length} facturen proberen te versturen`);
 

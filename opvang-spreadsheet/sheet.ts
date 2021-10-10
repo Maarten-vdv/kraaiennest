@@ -84,7 +84,8 @@ export function loadParents(data: Spreadsheet): Record<number, Parent> {
 			commune: row[14],
 			email1: row[8],
 			email2: row[9],
-			isTeacher: row[15]
+			quoteVia: row[15],
+			isTeacher: row[16]
 		};
 	});
 

@@ -27,7 +27,7 @@ export function calculateTotals(activeSheet: Spreadsheet, children: Record<numbe
 			} else if (supervisors[childId]) {
 				supervisorRows.push([childId, child.lastName + " " + child.firstName, morning, evening, "", "", ""])
 			} else if (parent) {
-				const hasMail = parent.email1 || parent.email2;
+				const hasMail =  !!parent.quoteVia &&  parent.quoteVia !== "" && parent.quoteVia !== "Papier";
 				sheet.appendRow([childId, child.lastName + " " + child.firstName, morning, evening, "", hasMail ? false : "", !hasMail ? true : ""])
 			}
 		});
