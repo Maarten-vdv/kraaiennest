@@ -25,6 +25,28 @@ export function generateQuote(total: Total, registrations: Registration[], paren
 	const eveningCost = total.evening * settings.rate;
 	const morningCost = total.morning * settings.rate;
 
+    const text =
+        'BCD'
+        + '\n002'
+        + '\n1'
+        + '\nSCT'
+        + '\nKREDBEBB'
+        + '\nOV KRAAIENNEST'
+        + '\nBE21744058424103'
+        + `\nEUR${eveningCost + morningCost}`
+        + '\nOPVG'
+        + `\n${settings.OGM[total.childId]}`
+
+	const qrCodeBlob = UrlFetchApp.fetch('https://chart.googleapis.com/chart', {
+		'method' : 'post',
+		'payload' : {
+			'cht': 'qr',
+			'chl': text,
+			'chs': '200x200'
+		}}).getBlob();
+    const bytes = qrCodeBlob.getBytes();
+    const qrBase64String = Utilities.base64Encode(bytes);
+
 	// month in dayjs in 0 based
 	quoteHtml = quoteHtml
 		.replace("{{maand}}", dayjs().month(month-1).format("MMMM"))
@@ -39,6 +61,9 @@ export function generateQuote(total: Total, registrations: Registration[], paren
 		.replace("{{rekening}}", settings.accountNr)
 		.replace("{{bic}}", settings.bic)
 		.replace("{{OGM}}", settings.OGM[total.childId]);
+
+	quoteHtml = quoteHtml
+		.replace("{{QR}}", qrBase64String);
 
 	quoteHtml = quoteHtml.replace("{{detail}}", getHtmlDetails(registrations));
 	const blob: GoogleAppsScript.Base.Blob = Utilities.newBlob(quoteHtml, "text/html", "text.html");

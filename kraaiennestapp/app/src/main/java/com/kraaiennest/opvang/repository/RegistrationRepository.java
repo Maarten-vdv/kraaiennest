@@ -48,8 +48,21 @@ public class RegistrationRepository {
 
     public Integer calculateHalfHours() {
         LocalDateTime now = LocalDateTime.now();
-        Duration duration = Duration.between(now, getCutOff()).abs();
-        return (30 + Math.toIntExact(duration.toMinutes() -1)) / 30;
+        LocalDateTime cutOff = getCutOff();
+        Duration duration;
+
+        if (cutOff.getHour() > 12) {
+            // evening starts at cutoff
+            duration = Duration.between(cutOff, now);
+        } else {
+            // morning ends at cutoff
+            duration = Duration.between(now, cutOff);
+        }
+
+        if (duration.isNegative()) {
+            return 0;
+        }
+        return (30 + Math.toIntExact(duration.toMinutes() - 1)) / 30;
     }
 
     public PartOfDay getPartOfDay() {

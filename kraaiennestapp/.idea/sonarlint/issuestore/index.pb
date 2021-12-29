@@ -102,11 +102,11 @@ Papp/src/main/java/com/kraaiennest/opvang/activities/checkin/CheckInActivity.jav
 Qapp/src/main/java/com/kraaiennest/opvang/activities/checkin/CheckInViewModel.java,6\1\61d82f46e13eceb8dcb97a944bde09319a877b8d
 i
 9app/src/main/java/com/kraaiennest/opvang/model/Child.java,3\1\316980be053098227b16f8445ef8a615d19ae001
-ƒ
-Sapp/src/main/java/com/kraaiennest/opvang/activities/register/RegisterViewModel.java,b\8\b87a5d5510c09b6a45436ebccd3eda3872ca5f95
 @
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 x
 Happ/src/main/java/com/kraaiennest/opvang/repository/ChildRepository.java,9\7\97669a5848be1a5c868ca995149d5f2b6b175b5d
+ƒ
+Sapp/src/main/java/com/kraaiennest/opvang/activities/register/RegisterViewModel.java,b\8\b87a5d5510c09b6a45436ebccd3eda3872ca5f95
 
 Oapp/src/main/java/com/kraaiennest/opvang/repository/RegistrationRepository.java,b\c\bc6d6ae8f8133680a656f109ae32bd3a537e685d
