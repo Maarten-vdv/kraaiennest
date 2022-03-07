@@ -3,14 +3,14 @@ package com.kraaiennest.opvang.api;
 import com.kraaiennest.opvang.model.CheckIn;
 import com.kraaiennest.opvang.model.Child;
 import com.kraaiennest.opvang.model.Registration;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 
 public interface APIService {

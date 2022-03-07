@@ -3,16 +3,16 @@ package com.kraaiennest.opvang.di;
 import com.kraaiennest.opvang.api.APIService;
 import com.kraaiennest.opvang.repository.ChildRepository;
 import com.kraaiennest.opvang.repository.RegistrationRepository;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
-import dagger.hilt.android.components.ApplicationComponent;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import dagger.hilt.components.SingletonComponent;
 
 @Module
-@InstallIn(ApplicationComponent.class)
+@InstallIn(SingletonComponent.class)
 public class RepositoryModule {
 
 

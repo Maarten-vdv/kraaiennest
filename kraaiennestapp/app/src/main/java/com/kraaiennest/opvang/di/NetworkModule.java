@@ -5,20 +5,22 @@ import com.google.gson.GsonBuilder;
 import com.kraaiennest.opvang.api.APIService;
 import com.kraaiennest.opvang.api.LocalDateTimeConverter;
 import com.kraaiennest.opvang.retrofit.QueryConverterFactory;
+
+import java.time.LocalDateTime;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
-import dagger.hilt.android.components.ApplicationComponent;
+import dagger.hilt.components.SingletonComponent;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import javax.inject.Singleton;
-import java.time.LocalDateTime;
-
 @Module
-@InstallIn(ApplicationComponent.class)
+@InstallIn(SingletonComponent.class)
 public class NetworkModule {
 
     public static final String API_BASE_URL = "https://www.tkraaiennest-grembergen.be/opvang/";

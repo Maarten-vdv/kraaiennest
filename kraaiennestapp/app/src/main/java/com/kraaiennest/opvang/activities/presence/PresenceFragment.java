@@ -1,24 +1,26 @@
 package com.kraaiennest.opvang.activities.presence;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.databinding.FragmentPresenceListBinding;
-import dagger.hilt.android.AndroidEntryPoint;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * A fragment representing a list of Items.
@@ -40,7 +42,7 @@ public class PresenceFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         com.kraaiennest.opvang.databinding.FragmentPresenceListBinding binding = FragmentPresenceListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -71,9 +73,8 @@ public class PresenceFragment extends Fragment {
     private void initSwipeContainer(SwipeRefreshLayout swipeContainer) {
         swipeContainer.setRefreshing(false);
         // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(() -> {
-            model.refreshPresences().thenRunAsync(() -> swipeContainer.setRefreshing(false));
-        });
+        swipeContainer.setOnRefreshListener(() ->
+                model.refreshPresences().thenRunAsync(() -> swipeContainer.setRefreshing(false)));
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
