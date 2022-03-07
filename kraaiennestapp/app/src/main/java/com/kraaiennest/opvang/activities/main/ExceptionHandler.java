@@ -1,7 +1,9 @@
 package com.kraaiennest.opvang.activities.main;
 
 import android.util.Log;
+
 import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {

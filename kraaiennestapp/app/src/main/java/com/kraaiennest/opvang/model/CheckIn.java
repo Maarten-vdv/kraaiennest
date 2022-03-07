@@ -1,7 +1,7 @@
 package com.kraaiennest.opvang.model;
 
-import com.google.firebase.Timestamp;
 import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 import java.time.LocalDateTime;

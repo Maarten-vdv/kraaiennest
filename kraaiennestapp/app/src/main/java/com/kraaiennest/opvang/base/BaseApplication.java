@@ -2,12 +2,15 @@ package com.kraaiennest.opvang.base;
 
 import android.app.Application;
 import android.content.Context;
+
 import com.kraaiennest.opvang.R;
-import dagger.hilt.android.HiltAndroidApp;
+
 import org.acra.ACRA;
 import org.acra.BuildConfig;
 import org.acra.annotation.AcraCore;
 import org.acra.annotation.AcraMailSender;
+
+import dagger.hilt.android.HiltAndroidApp;
 
 
 @HiltAndroidApp

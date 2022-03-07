@@ -1,10 +1,12 @@
 package com.kraaiennest.opvang.activities.register;
 
-import androidx.hilt.lifecycle.ViewModelInject;
+import static java.text.MessageFormat.format;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.model.Child;
 import com.kraaiennest.opvang.model.PartOfDay;
@@ -16,8 +18,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-import static java.text.MessageFormat.format;
+import javax.inject.Inject;
 
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class RegisterViewModel extends ViewModel {
 
     private final RegistrationRepository repository;
@@ -31,7 +36,7 @@ public class RegisterViewModel extends ViewModel {
     private final DateTimeFormatter dateTimeFormatter;
     private String errorMessage;
 
-    @ViewModelInject
+    @Inject
     public RegisterViewModel(RegistrationRepository registrationRepository, ChildRepository childRepository) {
         this.repository = registrationRepository;
         this.childRepository = childRepository;

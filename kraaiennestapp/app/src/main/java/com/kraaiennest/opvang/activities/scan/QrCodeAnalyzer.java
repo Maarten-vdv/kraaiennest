@@ -1,16 +1,28 @@
 package com.kraaiennest.opvang.activities.scan;
 
+import static android.graphics.ImageFormat.YUV_420_888;
+
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
-import com.google.zxing.*;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.PlanarYUVLuminanceSource;
+import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
 import java.nio.ByteBuffer;
-import java.util.*;
-
-import static android.graphics.ImageFormat.YUV_420_888;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
 
@@ -22,6 +34,7 @@ public class QrCodeAnalyzer implements ImageAnalysis.Analyzer {
         reader = new MultiFormatReader();
         Map<DecodeHintType, Object> hints = new EnumMap<>(DecodeHintType.class);
         hints.put(DecodeHintType.POSSIBLE_FORMATS, Collections.singletonList(BarcodeFormat.QR_CODE));
+        hints.put(DecodeHintType.TRY_HARDER, true);
         reader.setHints(hints);
     }
 

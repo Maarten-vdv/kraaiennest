@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Size;
 import android.view.Surface;
 import android.webkit.URLUtil;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
@@ -15,6 +16,7 @@ import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
+
 import com.google.common.util.concurrent.ListenableFuture;
 import com.kraaiennest.opvang.R;
 
@@ -96,7 +98,7 @@ public class ScanActivity extends AppCompatActivity {
 
         ImageAnalysis imageAnalysis =
                 new ImageAnalysis.Builder()
-                        .setTargetResolution(new Size(1280, 720))
+                        .setTargetResolution(new Size(800, 600))
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build();
         imageAnalysis.setAnalyzer(cameraExecutor, analyzer);

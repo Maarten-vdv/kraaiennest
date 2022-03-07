@@ -1,19 +1,20 @@
 package com.kraaiennest.opvang.activities.presence;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
+
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.model.PresenceSortOrder;
-import dagger.hilt.android.AndroidEntryPoint;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class PresenceActivity extends AppCompatActivity implements SortOptionsFragment.SortDialogListener {

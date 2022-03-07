@@ -1,11 +1,15 @@
 package com.kraaiennest.opvang.activities.presence;
 
-import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import com.kraaiennest.opvang.model.*;
+
+import com.kraaiennest.opvang.model.CheckIn;
+import com.kraaiennest.opvang.model.Child;
+import com.kraaiennest.opvang.model.Presence;
+import com.kraaiennest.opvang.model.PresenceSortOrder;
+import com.kraaiennest.opvang.model.Registration;
 import com.kraaiennest.opvang.repository.ChildRepository;
 import com.kraaiennest.opvang.repository.RegistrationRepository;
 
@@ -18,6 +22,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class PresenceViewModel extends ViewModel {
 
     private final RegistrationRepository registrationRepository;
@@ -29,7 +38,7 @@ public class PresenceViewModel extends ViewModel {
     Map<Integer, String> strings;
     private PresenceSortOrder sortOrder = PresenceSortOrder.NAME;
 
-    @ViewModelInject
+    @Inject
     public PresenceViewModel(RegistrationRepository registrationRepository, ChildRepository childRepository) {
         this.registrationRepository = registrationRepository;
         this.childRepository = childRepository;

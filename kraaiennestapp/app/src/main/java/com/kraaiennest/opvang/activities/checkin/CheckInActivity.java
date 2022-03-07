@@ -1,26 +1,29 @@
 package com.kraaiennest.opvang.activities.checkin;
 
+import static com.kraaiennest.opvang.activities.pin.PinActivity.CHILD_PIN;
+import static com.kraaiennest.opvang.activities.scan.ScanActivity.SCANNED_USER_ID;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.activities.main.ExceptionHandler;
 import com.kraaiennest.opvang.activities.pin.PinActivity;
 import com.kraaiennest.opvang.activities.register.ApiCallState;
 import com.kraaiennest.opvang.activities.scan.ScanActivity;
 import com.kraaiennest.opvang.databinding.ActivityCheckInBinding;
-import dagger.hilt.android.AndroidEntryPoint;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kraaiennest.opvang.activities.pin.PinActivity.CHILD_PIN;
-import static com.kraaiennest.opvang.activities.scan.ScanActivity.SCANNED_USER_ID;
+import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class CheckInActivity extends AppCompatActivity {

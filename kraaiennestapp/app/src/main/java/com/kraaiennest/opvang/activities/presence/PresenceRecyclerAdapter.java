@@ -1,12 +1,16 @@
 package com.kraaiennest.opvang.activities.presence;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.flexbox.FlexboxLayout;
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.model.Child;
@@ -16,8 +20,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class PresenceRecyclerAdapter extends RecyclerView.Adapter<PresenceRecyclerAdapter.ViewHolder> {
 

@@ -2,9 +2,7 @@ package com.kraaiennest.opvang.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Presence {
     @SerializedName("child")

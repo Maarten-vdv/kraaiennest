@@ -6,6 +6,7 @@ import com.kraaiennest.opvang.api.APIService;
 import com.kraaiennest.opvang.api.LocalDateTimeConverter;
 import com.kraaiennest.opvang.retrofit.QueryConverterFactory;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import javax.inject.Singleton;
@@ -43,6 +44,9 @@ public class NetworkModule {
                 .addInterceptor(logging)
                 .followSslRedirects(true)
                 .followRedirects(true)
+                .connectTimeout(Duration.ofSeconds(30))
+                .writeTimeout(Duration.ofSeconds(30))
+                .readTimeout(Duration.ofSeconds(30))
                 .build();
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))

@@ -1,10 +1,10 @@
 package com.kraaiennest.opvang.activities.checkin;
 
-import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.activities.register.ApiCallState;
 import com.kraaiennest.opvang.model.CheckIn;
@@ -16,6 +16,11 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class CheckInViewModel extends ViewModel {
 
     private final RegistrationRepository registrationRepository;
@@ -24,7 +29,7 @@ public class CheckInViewModel extends ViewModel {
     private MutableLiveData<ApiCallState> apiCallState;
     private Map<Integer, String> strings;
 
-    @ViewModelInject
+    @Inject
     public CheckInViewModel(RegistrationRepository registrationRepository, ChildRepository childRepository) {
         this.registrationRepository = registrationRepository;
         this.childRepository = childRepository;

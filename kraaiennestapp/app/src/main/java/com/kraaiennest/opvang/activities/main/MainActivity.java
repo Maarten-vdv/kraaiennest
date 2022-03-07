@@ -10,20 +10,24 @@ import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
+
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.activities.checkin.CheckInActivity;
 import com.kraaiennest.opvang.activities.presence.PresenceActivity;
 import com.kraaiennest.opvang.activities.register.RegisterActivity;
 import com.kraaiennest.opvang.databinding.ActivityMainBinding;
 import com.kraaiennest.opvang.repository.ChildRepository;
-import dagger.hilt.android.AndroidEntryPoint;
+
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
-import java.util.concurrent.ExecutionException;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {

@@ -1,7 +1,9 @@
 package com.kraaiennest.opvang.settings;
 
 import android.os.Bundle;
+
 import androidx.preference.PreferenceFragmentCompat;
+
 import com.kraaiennest.opvang.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {

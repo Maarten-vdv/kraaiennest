@@ -1,14 +1,15 @@
 package com.kraaiennest.opvang.retrofit;
 
 import org.jetbrains.annotations.NotNull;
-import retrofit2.Converter;
-import retrofit2.Retrofit;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+
+import retrofit2.Converter;
+import retrofit2.Retrofit;
 
 public class QueryConverterFactory extends Converter.Factory {
     public static QueryConverterFactory create() {
