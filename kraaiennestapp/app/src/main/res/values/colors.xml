@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#689f38</color>
+    <color name="primaryColorDisabled">#93988F</color>
+    <color name="primaryLightColor">#99d066</color>
+    <color name="primaryDarkColor">#387002</color>
+    <color name="secondaryColor">#dcedc8</color>
+    <color name="secondaryLightColor">#fffffb</color>
+    <color name="titleTextColor">#ffffff</color>
+    <color name="appBackgroundColor">#aabb97</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
+    <color name="cancelColor">#E53935</color>
+    <color name="departedColor">#D3766F</color>
+    <color name="register_btn_color_O">#039BE5</color>
+    <color name="register_btn_color_A">#F79922</color>
+    <color name="check_in_btn_color">#5133AB</color>
+    <color name="presence_btn_color">#AC193D</color>
+    <color name="black">#000000</color>
+</resources>

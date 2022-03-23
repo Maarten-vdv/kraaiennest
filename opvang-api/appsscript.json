@@ -1,0 +1,27 @@
+{
+  "timeZone": "Europe/Brussels",
+  "dependencies": {
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Sheets",
+        "version": "v4",
+        "serviceId": "sheets"
+      },
+      {
+        "userSymbol": "Drive",
+        "version": "v2",
+        "serviceId": "drive"
+      }
+    ],
+    "libraries": [
+      {
+        "userSymbol": "Dayjs",
+        "version": "0",
+        "libraryId": "1MRcy7tU5C9-NYF5Yx0yRdYcSphvxeFWIN6auHjYlEG7_ysQb-tk7jTrj",
+        "developmentMode": true
+      }
+    ]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}

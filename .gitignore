@@ -1,0 +1,5 @@
+/personal/opvang/.idea/
+/personal/opvang/node_modules/
+/personal/opvang/package-lock.json
+.idea/
+/firebase/functions/sheets_updater_service_account.json

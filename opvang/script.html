@@ -1,0 +1,134 @@
+<script>
+    const opvangApp = function () {
+        const self = this;
+        const now = new Date();
+        const halfHours = $('#halfHours');
+
+        //Submits the form to apps script
+        self.submitForm = function () {
+            toggleSubmitButton(true);
+            setSuccessMessage(false);
+            setErrorMessage(false);
+
+            const data = {
+                halfHours: parseInt(halfHours.text()),
+                now: now.getTime()
+            }
+
+            google.script.run
+                .withSuccessHandler(self.successfullySubmitted)
+                .withFailureHandler(self.failedToSubmit)
+                .formSubmit(data);
+        };
+
+        //When the apps script sucessfully returns
+        self.successfullySubmitted = function (value) {
+            if (value.success) {
+                setSuccessMessage(true, "Registratie geslaagd!");
+            } else {
+                setErrorMessage(true, value.message);
+                toggleSubmitButton(false);
+            }
+        }
+
+        //When the apps script threw an error
+        self.failedToSubmit = function (value) {
+            toggleSubmitButton(false);
+            setErrorMessage(true, value.message);
+        }
+
+        self.updateClock = function () {
+            let s = "";
+            s += (10 > now.getHours() ? "0" : "") + now.getHours() + ":";
+            s += (10 > now.getMinutes() ? "0" : "") + now.getMinutes();
+            console.log(s)
+            $('#clock').text(s);
+            // this makes the clock tick.
+            // setTimeout(self.updateClock, 60000 - d.getTime() % 60000 + 100);
+
+            if(now.getHours() === 15 && now.getMinutes() > 29 && now.getMinutes() < 46) {
+                // this is the free quarter and should be used to register which kids are here (with 0 half hours)
+                $(".part-register").removeClass('d-none');
+                $(".real-reg").addClass('d-none');
+                // auto submit form on registration
+                self.submitForm();
+            } else if (now.getHours() > 11) {
+                $('.eveningClock.clock').text("15:45");
+                $('.eveningClock').show();
+            } else {
+                $('.morningClock.clock').text("8:00");
+                $('.morningClock').show();
+            }
+        }
+
+        self.calcHalfHours = function () {
+            const evening = now.getHours() >= 12;
+            const wednesday = now.getDay() === 3;
+
+            let date = new Date();
+            let minutes;
+            if (evening && wednesday) {
+                date.setHours(15, 45);
+                minutes = moment.duration(moment(now).diff(moment(date))).as('minutes');
+            } else if (evening) {
+                date.setHours(15, 45);
+                minutes = moment.duration(moment(now).diff(moment(date))).as('minutes');
+            } else {
+                date.setHours(8, 0);
+                minutes = moment.duration(moment(date).diff(moment(now))).as('minutes');
+            }
+            return Math.max(0, Math.ceil(minutes / 30));
+        }
+
+        self.lower = function () {
+            const current = parseInt(halfHours.text());
+            halfHours.text(Math.max(0, current - 1));
+        }
+
+        self.higher = function () {
+            const current = parseInt(halfHours.text());
+            halfHours.text(Math.max(0, current + 1));
+        }
+    };
+
+    $(function () {
+        const app = new opvangApp();
+        $('#submitButton').on('click', app.submitForm);
+        $('#lower').on('click', app.lower);
+        $('#higher').on('click', app.higher);
+
+        $('#halfHours').text(app.calcHalfHours());
+        $('.morningClock').hide();
+        $('.eveningClock').hide();
+        app.updateClock();
+
+        const clock = $('#clock');
+    });
+
+    //Disables/enables the submit button
+    function toggleSubmitButton(disabled) {
+        $('#submitButton').prop('disabled', disabled);
+    }
+
+    //Sets the general message box's message and enables or disabled the error box
+    function setSuccessMessage(show, message) {
+        if (show) {
+            $('.success.message').removeClass('d-none');
+            $('.success.message .message').text(message);
+        } else {
+            $('.success.message').addClass('d-none');
+            $('.success.message .message').text('');
+        }
+    }
+
+    //Sets the error message box's message and enables or disabled the error box
+    function setErrorMessage(show, message) {
+        if (show) {
+            $('.error.message').removeClass('d-none');
+            $('.error.message .message').text(message);
+        } else {
+            $('.error.message').addClass('d-none');
+            $('.error.message .message').text('');
+        }
+    }
+</script>

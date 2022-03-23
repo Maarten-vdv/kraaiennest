@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.kraaiennest.opvang.activities.pin.PinViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/appBackgroundColor"
+        android:padding="40dp">
+
+        <TextView
+            android:id="@+id/tvEnterCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="@string/child_pin"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="#ffffff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="36sp"
+            android:letterSpacing="0.5"
+            android:text="@{viewmodel.pin}"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:padding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvEnterCode"
+            tools:text="..." />
+
+        <Button
+            android:id="@+id/pin_code_button_1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_circle_primary"
+            android:text="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintEnd_toStartOf="@+id/pin_code_button_2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCode" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pin_code_button_2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_circle_primary"
+            app:rippleColor="@color/primaryLightColor"
+            android:text="2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/pin_code_button_1"
+            app:layout_constraintEnd_toStartOf="@+id/pin_code_button_3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/pin_code_button_1"
+            app:layout_constraintTop_toTopOf="@+id/pin_code_button_1" />
+
+        <Button
+            android:id="@+id/pin_code_button_3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_circle_primary"
+            android:text="3"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/pin_code_button_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/pin_code_button_2"
+            app:layout_constraintTop_toTopOf="@+id/pin_code_button_1" />
+
+        <Button
+            android:id="@+id/pin_code_button_4"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_circle_primary"
+            android:text="4"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toTopOf="@+id/pin_code_button_7"
+            app:layout_constraintEnd_toStartOf="@+id/pin_code_button_5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pin_code_button_1" />
+
+        <Button
+            android:id="@+id/pin_code_button_5"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_circle_primary"
+            android:text="5"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/pin_code_button_4"
+            app:layout_constraintEnd_toStartOf="@+id/pin_code_button_6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/pin_code_button_1"
+            app:layout_constraintTop_toTopOf="@+id/pin_code_button_4" />
+
+        <Button
+            android:id="@+id/pin_code_button_6"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_circle_primary"
+            android:text="6"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/pin_code_button_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/pin_code_button_5"
+            app:layout_constraintTop_toTopOf="@+id/pin_code_button_4" />
+
+        <Button
+            android:id="@+id/pin_code_button_7"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_circle_primary"
+            android:text="7"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toTopOf="@+id/pin_code_button_delete"
+            app:layout_constraintEnd_toStartOf="@+id/pin_code_button_8"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pin_code_button_4" />
+
+        <Button
+            android:id="@+id/pin_code_button_8"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_circle_primary"
+            android:text="8"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/pin_code_button_7"
+            app:layout_constraintEnd_toStartOf="@+id/pin_code_button_9"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/pin_code_button_7"
+            app:layout_constraintTop_toTopOf="@+id/pin_code_button_7" />
+
+        <Button
+            android:id="@+id/pin_code_button_9"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_circle_primary"
+            android:text="9"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/pin_code_button_7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/pin_code_button_8"
+            app:layout_constraintTop_toTopOf="@+id/pin_code_button_7" />
+
+        <ImageButton
+            android:id="@+id/pin_code_button_delete"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/fui_transparent"
+            android:src="@drawable/ic_baseline_backspace_24"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintEnd_toStartOf="@+id/pin_code_button_0"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pin_code_button_7" />
+
+        <Button
+            android:id="@+id/pin_code_button_0"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:text="0"
+            android:background="@drawable/shape_circle_primary"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toEndOf="@+id/pin_code_button_delete"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintBottom_toBottomOf="@+id/pin_code_button_delete"
+            app:layout_constraintTop_toBottomOf="@id/pin_code_button_8"
+            app:layout_constraintEnd_toStartOf="@+id/pin_code_button_ok"
+            />
+
+        <ImageButton
+            android:id="@+id/pin_code_button_ok"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_round"
+            android:enabled="false"
+            android:src="@drawable/ic_baseline_check_24"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/pin_code_button_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/pin_code_button_0"
+            app:layout_constraintTop_toBottomOf="@+id/pin_code_button_9"
+            app:layout_constraintVertical_bias="0.45" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "346143943040",
+    "firebase_url": "https://opvang-kgov.firebaseio.com",
+    "project_id": "opvang-kgov",
+    "storage_bucket": "opvang-kgov.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346143943040:android:b9aa1d1762314ea833f965",
+        "android_client_info": {
+          "package_name": "com.kraaiennest.opvang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346143943040-h5mo265la4366d15024jikgr4o6gkepp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlC-5S-3bPGz3Tvt2GetG2H_YId_2iqxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346143943040-h5mo265la4366d15024jikgr4o6gkepp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

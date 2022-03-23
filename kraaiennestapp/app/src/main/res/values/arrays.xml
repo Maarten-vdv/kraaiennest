@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="presence_sort_array">
+        <item>naam</item>
+        <item>klas - naam</item>
+        <item>aanwezig - naam</item>
+    </string-array>
+</resources>

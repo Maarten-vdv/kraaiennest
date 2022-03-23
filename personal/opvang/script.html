@@ -1,0 +1,139 @@
+<script>
+    const inputs = [];
+
+    const opvangApp = function () {
+        const self = this;
+        const now = new Date();
+        const halfHours = $('#halfHours');
+
+        //Submits the form to apps script
+        self.submitForm = function () {
+            toggleSubmitButton(true);
+            setSuccessMessage(false);
+            setErrorMessage(false);
+
+            const data = {
+                halfHours: parseInt(halfHours.text())
+            }
+
+            google.script.run
+                .withSuccessHandler(self.successfullySubmitted)
+                .withFailureHandler(self.failedToSubmit)
+                .formSubmit(data);
+        };
+
+        //Retrieves the form data based on the input fields
+        self.getFormData = function () {
+            const output = {};
+            for (let i = 0; i < inputs.length; i++) {
+                output[inputs[i]] = $('#' + inputs[i]).val();
+            }
+            console.log(output)
+            return output;
+        }
+
+        //When the apps script sucessfully returns
+        self.successfullySubmitted = function (value) {
+            if (value.success) {
+                setSuccessMessage(true, "Registratie geslaagd!");
+            } else {
+                setErrorMessage(true, value.message);
+                toggleSubmitButton(false);
+            }
+        }
+
+        //When the apps script threw an error
+        self.failedToSubmit = function (value) {
+            toggleSubmitButton(false);
+            setErrorMessage(true, value.message);
+        }
+
+        self.updateClock = function () {
+            let s = "";
+            s += (10 > now.getHours() ? "0" : "") + now.getHours() + ":";
+            s += (10 > now.getMinutes() ? "0" : "") + now.getMinutes();
+            console.log(s)
+            $('#clock').text(s);
+            // this makes the clock tick.
+            //   setTimeout(self.updateClock, 60000 - d.getTime() % 60000 + 100);
+        }
+
+        self.calcHalfHours = function () {
+            const evening = now.getHours() >= 12;
+            const wednesday = now.getDay() === 3;
+
+            let date = new Date();
+            let minutes;
+            if (evening && wednesday) {
+                date.setHours(15, 30);
+                minutes = moment.duration(moment(now).diff(moment(date))).as('minutes');
+            } else if (evening) {
+                date.setHours(15, 30);
+                minutes = moment.duration(moment(now).diff(moment(date))).as('minutes');
+            } else {
+                date.setHours(8, 25);
+                minutes = moment.duration(moment(date).diff(moment(now))).as('minutes');
+            }
+            return Math.ceil(minutes / 30);
+        }
+
+        self.lower = function () {
+            const current = parseInt(halfHours.text());
+            halfHours.text(current - 1);
+        }
+
+        self.higher = function () {
+            const current = parseInt(halfHours.text());
+            halfHours.text(current + 1);
+        }
+    };
+
+    $(function () {
+        const app = new opvangApp();
+        $('#submitButton').on('click', app.submitForm);
+        $('#lower').on('click', app.lower);
+        $('#higher').on('click', app.higher);
+
+        $('#halfHours').text(app.calcHalfHours());
+
+        app.updateClock();
+
+        const clock = $('#clock');
+        $(window).resize(function () {
+            // Get the current height of the div and save it as a variable.
+            var height = clock.height();
+            // Set the font-size and line-height of the text within the div according to the current height.
+            clock.css({
+                'font-size': (height * 0.5) + 'px',
+                'line-height': height + 'px'
+            })
+        }).trigger('resize');
+    });
+
+    //Disables/enables the submit button
+    function toggleSubmitButton(disabled) {
+        $('#submitButton').prop('disabled', disabled);
+    }
+
+    //Sets the general message box's message and enables or disabled the error box
+    function setSuccessMessage(show, message) {
+        if (show) {
+            $('.success.message').removeClass('d-none');
+            $('.success.message .message').text(message);
+        } else {
+            $('.success.message').addClass('d-none');
+            $('.success.message .message').text('');
+        }
+    }
+
+    //Sets the error message box's message and enables or disabled the error box
+    function setErrorMessage(show, message) {
+        if (show) {
+            $('.error.message').removeClass('d-none');
+            $('.error.message .message').text(message);
+        } else {
+            $('.error.message').addClass('d-none');
+            $('.error.message .message').text('');
+        }
+    }
+</script>

@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">Opvang \'t Kraaiennest</string>
+    <string name="title_activity_presence">Aanwezigheden</string>
+    <string name="action_settings">Instellingen</string>
+    <string name="startBtn">Start</string>
+    <string name="presenceBtn">Presence</string>
+    <string name="action_register_O">Aankomst ochtend</string>
+    <string name="action_register_A">Vertrek avond</string>
+    <string name="action_presence">Aanwezigheden</string>
+    <string name="register_btn_O">Aankomst ochtend</string>
+    <string name="check_in_btn">Aankomst avond</string>
+    <string name="register_btn_A">Vertrek avond</string>
+    <string name="presence_btn">Aanwezigheden</string>
+    <string name="title_activity_check_in">Aankomst avond</string>
+
+    <string name="register_btn">Registreer</string>
+    <string name="scan_btn">Scan</string>
+    <string name="do_check_in_btn">Registreer</string>
+    <string name="back_btn">Terug</string>
+    <string name="lower">-</string>
+    <string name="higher">+</string>
+    <string name="scan_child">Scan een kind code</string>
+    <string name="registration_success">Registratie geslaagd</string>
+    <string name="half_hours">halve uren</string>
+    <string name="until">-</string>
+    <string name="check_in_success">Check in geslaagd</string>
+    <string name="check_in_fail">Check in mislukt</string>
+    <string name="title_activity_settings">Instellingen</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="error_load_presence">Fout bij ophalen van aanwezigheden.</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+
+    <string name="action_sort">Sorteer</string>
+    <string name="sort_field">Sorteer op</string>
+    <string name="sort_name">Naam</string>
+    <string name="sort_group">Klas</string>
+    <string name="sort_presence">Aanwezigheid</string>
+    <string name="title_activity_register">Registratie</string>
+    <string name="action_refresh">Vernieuw</string>
+    <string name="no_presences_available">Geen aanwezigheden gevonden</string>
+    <string name="not_valid_qr">Geen geldige opvang QR-code</string>
+    <string name="crach_toast">App crach report is verstuurd.</string>
+    <string name="app_crach_subject">Opvang app crach</string>
+    <string name="pin_btn">PIN</string>
+    <string name="not_valid_pin">Ongeldige PIN</string>
+    <string name="child_pin">kind PIN code</string>
+    <string name="action_filter">Filter</string>
+    <string name="registration_failed">Registratie mislukt: %1$s</string>
+</resources>
