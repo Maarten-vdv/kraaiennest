@@ -15,8 +15,7 @@ function calculateHours(activeSpreadsheet: Spreadsheet) {
 	if (!name.startsWith("registraties-")) {
 		return;
 	}
-	const month = Number.parseInt(name.split("-")[1]);
-	const yearFolder: Folder = getDriveFolderFromPath("Opvang/" + getSchoolYear(month));
+	const yearFolder: Folder = DriveApp.getFileById(activeSpreadsheet.getId()).getParents().next();
 	const data: Spreadsheet = loadSpreadSheetByName(yearFolder, "Gegevens")
 	let childArray: Child[] = loadChildren(data);
 	const children: Record<string, Child> = childArray.reduce((acc: Record<string, Child>, child: Child) => {
@@ -37,7 +36,7 @@ function createQuotes(activeSpreadsheet: Spreadsheet): void {
 	}
 	const month = Number.parseInt(name.split("-")[1]);
 	const opvangFolder: Folder = getDriveFolderFromPath("Opvang");
-	const yearFolder: Folder = getDriveFolderFromPath("Opvang/" + getSchoolYear(month));
+	const yearFolder: Folder = DriveApp.getFileById(activeSpreadsheet.getId()).getParents().next();
 
 	const data: Spreadsheet = loadSpreadSheetByName(yearFolder, "Gegevens")
 	const OGM: Spreadsheet = loadSpreadSheetByName(opvangFolder, "OGM");
@@ -49,7 +48,7 @@ function createQuotes(activeSpreadsheet: Spreadsheet): void {
 	const settings = loadSettings(data, OGM, month);
 
 	const ui = SpreadsheetApp.getUi();
-	ui.alert(`Het script gaat nu een batch van ${settings.batchSize || 50} facturen proberen aan te maken in Goolge drive map ${"Opvang/" + getSchoolYear(month) + "/Facturen/" + month}`);
+	ui.alert(`Het script gaat nu een batch van ${settings.batchSize || 50} facturen proberen aan te maken in Goolge drive map ${"Opvang/" + getSchoolYear() + "/Facturen/" + month}`);
 
 	const totalsToProcess = totals.filter(total => !total.quoteName).slice(0, settings.batchSize || 50);
 	totalsToProcess.forEach(total => {
@@ -78,11 +77,11 @@ function sendMails(activeSpreadsheet: Spreadsheet) {
 		return
 	}
 	const month = Number.parseInt(name.split("-")[1]);
-	const yearFolder: Folder = getDriveFolderFromPath("Opvang/" + getSchoolYear(month));
+	const yearFolder: Folder = DriveApp.getFileById(activeSpreadsheet.getId()).getParents().next();
 
 	const data: Spreadsheet = loadSpreadSheetByName(yearFolder, "Gegevens")
 	const settings = loadSettings(data, null, month);
-	const quoteFolder: Folder = getDriveFolderFromPath(`Opvang/${getSchoolYear(month)}/facturen/${month}`);
+	const quoteFolder: Folder = getDriveFolderFromPath(`Opvang/${getSchoolYear()}/facturen/${month}`);
 
 	const parents: Record<number, Parent> = loadParents(data);
 	const totals: Total[] = loadTotals(activeSpreadsheet);

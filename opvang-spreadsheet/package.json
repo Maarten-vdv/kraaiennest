@@ -7,7 +7,9 @@
     "@types/google-apps-script": "^1.0.34",
     "dayjs": "^1.10.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "ajv": "^8.9.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

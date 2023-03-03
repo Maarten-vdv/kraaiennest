@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kraaiennest.opvang">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <application
         android:name=".base.BaseApplication"
@@ -14,30 +14,33 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activities.nfc.NfcActivity"
+            android:exported="false" />
+        <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".activities.checkin.CheckInActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_check_in" />
+            android:label="@string/title_activity_check_in"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.presence.PresenceActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_presence" />
+            android:label="@string/title_activity_presence"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.register.RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_register" />
-        <activity android:name=".activities.scan.ScanActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".activities.pin.PinActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.scan.ScanActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.pin.PinActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.main.MainActivity"
-            android:theme="@style/AppTheme.Launcher"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

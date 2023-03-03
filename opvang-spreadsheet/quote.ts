@@ -7,7 +7,7 @@ export function generateQuote(total: Total, registrations: Registration[], paren
 		return;
 	}
 	const quoteTemplate: File = DriveApp.getFilesByName("factuur-template.html").next();
-	const fileName = `${getSchoolYear(month)}_${month}_${parent.childName.replace(/\s/g, "_")}.pdf`;
+	const fileName = `${getSchoolYear()}_${month}_${parent.childName.replace(/\s/g, "_")}.pdf`;
 
 	let quoteHtml: string = quoteTemplate.getBlob().getDataAsString();
 
@@ -69,13 +69,13 @@ export function generateQuote(total: Total, registrations: Registration[], paren
 	const blob: GoogleAppsScript.Base.Blob = Utilities.newBlob(quoteHtml, "text/html", "text.html");
 	const pdf: GoogleAppsScript.Base.Blob = blob.getAs("application/pdf");
 
-	const parentFolder = getDriveFolderFromPath("Opvang/" + getSchoolYear(month) + "/Facturen/");
+	const parentFolder = getDriveFolderFromPath("Opvang/" + getSchoolYear() + "/Facturen/");
 	if (!parentFolder.getFoldersByName(month + "").hasNext()) {
 		const monthFolder: Folder = parentFolder.createFolder(month + "");
 		monthFolder.createFolder("printen");
 	}
 
-	let path = "Opvang/" + getSchoolYear(month) + "/facturen/" + month + (total.toPrint ? "/printen" : "");
+	let path = "Opvang/" + getSchoolYear() + "/facturen/" + month + (total.toPrint ? "/printen" : "");
 	saveToDrive(pdf, fileName, path);
 	return fileName;
 }

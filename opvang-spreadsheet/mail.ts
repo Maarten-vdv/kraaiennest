@@ -14,7 +14,7 @@ export function sendMail(quoteFile: File, parent: Parent, month: number, send) {
     if (send) {
         const email: MailAdvancedParameters = {
             to: addresses,
-            subject: `Oudervereniging 't Kraaiennest - factuur Opvang maand ${monthString} (schooljaar ${getSchoolYear(month)})`,
+            subject: `Oudervereniging 't Kraaiennest - factuur Opvang maand ${monthString} (schooljaar ${getSchoolYear()})`,
             attachments: [quoteFile.getAs("application/pdf")],
             htmlBody: `<html><body><p>Beste,</p><p>In bijlage vindt u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}.</p>
 <p>Met vriendelijke groeten,<br />Oudervereniging 't Kraaiennest</p></body></html>`,
@@ -23,7 +23,7 @@ export function sendMail(quoteFile: File, parent: Parent, month: number, send) {
         MailApp.sendEmail(email);
     } else {
         GmailApp.createDraft(addresses,
-            `Oudervereniging 't kraaiennest - factuur Opvang maand ${monthString} (schooljaar ${getSchoolYear(month)})`,
+            `Oudervereniging 't kraaiennest - factuur Opvang maand ${monthString} (schooljaar ${getSchoolYear()})`,
             `In bijlage vindt u de factuur voor de opvang op school voor de maand ${monthString} voor ${parent.childName}`,
             {
                 attachments: [quoteFile.getAs("application/pdf")],
