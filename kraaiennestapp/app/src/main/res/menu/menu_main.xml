@@ -6,4 +6,8 @@
           android:title="@string/action_settings"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_write_nfc_tags"
+        android:orderInCategory="200"
+        android:title="@string/write_nfc_tags" />
 </menu>

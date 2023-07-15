@@ -109,6 +109,7 @@ export function loadChildren(): Child[] {
 		firstName: row[3],
 		group: row[4],
 		qrId: row[5],
-		pin: row[6]
+		pin: row[6],
+		nfc: row[7]
 	}));
 }

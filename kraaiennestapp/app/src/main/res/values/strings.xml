@@ -26,6 +26,8 @@
     <string name="check_in_success">Check in geslaagd</string>
     <string name="check_in_fail">Check in mislukt</string>
     <string name="title_activity_settings">Instellingen</string>
+    <string name="title_activity_nfc_write_overview">Nfc updaten</string>
+    <string name="title_activity_nfc_write">Tag schrijven</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
@@ -54,8 +56,12 @@
     <string name="crach_toast">App crach report is verstuurd.</string>
     <string name="app_crach_subject">Opvang app crach</string>
     <string name="pin_btn">PIN</string>
+    <string name="nfc_btn">NFC</string>
     <string name="not_valid_pin">Ongeldige PIN</string>
     <string name="child_pin">kind PIN code</string>
     <string name="action_filter">Filter</string>
     <string name="registration_failed">Registratie mislukt: %1$s</string>
+    <string name="write_nfc_tags">Write NFC tags</string>
+    <string name="do_nfc_btn">Schrijf tag</string>
+    <string name="not_valid_nfc">Geen geldige NFC tag</string>
 </resources>

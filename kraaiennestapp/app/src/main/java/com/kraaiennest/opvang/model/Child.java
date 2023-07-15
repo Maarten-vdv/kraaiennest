@@ -1,5 +1,7 @@
 package com.kraaiennest.opvang.model;
 
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
@@ -20,6 +22,9 @@ public class Child {
 
     @SerializedName("pin")
     String PIN;
+
+    @SerializedName("nfc")
+    String nfcId;
 
     public String getFirstName() {
         return firstName;
@@ -71,5 +76,13 @@ public class Child {
 
     public void setPIN(String PIN) {
         this.PIN = PIN;
+    }
+
+    public String getNfcId() {
+        return nfcId;
+    }
+
+    public void setNfcId(String nfcId) {
+        this.nfcId = nfcId;
     }
 }

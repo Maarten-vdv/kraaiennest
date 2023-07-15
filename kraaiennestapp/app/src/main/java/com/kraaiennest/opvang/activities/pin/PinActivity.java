@@ -1,5 +1,7 @@
 package com.kraaiennest.opvang.activities.pin;
 
+import static com.kraaiennest.opvang.activityContracts.InputChildId.FOUND_CHILD_ID;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +14,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.activities.main.ExceptionHandler;
 import com.kraaiennest.opvang.databinding.ActivityPinBinding;
+import com.kraaiennest.opvang.model.FoundChildId;
+import com.kraaiennest.opvang.model.FoundChildIdType;
 
 public class PinActivity extends AppCompatActivity {
 
-    public static final String CHILD_PIN = "pin";
     private PinViewModel model;
 
 
@@ -49,7 +52,7 @@ public class PinActivity extends AppCompatActivity {
 
         binding.pinCodeButtonOk.setOnClickListener(e -> {
             Intent resultIntent = new Intent();
-            resultIntent.putExtra(CHILD_PIN, model.getPin().getValue());
+            resultIntent.putExtra(FOUND_CHILD_ID, new FoundChildId(model.getPin().getValue(), FoundChildIdType.PIN));
             setResult(Activity.RESULT_OK, resultIntent);
             finish();
         });

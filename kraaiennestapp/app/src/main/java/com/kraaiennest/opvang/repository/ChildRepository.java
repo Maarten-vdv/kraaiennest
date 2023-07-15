@@ -35,4 +35,11 @@ public class ChildRepository {
         }
         return getChildren().thenApply(children -> childCache.stream().filter(c -> c.getPIN().equals(pin)).findFirst().orElse(null));
     }
+
+    public CompletableFuture<Child> findByNFC(String nfcId) {
+        if (childCache != null) {
+            return CompletableFuture.supplyAsync(() -> childCache.stream().filter(c -> c.getNfcId().equals(nfcId)).findFirst().orElse(null));
+        }
+        return getChildren().thenApply(children -> childCache.stream().filter(c -> c.getNfcId().equals(nfcId)).findFirst().orElse(null));
+    }
 }

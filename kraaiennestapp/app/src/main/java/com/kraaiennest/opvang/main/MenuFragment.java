@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.kraaiennest.opvang.R;
+import com.kraaiennest.opvang.activities.nfc.NfcWriteOverviewActivity;
 import com.kraaiennest.opvang.settings.SettingsActivity;
 
 /**
@@ -38,6 +39,9 @@ public class MenuFragment extends Fragment {
 
         if (id == R.id.action_settings) {
             Intent intent = new Intent(getContext(), SettingsActivity.class);
+            startActivity(intent);
+        } else  if (id == R.id.action_write_nfc_tags) {
+            Intent intent = new Intent(getContext(), NfcWriteOverviewActivity.class);
             startActivity(intent);
         }
 

@@ -1,37 +1,38 @@
 package com.kraaiennest.opvang.activities.register;
 
-import static com.kraaiennest.opvang.activities.pin.PinActivity.CHILD_PIN;
-import static com.kraaiennest.opvang.activities.scan.ScanActivity.SCANNED_USER_ID;
-
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.activities.main.ExceptionHandler;
-import com.kraaiennest.opvang.activities.pin.PinActivity;
-import com.kraaiennest.opvang.activities.scan.ScanActivity;
+import com.kraaiennest.opvang.activityContracts.InputChildId;
 import com.kraaiennest.opvang.databinding.ActivityRegisterBinding;
+import com.kraaiennest.opvang.model.FoundChildIdType;
 import com.kraaiennest.opvang.model.PartOfDay;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class RegisterActivity extends AppCompatActivity {
 
-    public static final int REGISTER_SCAN_REQUEST = 2;
-    public static final int REGISTER_PIN_REQUEST = 3;
     private RegisterViewModel model;
+    private ActivityResultLauncher<FoundChildIdType> findChildActivityLauncher;
+    private boolean chainRegistrations;
+    private FoundChildIdType lastFindType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         String partOfDay = getIntent().getStringExtra("partOfDay");
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        chainRegistrations = preferences.getBoolean("chainRegistrations", false);
 
         ActivityRegisterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setLifecycleOwner(this);
@@ -63,7 +67,24 @@ public class RegisterActivity extends AppCompatActivity {
         strings.put(R.string.half_hours, (orientation == Configuration.ORIENTATION_LANDSCAPE ? " " : "\n") + getString(R.string.half_hours));
         model.loadExtra(strings);
 
-        binding.registerRegisterBtn.setOnClickListener(click -> model.createRegistration());
+        binding.registerRegisterBtn.setOnClickListener(click -> {
+            CompletableFuture<Void> registration = model.createRegistration();
+            registration.thenAccept(result -> {
+                if (chainRegistrations) {
+                    switch (lastFindType) {
+                        case QR:
+                            startScan();
+                            break;
+                        case PIN:
+                            startPin();
+                            break;
+                        case NFC:
+                            startNfc();
+                            break;
+                    }
+                }
+            });
+        });
 
         model.getRegistrationState().observe(this, state -> {
             if (state.equals(ApiCallState.BUSY)) {
@@ -83,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         binding.registerScanBtn.setOnClickListener(click -> startScan());
+        binding.registerNfcBtn.setOnClickListener(click -> startNfc());
         binding.registerPinBtn.setOnClickListener(click -> startPin());
         binding.registerLower.setOnClickListener(click -> model.addHalfHours(-1));
         binding.registerHigher.setOnClickListener(click -> model.addHalfHours(1));
@@ -100,6 +122,29 @@ public class RegisterActivity extends AppCompatActivity {
                 binding.cutoff2.setVisibility(View.INVISIBLE);
             }
         });
+
+        findChildActivityLauncher = registerForActivityResult(new InputChildId(), foundChildId -> {
+            if (foundChildId == null) {
+                return;
+            }
+
+            lastFindType = foundChildId.getType();
+            switch (foundChildId.getType()) {
+                case QR:
+                    if (foundChildId.getId() == null) {
+                        Toast.makeText(this, R.string.not_valid_qr, Toast.LENGTH_SHORT).show();
+                    } else {
+                        new ViewModelProvider(this).get(RegisterViewModel.class).loadChildByQrId(foundChildId.getId());
+                    }
+                    break;
+                case PIN:
+                    new ViewModelProvider(this).get(RegisterViewModel.class).loadChildByPIN(foundChildId.getId());
+                    break;
+                case NFC:
+                    new ViewModelProvider(this).get(RegisterViewModel.class).loadChildByNFC(foundChildId.getId());
+                    break;
+            }
+        });
     }
 
     @Override
@@ -108,30 +153,15 @@ public class RegisterActivity extends AppCompatActivity {
         this.model.clearChild();
     }
 
+    private void startNfc() {
+        this.findChildActivityLauncher.launch(FoundChildIdType.NFC);
+    }
+
     private void startScan() {
-        Intent intent = new Intent(this, ScanActivity.class);
-        startActivityForResult(intent, REGISTER_SCAN_REQUEST);
+        this.findChildActivityLauncher.launch(FoundChildIdType.QR);
     }
 
     private void startPin() {
-        Intent intent = new Intent(this, PinActivity.class);
-        startActivityForResult(intent, REGISTER_PIN_REQUEST);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REGISTER_SCAN_REQUEST && resultCode == RESULT_OK) {
-            String userId = data.getStringExtra(SCANNED_USER_ID);
-            if (userId != null) {
-                new ViewModelProvider(this).get(RegisterViewModel.class).loadChildByQrId(userId);
-            } else {
-                Toast.makeText(this, R.string.not_valid_qr, Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == REGISTER_PIN_REQUEST && resultCode == RESULT_OK) {
-            String pin = data.getStringExtra(CHILD_PIN);
-            new ViewModelProvider(this).get(RegisterViewModel.class).loadChildByPIN(pin);
-        }
+        this.findChildActivityLauncher.launch(FoundChildIdType.PIN);
     }
 }

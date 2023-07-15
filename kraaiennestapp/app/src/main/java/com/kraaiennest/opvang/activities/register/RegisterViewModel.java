@@ -17,6 +17,7 @@ import com.kraaiennest.opvang.repository.RegistrationRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
@@ -93,9 +94,9 @@ public class RegisterViewModel extends ViewModel {
         return registrationState;
     }
 
-    public void createRegistration() {
+    public CompletableFuture<Void> createRegistration() {
         if (child.getValue() == null) {
-            return;
+            return null;
         }
 
         registrationState.setValue(ApiCallState.BUSY);
@@ -106,7 +107,7 @@ public class RegisterViewModel extends ViewModel {
         registration.setRegistrationTime(LocalDateTime.now());
         registration.setPartOfDay(getPartOfDay().getValue());
 
-        repository.createRegistration(registration)
+        return repository.createRegistration(registration)
                 .exceptionally(e -> {
                     registrationState.postValue(ApiCallState.ERROR);
                     errorMessage = e.getMessage();
@@ -125,6 +126,10 @@ public class RegisterViewModel extends ViewModel {
 
     public void loadChildByPIN(String pin) {
         childRepository.findByPIN(pin).thenAccept(c -> child.postValue(c)).exceptionally(f -> null);
+    }
+
+    public void loadChildByNFC(String nfcId) {
+        childRepository.findByNFC(nfcId).thenAccept(c -> child.postValue(c)).exceptionally(f -> null);
     }
 
     public void addHalfHours(int i) {

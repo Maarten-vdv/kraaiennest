@@ -1,5 +1,7 @@
 package com.kraaiennest.opvang.activities.scan;
 
+import static com.kraaiennest.opvang.activityContracts.InputChildId.FOUND_CHILD_ID;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.UrlQuerySanitizer;
@@ -19,6 +21,8 @@ import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.kraaiennest.opvang.R;
+import com.kraaiennest.opvang.model.FoundChildId;
+import com.kraaiennest.opvang.model.FoundChildIdType;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -26,7 +30,6 @@ import java.util.concurrent.Executors;
 
 public class ScanActivity extends AppCompatActivity {
 
-    public static final String SCANNED_USER_ID = "userId";
     private final Executor cameraExecutor = Executors.newSingleThreadExecutor();
     private QrCodeAnalyzer analyzer;
 
@@ -44,13 +47,13 @@ public class ScanActivity extends AppCompatActivity {
                 String userId = null;
 
                 if (URLUtil.isValidUrl(url)) {
-                    userId = new UrlQuerySanitizer(url).getValue(SCANNED_USER_ID);
-                } else if (url.startsWith(SCANNED_USER_ID + "=")) {
-                    userId = url.replace(SCANNED_USER_ID + "=", "");
+                    userId = new UrlQuerySanitizer(url).getValue(FOUND_CHILD_ID);
+                } else if (url.startsWith(FOUND_CHILD_ID + "=")) {
+                    userId = url.replace(FOUND_CHILD_ID + "=", "");
                 }
 
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra(SCANNED_USER_ID, userId);
+                resultIntent.putExtra(FOUND_CHILD_ID, new FoundChildId(userId, FoundChildIdType.QR));
                 setResult(Activity.RESULT_OK, resultIntent);
             }
             found = true;

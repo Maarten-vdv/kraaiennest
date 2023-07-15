@@ -1,4 +1,4 @@
-package com.kraaiennest.opvang.activities.checkin;
+package com.kraaiennest.opvang.activities.nfc;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
-public class CheckInViewModel extends ViewModel {
+public class NfcOverviewViewModel extends ViewModel {
 
     private final RegistrationRepository registrationRepository;
     private final ChildRepository childRepository;
@@ -30,7 +30,7 @@ public class CheckInViewModel extends ViewModel {
     private Map<Integer, String> strings;
 
     @Inject
-    public CheckInViewModel(RegistrationRepository registrationRepository, ChildRepository childRepository) {
+    public NfcOverviewViewModel(RegistrationRepository registrationRepository, ChildRepository childRepository) {
         this.registrationRepository = registrationRepository;
         this.childRepository = childRepository;
     }
@@ -63,14 +63,14 @@ public class CheckInViewModel extends ViewModel {
         return Transformations.map(getChild(), c -> c == null ? strings.get(R.string.scan_child) : c.getFullName());
     }
 
-    public MutableLiveData<ApiCallState> getCheckInState() {
+    public MutableLiveData<ApiCallState> getState() {
         if (apiCallState == null) {
             apiCallState = new MutableLiveData<>(ApiCallState.IDLE);
         }
         return apiCallState;
     }
 
-    public void checkInDone() {
+    public void writeDone() {
         apiCallState.setValue(ApiCallState.IDLE);
     }
 

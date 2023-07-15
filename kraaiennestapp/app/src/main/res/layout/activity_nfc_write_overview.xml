@@ -9,7 +9,7 @@
 
         <variable
             name="viewmodel"
-            type="com.kraaiennest.opvang.activities.checkin.CheckInViewModel" />
+            type="com.kraaiennest.opvang.activities.nfc.NfcOverviewViewModel" />
     </data>
 
     <LinearLayout
@@ -18,21 +18,21 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_checkin"
+            android:id="@+id/toolbar_nfc"
             android:minHeight="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="@android:color/white"
-            android:background="@color/check_in_btn_color"
+            android:background="@color/nfc_btn_color"
             android:theme="@style/AppTheme.AppBarOverlay" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/check_in_layout"
+            android:id="@+id/nfc_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/appBackgroundColor"
             android:backgroundTintMode="add"
-            tools:context=".activities.checkin.CheckInActivity">
+            tools:context=".activities.nfc.nfcActivity">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
@@ -74,24 +74,24 @@
                     android:text="@{viewmodel.child.group}"
                     android:textColor="#FFFFFF"
                     android:textSize="36sp"
-                    app:layout_constraintBottom_toTopOf="@id/checkin_guideline"
+                    app:layout_constraintBottom_toTopOf="@id/nfc_guideline"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHeight_percent="0.25"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/child_name" />
 
                 <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/checkin_guideline"
+                    android:id="@+id/nfc_guideline"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@id/check_in_scan_btn"
+                    app:layout_constraintBottom_toTopOf="@id/nfc_scan_btn"
                     app:layout_constraintGuide_percent="0.75"
                     app:layout_constraintHeight_percent="0.25"
                     app:layout_constraintTop_toBottomOf="@id/child_group" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/check_in_pin_btn"
+                    android:id="@+id/nfc_pin_btn"
                     style="@style/MainButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -100,30 +100,14 @@
                     android:text="@string/pin_btn"
                     android:textColor="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/check_in_nfc_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/nfc_scan_btn"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/checkin_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/nfc_guideline"
                     app:rippleColor="@color/primaryLightColor"
                     />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/check_in_nfc_btn"
-                    style="@style/MainButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginEnd="2dp"
-                    android:background="@color/primaryColor"
-                    android:text="@string/nfc_btn"
-                    android:textColor="#FFFFFF"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/check_in_scan_btn"
-                    app:layout_constraintStart_toEndOf="@+id/check_in_pin_btn"
-                    app:layout_constraintTop_toBottomOf="@id/checkin_guideline"
-                    app:rippleColor="@color/primaryLightColor"
-                    />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/check_in_scan_btn"
+                    android:id="@+id/nfc_scan_btn"
                     style="@style/MainButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -135,22 +119,22 @@
                     app:rippleColor="@color/primaryLightColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/check_in_nfc_btn"
-                    app:layout_constraintTop_toBottomOf="@id/checkin_guideline" />
+                    app:layout_constraintStart_toEndOf="@+id/nfc_pin_btn"
+                    app:layout_constraintTop_toBottomOf="@id/nfc_guideline" />
 
                 <com.kusu.loadingbutton.LoadingButton
-                    android:id="@+id/check_in_btn"
+                    android:id="@+id/nfc_btn"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="2dp"
                     android:background="@color/primaryColor"
                     android:visibility="@{viewmodel.child == null ? View.GONE : View.VISIBLE}"
                     android:textColor="#FFFFFF"
-                    android:text="@string/do_check_in_btn"
+                    android:text="@string/do_nfc_btn"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/checkin_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/nfc_guideline"
                     app:enabled="true"
                     style="@style/Widget.ProgressButton.Primary"
                     app:lb_buttonColor="@color/primaryColor"

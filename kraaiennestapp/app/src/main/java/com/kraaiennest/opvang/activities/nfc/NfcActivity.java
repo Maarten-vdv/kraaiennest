@@ -1,5 +1,8 @@
 package com.kraaiennest.opvang.activities.nfc;
 
+import static com.kraaiennest.opvang.activityContracts.InputChildId.FOUND_CHILD_ID;
+
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NdefMessage;
@@ -17,15 +20,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.kraaiennest.opvang.R;
+import com.kraaiennest.opvang.model.FoundChildId;
+import com.kraaiennest.opvang.model.FoundChildIdType;
 import com.kraaiennest.opvang.model.ndef.ParsedNdefRecord;
 
 import java.util.List;
 
-import dagger.hilt.android.AndroidEntryPoint;
-
-@AndroidEntryPoint
 public class NfcActivity extends AppCompatActivity {
 
+    public static final String SCANNED_RECORD = "SCANNED_RECORD";
     private TextView text;
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
@@ -45,7 +48,8 @@ public class NfcActivity extends AppCompatActivity {
 
         pendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, this.getClass())
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                , PendingIntent.FLAG_MUTABLE);
     }
 
     @Override
@@ -95,11 +99,18 @@ public class NfcActivity extends AppCompatActivity {
                 Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 byte[] payload = dumpTagData(tag).getBytes();
                 NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload);
-                NdefMessage msg = new NdefMessage(new NdefRecord[] {record});
-                msgs = new NdefMessage[] {msg};
+                NdefMessage msg = new NdefMessage(new NdefRecord[]{record});
+                msgs = new NdefMessage[]{msg};
             }
+            Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
-            displayMessages(msgs);
+            Intent resultIntent = new Intent();
+            String ndefMessage = msgs[0].toString();
+            String qrId = ndefMessage.split("/")[0];
+
+            resultIntent.putExtra(FOUND_CHILD_ID, new FoundChildId(qrId, FoundChildIdType.NFC));
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         }
     }
 
@@ -223,7 +234,7 @@ public class NfcActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private long toDec(byte[] bytes) {
+    private Long toDec(byte[] bytes) {
         long result = 0;
         long factor = 1;
         for (int i = 0; i < bytes.length; ++i) {

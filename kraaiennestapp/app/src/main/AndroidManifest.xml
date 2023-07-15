@@ -20,6 +20,13 @@
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
+            android:name=".activities.nfc.NfcWriteOverviewActivity"
+            android:label="@string/title_activity_nfc_write_overview"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.nfc.NfcWriteActivity"
+            android:label="@string/title_activity_nfc_write" />
+        <activity
             android:name=".activities.checkin.CheckInActivity"
             android:label="@string/title_activity_check_in"
             android:theme="@style/AppTheme.NoActionBar" />
