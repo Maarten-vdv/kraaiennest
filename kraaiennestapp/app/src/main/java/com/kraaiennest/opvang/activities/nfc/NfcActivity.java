@@ -14,7 +14,6 @@ import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,14 +21,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.model.FoundChildId;
 import com.kraaiennest.opvang.model.FoundChildIdType;
+import com.kraaiennest.opvang.model.ndef.ChildNdefMessage;
 import com.kraaiennest.opvang.model.ndef.ParsedNdefRecord;
 
 import java.util.List;
 
 public class NfcActivity extends AppCompatActivity {
-
-    public static final String SCANNED_RECORD = "SCANNED_RECORD";
-    private TextView text;
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
 
@@ -37,7 +34,6 @@ public class NfcActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc);
-        text = findViewById(R.id.text);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (nfcAdapter == null) {
@@ -96,39 +92,78 @@ public class NfcActivity extends AppCompatActivity {
             } else {
                 byte[] empty = new byte[0];
                 byte[] id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
-                Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 byte[] payload = dumpTagData(tag).getBytes();
                 NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload);
                 NdefMessage msg = new NdefMessage(new NdefRecord[]{record});
                 msgs = new NdefMessage[]{msg};
             }
-            Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 
             Intent resultIntent = new Intent();
-            String ndefMessage = msgs[0].toString();
-            String qrId = ndefMessage.split("/")[0];
 
-            resultIntent.putExtra(FOUND_CHILD_ID, new FoundChildId(qrId, FoundChildIdType.NFC));
-            setResult(Activity.RESULT_OK, resultIntent);
-            finish();
+            try {
+                // get the QrId from the Ndef message (record format is)
+                List<ParsedNdefRecord> records = NdefMessageParser.parse(msgs[0]);
+                ChildNdefMessage message = new ChildNdefMessage(records.get(0).str());
+                String qrId = message.getQrId();
+
+                resultIntent.putExtra(FOUND_CHILD_ID, new FoundChildId(qrId, FoundChildIdType.NFC));
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            } catch (Exception ex) {
+                finish();
+            }
         }
     }
 
-    private void displayMessages(NdefMessage[] messages) {
-        if (messages == null || messages.length == 0)
-            return;
-
-        StringBuilder builder = new StringBuilder();
-        List<ParsedNdefRecord> records = NdefMessageParser.parse(messages[0]);
-        final int size = records.size();
-
-        for (int i = 0; i < size; i++) {
-            ParsedNdefRecord record = records.get(i);
-            String str = record.str();
-            builder.append(str).append("\n");
+    private String toHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = bytes.length - 1; i >= 0; --i) {
+            int b = bytes[i] & 0xff;
+            if (b < 0x10)
+                sb.append('0');
+            sb.append(Integer.toHexString(b));
+            if (i > 0) {
+                sb.append(" ");
+            }
         }
+        return sb.toString();
+    }
 
-        text.setText(builder.toString());
+    private String toReversedHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < bytes.length; ++i) {
+            if (i > 0) {
+                sb.append(" ");
+            }
+            int b = bytes[i] & 0xff;
+            if (b < 0x10)
+                sb.append('0');
+            sb.append(Integer.toHexString(b));
+        }
+        return sb.toString();
+    }
+
+    private Long toDec(byte[] bytes) {
+        long result = 0;
+        long factor = 1;
+        for (byte aByte : bytes) {
+            long value = aByte & 0xffL;
+            result += value * factor;
+            factor *= 256L;
+        }
+        return result;
+    }
+
+    private long toReversedDec(byte[] bytes) {
+        long result = 0;
+        long factor = 1;
+        for (int i = bytes.length - 1; i >= 0; --i) {
+            long value = bytes[i] & 0xffL;
+            result += value * factor;
+            factor *= 256L;
+        }
+        return result;
     }
 
     private String dumpTagData(Tag tag) {
@@ -172,7 +207,7 @@ public class NfcActivity extends AppCompatActivity {
                     sb.append('\n');
 
                     sb.append("Mifare size: ");
-                    sb.append(mifareTag.getSize() + " bytes");
+                    sb.append(mifareTag.getSize()).append(" bytes");
                     sb.append('\n');
 
                     sb.append("Mifare sectors: ");
@@ -182,7 +217,7 @@ public class NfcActivity extends AppCompatActivity {
                     sb.append("Mifare blocks: ");
                     sb.append(mifareTag.getBlockCount());
                 } catch (Exception e) {
-                    sb.append("Mifare classic error: " + e.getMessage());
+                    sb.append("Mifare classic error: ").append(e.getMessage());
                 }
             }
 
@@ -206,53 +241,20 @@ public class NfcActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    private String toHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = bytes.length - 1; i >= 0; --i) {
-            int b = bytes[i] & 0xff;
-            if (b < 0x10)
-                sb.append('0');
-            sb.append(Integer.toHexString(b));
-            if (i > 0) {
-                sb.append(" ");
-            }
-        }
-        return sb.toString();
-    }
-
-    private String toReversedHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < bytes.length; ++i) {
-            if (i > 0) {
-                sb.append(" ");
-            }
-            int b = bytes[i] & 0xff;
-            if (b < 0x10)
-                sb.append('0');
-            sb.append(Integer.toHexString(b));
-        }
-        return sb.toString();
-    }
-
-    private Long toDec(byte[] bytes) {
-        long result = 0;
-        long factor = 1;
-        for (int i = 0; i < bytes.length; ++i) {
-            long value = bytes[i] & 0xffl;
-            result += value * factor;
-            factor *= 256l;
-        }
-        return result;
-    }
-
-    private long toReversedDec(byte[] bytes) {
-        long result = 0;
-        long factor = 1;
-        for (int i = bytes.length - 1; i >= 0; --i) {
-            long value = bytes[i] & 0xffl;
-            result += value * factor;
-            factor *= 256l;
-        }
-        return result;
-    }
+    //    private void displayMessages(NdefMessage[] messages) {
+    //        if (messages == null || messages.length == 0)
+    //            return;
+    //
+    //        StringBuilder builder = new StringBuilder();
+    //        List<ParsedNdefRecord> records = NdefMessageParser.parse(messages[0]);
+    //        final int size = records.size();
+    //
+    //        for (int i = 0; i < size; i++) {
+    //            ParsedNdefRecord record = records.get(i);
+    //            String str = record.str();
+    //            builder.append(str).append("\n");
+    //        }
+    //
+    //        text.setText(builder.toString());
+    //    }
 }

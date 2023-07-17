@@ -11,7 +11,6 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.activityContracts.WriteChildInfo;
 import com.kraaiennest.opvang.model.Child;
+import com.kraaiennest.opvang.model.ndef.ChildNdefMessage;
 
 import org.parceler.Parcels;
 
@@ -27,9 +27,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class NfcWriteActivity extends AppCompatActivity {
-
-    public static final String SCANNED_RECORD = "SCANNED_RECORD";
-    private TextView text;
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private Child child;
@@ -38,7 +35,6 @@ public class NfcWriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc);
-        text = findViewById(R.id.text);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (nfcAdapter == null) {
@@ -99,7 +95,8 @@ public class NfcWriteActivity extends AppCompatActivity {
     public void writeTag(Tag tag, Child child) {
         if (tag != null) {
             try {
-                NdefRecord textRecord = this.createTextRecord(child.getQrId() + "/" + child.getFirstName() + " " + child.getLastName(), Locale.getDefault());
+                ChildNdefMessage message = new ChildNdefMessage(child.getQrId(), child.getFullName(), child.getId());
+                NdefRecord textRecord = this.createTextRecord(message.getSource(), Locale.getDefault());
 
                 Ndef ndefTag = Ndef.get(tag);
                 if (ndefTag == null) {

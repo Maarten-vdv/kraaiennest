@@ -19,17 +19,13 @@ public class NdefMessageParser {
     }
 
     public static List<ParsedNdefRecord> getRecords(NdefRecord[] records) {
-        List<ParsedNdefRecord> elements = new ArrayList<ParsedNdefRecord>();
+        List<ParsedNdefRecord> elements = new ArrayList<>();
 
         for (final NdefRecord record : records) {
             if (TextRecord.isText(record)) {
                 elements.add(TextRecord.parse(record));
             } else {
-                elements.add(new ParsedNdefRecord() {
-                    public String str() {
-                        return new String(record.getPayload());
-                    }
-                });
+                elements.add(() -> new String(record.getPayload()));
             }
         }
 

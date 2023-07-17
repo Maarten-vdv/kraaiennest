@@ -1,10 +1,8 @@
 package com.kraaiennest.opvang.activities.nfc;
 
-import static com.kraaiennest.opvang.model.FoundChildIdType.NFC;
 import static com.kraaiennest.opvang.model.FoundChildIdType.PIN;
 import static com.kraaiennest.opvang.model.FoundChildIdType.QR;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -14,10 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 
 import com.kraaiennest.opvang.R;
-import com.kraaiennest.opvang.activities.checkin.CheckInViewModel;
 import com.kraaiennest.opvang.activities.main.ExceptionHandler;
 import com.kraaiennest.opvang.activities.register.ApiCallState;
 import com.kraaiennest.opvang.activityContracts.InputChildId;
@@ -28,7 +24,6 @@ import com.kraaiennest.opvang.model.FoundChildIdType;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -38,27 +33,21 @@ public class NfcWriteOverviewActivity extends AppCompatActivity {
     private NfcOverviewViewModel model;
     private ActivityResultLauncher<FoundChildIdType> findChildActivityLauncher;
     private ActivityResultLauncher<Child> findWriteActivityLauncher;
-    private boolean chainRegistrations;
-    private FoundChildIdType lastFindType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler("NfcWriteOverview"));
-
         super.onCreate(savedInstanceState);
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        chainRegistrations = preferences.getBoolean("chainRegistrations", false);
 
         ActivityNfcWriteOverviewBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_nfc_write_overview);
         binding.setLifecycleOwner(this);
         View view = binding.getRoot();
         setContentView(view);
 
-//        Toolbar toolbar = findViewById(R.id.toolbar_nfc);
-//        setSupportActionBar(toolbar);
-//        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-//        toolbar.setNavigationOnClickListener(e -> finish());
+        Toolbar toolbar = findViewById(R.id.toolbar_nfc);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        toolbar.setNavigationOnClickListener(e -> finish());
 
         model = new ViewModelProvider(this).get(NfcOverviewViewModel.class);
         binding.setViewmodel(model);
@@ -67,23 +56,7 @@ public class NfcWriteOverviewActivity extends AppCompatActivity {
         model.loadExtra(strings);
         binding.nfcBtn.setEnabled(true);
 
-        binding.nfcBtn.setOnClickListener(click -> {
-            this.findChildActivityLauncher.launch(NFC);
-            this.startNfcWrite(this.model.getChild().getValue());
-//            CompletableFuture<Void> checkIn = model.createCheckIn();
-//            checkIn.thenAccept(result -> {
-//                if (chainRegistrations) {
-//                    switch (lastFindType) {
-//                        case QR:
-//                            startScan();
-//                            break;
-//                        case PIN:
-//                            startPin();
-//                            break;
-//                    }
-//                }
-//            });
-        });
+        binding.nfcBtn.setOnClickListener(click -> this.startNfcWrite(this.model.getChild().getValue()));
         binding.nfcScanBtn.setOnClickListener(click -> startScan());
         binding.nfcPinBtn.setOnClickListener(click -> startPin());
 
@@ -106,6 +79,11 @@ public class NfcWriteOverviewActivity extends AppCompatActivity {
         });
 
         findWriteActivityLauncher = registerForActivityResult(new WriteChildInfo(), result -> {
+            if (result) {
+                Toast.makeText(this, R.string.tag_write_success, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, R.string.tag_write_fail, Toast.LENGTH_SHORT).show();
+            }
             new ViewModelProvider(this).get(NfcOverviewViewModel.class).clearChild();
         });
 
@@ -113,8 +91,6 @@ public class NfcWriteOverviewActivity extends AppCompatActivity {
             if (foundChildId == null) {
                 return;
             }
-
-            lastFindType = foundChildId.getType();
             switch (foundChildId.getType()) {
                 case QR:
                     if (foundChildId.getId() == null) {
@@ -125,9 +101,6 @@ public class NfcWriteOverviewActivity extends AppCompatActivity {
                     break;
                 case PIN:
                     new ViewModelProvider(this).get(NfcOverviewViewModel.class).loadChildByPIN(foundChildId.getId());
-                    break;
-                case NFC:
-                    new ViewModelProvider(this).get(NfcOverviewViewModel.class).loadChildByNFC(foundChildId.getId());
                     break;
             }
         });
@@ -150,5 +123,4 @@ public class NfcWriteOverviewActivity extends AppCompatActivity {
     private void startNfcWrite(Child child) {
         this.findWriteActivityLauncher.launch(child);
     }
-
 }

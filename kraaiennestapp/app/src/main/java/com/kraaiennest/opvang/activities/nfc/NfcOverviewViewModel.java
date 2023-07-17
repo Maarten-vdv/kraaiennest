@@ -7,14 +7,11 @@ import androidx.lifecycle.ViewModel;
 
 import com.kraaiennest.opvang.R;
 import com.kraaiennest.opvang.activities.register.ApiCallState;
-import com.kraaiennest.opvang.model.CheckIn;
 import com.kraaiennest.opvang.model.Child;
 import com.kraaiennest.opvang.repository.ChildRepository;
 import com.kraaiennest.opvang.repository.RegistrationRepository;
 
-import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
@@ -23,7 +20,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class NfcOverviewViewModel extends ViewModel {
 
-    private final RegistrationRepository registrationRepository;
     private final ChildRepository childRepository;
     private MutableLiveData<Child> child;
     private MutableLiveData<ApiCallState> apiCallState;
@@ -31,7 +27,6 @@ public class NfcOverviewViewModel extends ViewModel {
 
     @Inject
     public NfcOverviewViewModel(RegistrationRepository registrationRepository, ChildRepository childRepository) {
-        this.registrationRepository = registrationRepository;
         this.childRepository = childRepository;
     }
 
@@ -55,10 +50,6 @@ public class NfcOverviewViewModel extends ViewModel {
         childRepository.findByPIN(pin).thenAcceptAsync(c -> child.postValue(c)).exceptionally(f -> null);
     }
 
-    public void loadChildByNFC(String nfcId) {
-        childRepository.findByNFC(nfcId).thenAccept(c -> child.postValue(c)).exceptionally(f -> null);
-    }
-
     public LiveData<String> getFullName() {
         return Transformations.map(getChild(), c -> c == null ? strings.get(R.string.scan_child) : c.getFullName());
     }
@@ -72,25 +63,6 @@ public class NfcOverviewViewModel extends ViewModel {
 
     public void writeDone() {
         apiCallState.setValue(ApiCallState.IDLE);
-    }
-
-    public  CompletableFuture<Void> createCheckIn() {
-        apiCallState.setValue(ApiCallState.BUSY);
-        if (child.getValue() == null) {
-            CompletableFuture.completedFuture(null);
-        }
-        CheckIn checkIn = new CheckIn();
-        checkIn.setCheckInTime(LocalDateTime.now());
-        checkIn.setChildId(child.getValue().getId());
-        CompletableFuture<CheckIn> checkInTask = registrationRepository.createCheckIn(checkIn);
-
-        return checkInTask.thenRunAsync(() -> {
-             child.postValue(null);
-             apiCallState.postValue(ApiCallState.SUCCESS);
-         }).exceptionally((Throwable error) -> {
-             apiCallState.postValue(ApiCallState.ERROR);
-             return null;
-         });
     }
 
     public void clearChild() {

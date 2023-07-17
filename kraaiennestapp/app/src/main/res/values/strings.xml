@@ -64,4 +64,7 @@
     <string name="write_nfc_tags">Write NFC tags</string>
     <string name="do_nfc_btn">Schrijf tag</string>
     <string name="not_valid_nfc">Geen geldige NFC tag</string>
+    <string name="provide_nfc_tag">Houd een nfc tag tegen de achterkant van het toestel</string>
+    <string name="tag_write_fail">Tag schrijven mislukt</string>
+    <string name="tag_write_success">Tag geschreven</string>
 </resources>

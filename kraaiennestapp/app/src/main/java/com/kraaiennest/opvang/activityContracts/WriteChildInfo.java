@@ -1,6 +1,7 @@
 package com.kraaiennest.opvang.activityContracts;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -27,11 +28,6 @@ public class WriteChildInfo extends ActivityResultContract<Child, Boolean> {
 
     @Override
     public Boolean parseResult(int resultCode, @Nullable Intent result) {
-//        if (resultCode != Activity.RESULT_OK || result == null) {
-//            return null;
-//        }
-//        return result.getParcelableExtra(FOUND_CHILD_ID);
-//
-        return true;
+        return resultCode == Activity.RESULT_OK && result != null;
     }
 }
