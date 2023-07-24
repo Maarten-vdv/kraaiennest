@@ -1,0 +1,103 @@
+<div>
+    <form [formGroup]="parent1Form" class="form">
+        <h3>Info ouder</h3>
+        <mat-form-field>
+            <mat-label>Voornaam</mat-label>
+            <input matInput formControlName="firstName"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Naam</mat-label>
+            <input matInput formControlName="lastName"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Email adres</mat-label>
+            <input matInput formControlName="email"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Telefoon</mat-label>
+            <input matInput formControlName="phone"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Rijksregister nummer</mat-label>
+            <input matInput formControlName="registerNr"/>
+        </mat-form-field>
+    </form>
+</div>
+
+<div>
+    <form [formGroup]="parent2Form" class="form">
+        <h3>Info ouder</h3>
+        <mat-form-field>
+            <mat-label>Voornaam</mat-label>
+            <input matInput formControlName="firstName"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Naam</mat-label>
+            <input matInput formControlName="lastName"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Email adres</mat-label>
+            <input matInput formControlName="email"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Telefoon</mat-label>
+            <input matInput formControlName="phone"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Rijksregister nummer</mat-label>
+            <input matInput formControlName="registerNr"/>
+        </mat-form-field>
+    </form>
+</div>
+
+<div>
+    <form [formGroup]="addressForm" class="form">
+        <h3>Adres gegevens</h3>
+        <mat-form-field>
+            <mat-label>Straat</mat-label>
+            <input matInput formControlName="street"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Nummer/(bus)</mat-label>
+            <input matInput formControlName="houseNr"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Postcode</mat-label>
+            <input matInput formControlName="postalCode"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Gemeente</mat-label>
+            <input matInput formControlName="commune"/>
+        </mat-form-field>
+    </form>
+</div>
+
+<div>
+    <form [formGroup]="childForm" class="form">
+        <h3>Info kind</h3>
+        <mat-form-field>
+            <mat-label>Voornaam</mat-label>
+            <input matInput formControlName="firstName"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Familienaam</mat-label>
+            <input matInput formControlName="lastName"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>rijksregister nummer</mat-label>
+            <input matInput formControlName="registerNr"/>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Klas</mat-label>
+            <input matInput formControlName="group"/>
+        </mat-form-field>
+    </form>
+</div>
+
+<div class="action-bar">
+    <button mat-flat-button (click)="updateData()" color="accent">Update</button>
+</div>
+
+<ng-template #loading>
+    <p>Loading...</p>
+</ng-template>

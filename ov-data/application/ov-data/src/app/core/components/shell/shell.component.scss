@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toolbar {
+  flex-shrink: 0;
+}
+
+.content {
+  flex: auto;
+  padding: 1rem;
+
+  width: 80%;
+  max-width: 1200px;
+}
