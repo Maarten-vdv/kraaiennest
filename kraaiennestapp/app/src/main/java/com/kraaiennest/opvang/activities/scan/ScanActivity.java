@@ -47,9 +47,9 @@ public class ScanActivity extends AppCompatActivity {
                 String userId = null;
 
                 if (URLUtil.isValidUrl(url)) {
-                    userId = new UrlQuerySanitizer(url).getValue(FOUND_CHILD_ID);
-                } else if (url.startsWith(FOUND_CHILD_ID + "=")) {
-                    userId = url.replace(FOUND_CHILD_ID + "=", "");
+                    userId = new UrlQuerySanitizer(url).getValue("userId");
+                } else if (url.startsWith("userId=")) {
+                    userId = url.replace( "userId=", "");
                 }
 
                 Intent resultIntent = new Intent();
