@@ -107,7 +107,7 @@ public class NfcActivity extends AppCompatActivity {
                 ChildNdefMessage message = new ChildNdefMessage(records.get(0).str());
                 String qrId = message.getQrId();
 
-                resultIntent.putExtra(FOUND_CHILD_ID, new FoundChildId(qrId, FoundChildIdType.NFC));
+                resultIntent.putExtra(FOUND_CHILD_ID, new FoundChildId(qrId, FoundChildIdType.QR));
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             } catch (Exception ex) {
